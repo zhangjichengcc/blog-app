@@ -36,8 +36,8 @@ jobs:
       - name: connect Server & backups
         uses: appleboy/ssh-action@master
         with:
-          host: REMOTE_HOST # 下面三个配置与上一步类似
-          username: REMOTE_USER
+          host: ${{ env.REMOTE_HOST }} # 下面三个配置与上一步类似
+          username: ${{ env.REMOTE_USER }}
           key: ${{ secrets.AL_ACCESS_TOKEN }}
           script: |
             cd ${{ env.TARGET_PATH }}
