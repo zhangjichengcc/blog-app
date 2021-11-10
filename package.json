@@ -3,6 +3,8 @@
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
+    "bootstrap:dev": "cross-env UMI_ENV=dev node scripts/init.ts ",
+    "bootstrap:prod": "cross-env UMI_ENV=prod node scripts/init.ts ",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
@@ -31,8 +33,11 @@
     "@types/react-dom": "^17.0.0",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.5.20",
+    "chalk": "^4.1.2",
+    "cross-env": "^7.0.3",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
+    "ts-node": "^10.4.0",
     "typescript": "^4.1.2",
     "yorkie": "^2.0.0"
   }
