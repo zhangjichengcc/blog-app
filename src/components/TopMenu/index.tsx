@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-17 10:37:56
- * @LastEditTime: 2021-12-17 17:10:29
+ * @LastEditTime: 2021-12-20 15:37:17
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\components\TopMenu\index.tsx
@@ -32,7 +32,7 @@ const TopMenu: FC<any> = (props) => {
 
   return (
     <div className={styles.topMenu}>
-      <MenuLogo onClick={onLogoClick} />
+      <MenuLogo onClick={onLogoClick} style={{paddingRight: '3vw'}}/>
       <Routes2Menu routes={baseRoutes} />
       <TopUserBar />
     </div>
