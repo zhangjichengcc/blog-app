@@ -1,0 +1,36 @@
+@import '~@/global.less';
+
+.historyBar {
+  display: flex;
+  align-items: center;
+  > i {
+    display: block;
+    width: 1px;
+    height: 15px;
+    background-color: #888;
+    margin: 0 9px;
+  }
+  .leftBar {
+    color: #aaa;
+    font-size: 15px;
+    cursor: no-drop;
+    > span {
+      margin-right: 5px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  .rightBar {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    > .filder {
+      cursor: pointer;
+      transition: all ease 0.3s;
+      &:hover {
+        color: @active-color;
+      }
+    }
+  }
+}

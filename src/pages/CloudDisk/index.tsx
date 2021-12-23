@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-21 14:41:34
- * @LastEditTime: 2021-12-23 17:06:03
+ * @LastEditTime: 2021-12-23 20:39:27
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\index.tsx
@@ -9,6 +9,7 @@
 
 import React, { FC, useState } from 'react';
 import { Button, Input, Menu, Badge } from 'antd';
+import AllFiles from './AllFiles';
 import {
   FolderOutlined,
   ProfileOutlined,
@@ -97,7 +98,9 @@ const CloudDisk: FC<any> = (props) => {
             </Item>
           </ItemGroup> */}
         </Menu>
-        <div className={styles.mainBody}>body</div>
+        <div className={styles.mainBody}>
+          <AllFiles />
+        </div>
       </div>
     </div>
   );
