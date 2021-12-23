@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-09 15:56:30
- * @LastEditTime: 2021-11-09 15:59:20
+ * @LastEditTime: 2021-12-21 10:49:49
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\utils\request.ts
@@ -16,7 +16,7 @@
 import { stringify } from 'qs';
 import { notification } from 'antd';
 
-const codeMessage: {[key: number]: string} = {
+const codeMessage: { [key: number]: string } = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
   202: '一个请求已经进入后台排队（异步任务）。',
@@ -37,6 +37,20 @@ const codeMessage: {[key: number]: string} = {
  * 异常处理程序
  */
 
+interface _ErrorProps {
+  // message
+}
+class _Error extends Error {
+  public message: string;
+  public code!: number;
+  public response: any;
+  public name!: string;
+  constructor(message: string) {
+    super();
+    this.message = message;
+  }
+}
+
 const errorHandler = (error: { response: any; message: any }) => {
   const { response, message } = error;
   if (response && response.status) {
@@ -56,11 +70,9 @@ const errorHandler = (error: { response: any; message: any }) => {
 
 // 检验状态码， 200 表示请求成功
 const checkStatus = (response: any) => {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
-  const error = new Error(response.statusText);
-  error.status = response.status;
+  if (response.status >= 200 && response.status < 300) return response;
+  const error = new _Error(response.statusText);
+  error.code = response.status;
   error.response = response;
   throw error;
 };
@@ -102,15 +114,15 @@ export default function request(option: any) {
 
   return fetch(url, newOptions)
     .then(checkStatus)
-    .then(response => response.json())
-    .then(response => {
+    .then((response) => response.json())
+    .then((response) => {
       const { code, message } = response;
       // code 为 0 并且 data 存在的时候才返回数据，其他的均抛出异常，该异常属于业务异常
       if (newOptions.responseType === 'progress' || code === 0) {
         return response;
       }
       // 抛出错误并捕捉
-      const error = new Error(message);
+      const error = new _Error(message);
       error.response = response;
       error.code = -1;
       error.name = 'serviceError';
