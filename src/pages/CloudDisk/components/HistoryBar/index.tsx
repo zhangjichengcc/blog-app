@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:38:14
- * @LastEditTime: 2021-12-23 20:47:13
+ * @LastEditTime: 2021-12-24 19:39:07
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\components\HistoryBar\index.tsx
@@ -18,6 +18,8 @@ import {
 import styles from './index.less';
 
 const HistoryBar: FC<any> = (props) => {
+  const { history } = props;
+
   return (
     <div className={styles.historyBar}>
       <div className={styles.leftBar}>
