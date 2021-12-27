@@ -13,11 +13,16 @@
   .leftBar {
     color: #aaa;
     font-size: 15px;
-    cursor: no-drop;
     > span {
+      // cursor: no-drop;
       margin-right: 5px;
+      transition: all 0.3s ease-in-out;
       &:last-child {
         margin-right: 0;
+      }
+      &.active {
+        color: #555;
+        cursor: pointer;
       }
     }
   }
