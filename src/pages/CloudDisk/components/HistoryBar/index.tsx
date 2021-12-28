@@ -1,14 +1,15 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:38:14
- * @LastEditTime: 2021-12-27 17:35:29
+ * @LastEditTime: 2021-12-28 20:58:04
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\components\HistoryBar\index.tsx
  */
 
-import React, { FC, useState, useEffect, useCallback } from 'react';
-import EventEmitter from 'utils/eventEmitter';
+import React, { FC, RefObject, ReactElement, useImperativeHandle } from 'react';
+import BreadCrumbNode from '@/utils/BreadCrumbNode';
+import useHistory from '../../hooks/useHistory';
 import {
   ReloadOutlined,
   LeftOutlined,
@@ -17,101 +18,56 @@ import {
 } from '@ant-design/icons';
 
 import styles from './index.less';
-interface historyItemProps {
-  key: string;
-  label: string;
-  value: string;
-}
 
-const eventEmitter = new EventEmitter();
-
-type useHistoryReturnProps = [
-  Array<historyItemProps>,
-  number,
-  Array<historyItemProps>,
-  (item: historyItemProps) => void,
-  (count: number) => void,
-];
-
-const useHistory = function (
-  historyList: Array<historyItemProps> = [],
-): useHistoryReturnProps {
-  const [history, setHistory] = useState<Array<historyItemProps>>(historyList);
-  const [currentIdx, setCurrentIdx] = useState<number>(0);
-  const [visualHistory, setVisualHistory] = useState<Array<historyItemProps>>(
-    [],
-  );
-
-  function historyChange(count: number): void {
-    const _currentIdx = currentIdx + count;
-    if (_currentIdx > history.length - 1 || _currentIdx < 0) {
-      console.warn('historyChange(count: number)：当前count不合法');
-    } else {
-      setCurrentIdx(_currentIdx);
-    }
-  }
-
-  // function addHistory(item: historyItemProps) : void {
-  //   setHistory(visualHistory.concat(item));
-  //   setCurrentIdx(currentIdx + 1);
-  // }
-
-  const addHistory = (item: historyItemProps): void => {
-    setHistory(visualHistory.concat(item));
-    setCurrentIdx(currentIdx + 1);
-  };
-
-  useEffect(
-    function () {
-      setVisualHistory(history.slice(0, currentIdx + 1));
-    },
-    [currentIdx, history],
-  );
-
-  return [history, currentIdx, visualHistory, addHistory, historyChange];
+type HistoryBarProps = {
+  /**
+   * 接收子组件ref，用于父组件调用子组件方法
+   * cRef.current.addHistory() // 添加历史记录
+   */
+  cRef: RefObject<ReactElement>;
+  /**
+   * 默认历史记录列表
+   */
+  history?: BreadCrumbNode[];
 };
 
-const list = [
-  { key: 'title', value: '全部文件', label: '全部文件' },
-  { key: 'my', value: '我的文件', label: '我的文件' },
-];
-
-const HistoryBar: FC<any> = (props) => {
-  const { history: _history = list } = props;
-  const [
-    history,
-    currentIdx,
-    visualHistory,
-    addHistory,
-    historyChange,
-  ] = useHistory(_history);
+const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
+  const { history: _history = [], cRef } = props;
+  const [history, currentIdx, visualHistory, go, push] = useHistory(_history);
 
   const leftActive = currentIdx > 0;
   const rightActive = currentIdx < history.length - 1;
 
+  /**
+   * 后退
+   */
   function goBack() {
-    leftActive && historyChange(-1);
+    leftActive && go(-1);
   }
 
+  /**
+   * 前进
+   */
   function forward() {
-    rightActive && historyChange(1);
+    rightActive && go(1);
   }
 
+  /**
+   * 刷新
+   */
   function reload() {}
 
-  function test() {
-    const now = Date.now();
-    addHistory({ label: 'a', key: String(now), value: String(now) });
+  /**
+   * 点击指定目录触发
+   * @param item
+   */
+  function onHandleClick(item: BreadCrumbNode) {
+    push(item);
   }
 
-  useEffect(function () {
-    eventEmitter.on('CloudDist_HistoryBar_addHistory', addHistory);
-    console.log(eventEmitter);
-    global.eventEmitter = eventEmitter;
-    return function () {
-      eventEmitter.off('CloudDist_HistoryBar_addHistory');
-    };
-  }, []);
+  useImperativeHandle(cRef, (): any => ({
+    push,
+  }));
 
   return (
     <div className={styles.historyBar}>
@@ -128,24 +84,23 @@ const HistoryBar: FC<any> = (props) => {
       </div>
       <i />
       <div className={styles.rightBar}>
-        {visualHistory.map((item: { key: any; label: any }, idx: number) => {
-          const { key, label } = item;
+        {visualHistory.map((item: BreadCrumbNode, idx: number) => {
+          const { id, name } = item;
           return (
-            <span key={key}>
+            <span key={id}>
               {idx !== 0 && <CaretRightOutlined style={{ margin: '0 5px' }} />}
-              <span className={styles.filder}>{label}</span>
+              <span
+                className={styles.filder}
+                onClick={(_e) => onHandleClick(item)}
+              >
+                {name}
+              </span>
             </span>
           );
         })}
       </div>
-      <span onClick={test}>test</span>
     </div>
   );
 };
 
-function addHistory(item: historyItemProps) {
-  eventEmitter.emit('CloudDist_HistoryBar_addHistory', item);
-}
-
 export default HistoryBar;
-export { addHistory };

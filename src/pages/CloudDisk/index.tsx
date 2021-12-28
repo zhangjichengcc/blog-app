@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-12-21 14:41:34
- * @LastEditTime: 2021-12-23 20:39:27
+ * @LastEditTime: 2021-12-28 20:50:30
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\index.tsx
  */
 
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useRef } from 'react';
 import { Button, Input, Menu, Badge } from 'antd';
 import AllFiles from './AllFiles';
 import {
@@ -17,6 +17,8 @@ import {
   CloudUploadOutlined,
 } from '@ant-design/icons';
 
+import BreadCrumbNode from 'utils/BreadCrumbNode';
+
 import styles from './index.less';
 
 const { Search } = Input;
@@ -24,12 +26,31 @@ const { Item, ItemGroup } = Menu;
 
 type MenuKeyProps = 'all' | 'myResource' | 'myDownload';
 
+const allMenu = new BreadCrumbNode('all', '全部文件');
+const resourcesMenu = new BreadCrumbNode('resources', '我的资源', allMenu);
+const downloadMenu = new BreadCrumbNode('download', '我的下载', allMenu);
+
+const tabMenus = [
+  { node: allMenu, icon: <FolderOutlined /> },
+  { node: resourcesMenu, icon: <ProfileOutlined /> },
+  { node: downloadMenu, icon: <CloudDownloadOutlined /> },
+];
+
 const CloudDisk: FC<any> = (props) => {
   const [navTab, setNavTab] = useState<MenuKeyProps>('all');
 
+  const AllFilesRef = useRef(null);
+
   function onSearch() {}
 
-  function openDir() {}
+  /**
+   * 调用 AllFile 内部方法 添加记录
+   * @param node
+   */
+  function openDir(node: BreadCrumbNode) {
+    const { current }: { current: any } = AllFilesRef;
+    current?.addHistory?.(node);
+  }
 
   return (
     <div className={styles.cloudDisk}>
@@ -47,24 +68,12 @@ const CloudDisk: FC<any> = (props) => {
       </div>
       <div className={styles.content}>
         <Menu selectedKeys={[navTab]} mode="inline" className={styles.menu}>
-          <Item key="all" onClick={() => openDir({ name: '全部文件', id: 0 })}>
-            <FolderOutlined />
-            <span>全部文件</span>
-          </Item>
-          <Item
-            key="myResource"
-            onClick={() => openDir({ name: '我的资源', id: 1 })}
-          >
-            <ProfileOutlined />
-            <span>我的资源</span>
-          </Item>
-          <Item
-            key="myDownload"
-            onClick={() => openDir({ name: '我的下载', id: 2 })}
-          >
-            <CloudDownloadOutlined />
-            <span>我的下载</span>
-          </Item>
+          {tabMenus.map((item) => (
+            <Item key={item.node.id} onClick={() => openDir(item.node)}>
+              {item.icon}
+              <span>{item.node.name}</span>
+            </Item>
+          ))}
           {/* <ItemGroup title="传输列表">
             <Item
               key="upload"
@@ -99,7 +108,7 @@ const CloudDisk: FC<any> = (props) => {
           </ItemGroup> */}
         </Menu>
         <div className={styles.mainBody}>
-          <AllFiles />
+          <AllFiles cRef={AllFilesRef} />
         </div>
       </div>
     </div>
