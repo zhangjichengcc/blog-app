@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-21 14:41:34
- * @LastEditTime: 2021-12-28 20:50:30
+ * @LastEditTime: 2021-12-29 00:11:24
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\index.tsx
@@ -24,8 +24,6 @@ import styles from './index.less';
 const { Search } = Input;
 const { Item, ItemGroup } = Menu;
 
-type MenuKeyProps = 'all' | 'myResource' | 'myDownload';
-
 const allMenu = new BreadCrumbNode('all', '全部文件');
 const resourcesMenu = new BreadCrumbNode('resources', '我的资源', allMenu);
 const downloadMenu = new BreadCrumbNode('download', '我的下载', allMenu);
@@ -37,7 +35,7 @@ const tabMenus = [
 ];
 
 const CloudDisk: FC<any> = (props) => {
-  const [navTab, setNavTab] = useState<MenuKeyProps>('all');
+  const [navTab, setNavTab] = useState<string>(allMenu.id);
 
   const AllFilesRef = useRef(null);
 
@@ -49,7 +47,14 @@ const CloudDisk: FC<any> = (props) => {
    */
   function openDir(node: BreadCrumbNode) {
     const { current }: { current: any } = AllFilesRef;
+    const { id } = node;
     current?.addHistory?.(node);
+    setNavTab(id);
+  }
+
+  function onMenuChange(node: BreadCrumbNode) {
+    const { id } = node;
+    setNavTab(id);
   }
 
   return (
@@ -108,7 +113,7 @@ const CloudDisk: FC<any> = (props) => {
           </ItemGroup> */}
         </Menu>
         <div className={styles.mainBody}>
-          <AllFiles cRef={AllFilesRef} />
+          <AllFiles cRef={AllFilesRef} onMenuChange={onMenuChange} />
         </div>
       </div>
     </div>
