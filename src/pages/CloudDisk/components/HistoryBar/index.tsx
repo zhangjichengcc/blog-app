@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:38:14
- * @LastEditTime: 2021-12-28 20:58:04
+ * @LastEditTime: 2021-12-29 17:29:36
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\components\HistoryBar\index.tsx
@@ -29,10 +29,14 @@ type HistoryBarProps = {
    * 默认历史记录列表
    */
   history?: BreadCrumbNode[];
+  /**
+   * 面包屑导航变化触发
+   */
+  onChange?: (node: BreadCrumbNode) => void;
 };
 
 const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
-  const { history: _history = [], cRef } = props;
+  const { history: _history = [], cRef, onChange } = props;
   const [history, currentIdx, visualHistory, go, push] = useHistory(_history);
 
   const leftActive = currentIdx > 0;
@@ -42,14 +46,18 @@ const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
    * 后退
    */
   function goBack() {
-    leftActive && go(-1);
+    if (!leftActive) return;
+    go(-1);
+    typeof onChange === 'function' && onChange(history[currentIdx - 1]);
   }
 
   /**
    * 前进
    */
   function forward() {
-    rightActive && go(1);
+    if (!rightActive) return;
+    go(1);
+    typeof onChange === 'function' && onChange(history[currentIdx + 1]);
   }
 
   /**
@@ -63,6 +71,7 @@ const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
    */
   function onHandleClick(item: BreadCrumbNode) {
     push(item);
+    typeof onChange === 'function' && onChange(item);
   }
 
   useImperativeHandle(cRef, (): any => ({
