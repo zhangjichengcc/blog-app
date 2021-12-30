@@ -10,16 +10,16 @@
 const TARGET = process.env.ApiTarget;
 
 const proxyConfig = {
-  "/api": {
-    target: TARGET, // 本地
-    // pathRewrite: { '^/api': '' },
-    changeOrigin: true
-    // router: {
-    //   '/api/artical': 'http://127.0.0.1:5001',
-    //   '/api/image': 'http://127.0.0.1:5002',
-    //   '/api/user': 'http://127.0.0.1:5003',
-    // },
-  }
+  // "/api": {
+  //   target: TARGET, // 本地
+  //   // pathRewrite: { '^/api': '' },
+  //   changeOrigin: true
+  //   // router: {
+  //   //   '/api/artical': 'http://127.0.0.1:5001',
+  //   //   '/api/image': 'http://127.0.0.1:5002',
+  //   //   '/api/user': 'http://127.0.0.1:5003',
+  //   // },
+  // }
 };
 
 export default proxyConfig;

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-21 14:41:34
- * @LastEditTime: 2021-12-29 14:46:10
+ * @LastEditTime: 2021-12-30 18:50:13
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\index.tsx
@@ -38,6 +38,9 @@ const tabMenus = [
 
 const CloudDisk: FC<any> = (props) => {
   const [navTab, setNavTab] = useState<string>(allMenu.id);
+  const [AllFilesSelectedKeys, setAllFilesSelectedKeys] = useState<string[]>(
+    [],
+  );
 
   const AllFilesRef = useRef(null);
 
@@ -47,14 +50,18 @@ const CloudDisk: FC<any> = (props) => {
    * 调用 AllFile 内部方法 添加记录
    * @param node
    */
-  function openDir(node: BreadCrumbNode) {
+  async function openDir(node: BreadCrumbNode) {
     const { current }: { current: any } = AllFilesRef;
+    await current?.addHistory?.(node);
     setNavTab(node.id);
-    current?.addHistory?.(node);
   }
 
   function onAllFilesMenuChange(node: BreadCrumbNode) {
     setNavTab(node.id);
+  }
+
+  function onSelectedChange(keys: React.SetStateAction<string[]>) {
+    setAllFilesSelectedKeys(keys);
   }
 
   return (
@@ -62,8 +69,16 @@ const CloudDisk: FC<any> = (props) => {
       <div className={styles.headerWrap}>
         <span className={styles.title}>XX网盘</span>
         <div className={styles.toolsBar}>
-          <Button>上传</Button>
-          <Button>新建文件夹</Button>
+          <Button disabled={!!AllFilesSelectedKeys.length}>上传</Button>
+          <Button disabled={!!AllFilesSelectedKeys.length}>新建文件夹</Button>
+          {!!AllFilesSelectedKeys.length && (
+            <>
+              <Button>下载</Button>
+              <Button>删除</Button>
+              <Button>移动到</Button>
+              <Button>复制到</Button>
+            </>
+          )}
         </div>
         <Search
           placeholder="input search text"
@@ -113,7 +128,11 @@ const CloudDisk: FC<any> = (props) => {
           </ItemGroup> */}
         </Menu>
         <div className={styles.mainBody}>
-          <AllFiles cRef={AllFilesRef} onHistoryChange={onAllFilesMenuChange} />
+          <AllFiles
+            cRef={AllFilesRef}
+            onHistoryChange={onAllFilesMenuChange}
+            onSelectedChange={onSelectedChange}
+          />
         </div>
       </div>
     </div>

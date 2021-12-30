@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:38:14
- * @LastEditTime: 2021-12-29 17:29:36
+ * @LastEditTime: 2021-12-30 18:58:51
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\components\HistoryBar\index.tsx
@@ -32,11 +32,15 @@ type HistoryBarProps = {
   /**
    * 面包屑导航变化触发
    */
-  onChange?: (node: BreadCrumbNode) => void;
+  onChange?: (node: BreadCrumbNode) => Promise<any>;
+  /**
+   * 页面刷新
+   */
+  onReload?: (node: BreadCrumbNode) => void;
 };
 
 const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
-  const { history: _history = [], cRef, onChange } = props;
+  const { history: _history = [], cRef, onChange, onReload } = props;
   const [history, currentIdx, visualHistory, go, push] = useHistory(_history);
 
   const leftActive = currentIdx > 0;
@@ -45,25 +49,31 @@ const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
   /**
    * 后退
    */
-  function goBack() {
+  async function goBack() {
     if (!leftActive) return;
+    if (typeof onChange === 'function') {
+      await onChange(history[currentIdx - 1]);
+    }
     go(-1);
-    typeof onChange === 'function' && onChange(history[currentIdx - 1]);
   }
 
   /**
    * 前进
    */
-  function forward() {
+  async function forward() {
     if (!rightActive) return;
+    if (typeof onChange === 'function') {
+      onChange(history[currentIdx + 1]);
+    }
     go(1);
-    typeof onChange === 'function' && onChange(history[currentIdx + 1]);
   }
 
   /**
    * 刷新
    */
-  function reload() {}
+  function reload() {
+    typeof onReload === 'function' && onReload(history[currentIdx]);
+  }
 
   /**
    * 点击指定目录触发
