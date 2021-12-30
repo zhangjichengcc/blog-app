@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2021-12-30 19:02:58
+ * @LastEditTime: 2021-12-30 19:11:59
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -147,8 +147,9 @@ const AllFiles: FC<any> = (props) => {
   }
 
   // 获取数据
-  function fetchData(id) {
+  function fetchData(id: string) {
     setLoading(true);
+    console.log(id);
     return new Promise<void>((resolve, reject) => {
       setTimeout(() => {
         setFileList(data);
@@ -178,7 +179,7 @@ const AllFiles: FC<any> = (props) => {
     if (type === 'directory') {
       const node = new BreadCrumbNode(id, name, currentNode);
       await fetchData(id);
-      addHistory(node);
+      push(node);
       setCurrentNode(node);
     }
   }
