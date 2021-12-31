@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2021-12-30 19:11:59
+ * @LastEditTime: 2021-12-31 19:39:26
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -58,6 +58,20 @@ const data: DataType[] = [
   {
     id: '1',
     name: '我的收藏',
+    size: 10249,
+    type: 'directory',
+    createTime: '2021/12/29 12:00:00',
+  },
+  {
+    id: 'resources',
+    name: '我的资源',
+    size: 10249,
+    type: 'directory',
+    createTime: '2021/12/29 12:00:00',
+  },
+  {
+    id: 'download',
+    name: '我的下载',
     size: 10249,
     type: 'directory',
     createTime: '2021/12/29 12:00:00',
