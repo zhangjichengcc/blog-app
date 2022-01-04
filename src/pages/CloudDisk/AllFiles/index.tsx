@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-04 11:36:57
+ * @LastEditTime: 2022-01-04 18:12:19
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -14,66 +14,21 @@ import React, {
   useEffect,
   useImperativeHandle,
 } from 'react';
-import request from 'utils/request';
-import { Table } from 'antd';
-import { ContainerOutlined, CloudDownloadOutlined } from '@ant-design/icons';
+// import { DataType } from '../index.d.ts'
+import moment from 'moment';
+import { Table, Input } from 'antd';
+import {
+  ContainerOutlined,
+  CloudDownloadOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+} from '@ant-design/icons';
 import HistoryBar from '../components/HistoryBar';
 import FileIcon, { getFileType } from '../components/FileIcon';
+import ColumnsName from './components/ColumnsName';
 import BreadCrumbNode from 'utils/BreadCrumbNode';
 
 import styles from './index.less';
-
-interface DataType {
-  id: string;
-  // pId: string;
-  name: string;
-  size: number;
-  type: 'file' | 'directory';
-  createTime: string;
-}
-
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    render: (text: string, record: DataType) => {
-      switch (record.id) {
-        case 'resources':
-          return (
-            <a style={{ display: 'flex', alignItems: 'center' }}>
-              <ContainerOutlined style={{ fontSize: 20, marginRight: 8 }} />
-              {text}
-            </a>
-          );
-        case 'public':
-          return (
-            <a style={{ display: 'flex', alignItems: 'center' }}>
-              <CloudDownloadOutlined style={{ fontSize: 20, marginRight: 8 }} />
-              {text}
-            </a>
-          );
-        default:
-          return (
-            <a style={{ display: 'flex', alignItems: 'center' }}>
-              <FileIcon
-                type={getFileType(text)}
-                style={{ fontSize: 20, marginRight: 8 }}
-              />
-              {text}
-            </a>
-          );
-      }
-    },
-  },
-  {
-    title: 'Size',
-    dataIndex: 'size',
-  },
-  {
-    title: 'CreateTime',
-    dataIndex: 'createTime',
-  },
-];
 
 const data: DataType[] = [
   {
@@ -145,6 +100,8 @@ const data: DataType[] = [
   },
 ];
 
+const test: API.testProps = 'aaaaa';
+
 const AllFiles: FC<any> = (props) => {
   const { cRef, onHistoryChange, onSelectedChange } = props;
 
@@ -152,11 +109,40 @@ const AllFiles: FC<any> = (props) => {
 
   const [fileList, setFileList] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(false);
-  const historyList = [new BreadCrumbNode('all', '全部文件')];
+  const [newDirectory, setNewDirectory] = useState({
+    id: '_new',
+    name: '新建文件夹',
+    size: 0,
+    type: 'directory',
+    createTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+  });
   const [currentNode, setCurrentNode] = useState<BreadCrumbNode>(
     new BreadCrumbNode('all', '全部文件'),
   );
+  const historyList = [new BreadCrumbNode('all', '全部文件')];
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      render: (_text: string, record: DataType) => (
+        <ColumnsName
+          record={record}
+          addNewDir={newDirSuccess}
+          onNameChanged={onNameChanged}
+        />
+      ),
+    },
+    {
+      title: 'Size',
+      dataIndex: 'size',
+    },
+    {
+      title: 'CreateTime',
+      dataIndex: 'createTime',
+    },
+  ];
 
   /**
    * 调用 HistoryBar 内部方法 添加记录
@@ -238,8 +224,38 @@ const AllFiles: FC<any> = (props) => {
     setSelectedRowKeys(selectedRowKeys);
   }
 
+  /**
+   * 新建文件夹
+   */
+  function newDir() {
+    const item: DataType = {
+      id: '_new',
+      name: '新建文件夹',
+      size: 0,
+      edit: true,
+      type: 'directory',
+      createTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+    };
+    setFileList([item, ...fileList]);
+  }
+
+  /**
+   * 新建文件夹确认
+   */
+  function newDirSuccess(item: DataType) {
+    const [editItem, releaseItem, downloadItem, ...others] = fileList;
+    setFileList([releaseItem, downloadItem, item, ...others]);
+  }
+
+  /**
+   * 修改文件名
+   */
+  function onNameChanged() {}
+
   useImperativeHandle(cRef, () => ({
     addHistory,
+    onNameChanged,
+    newDir,
   }));
 
   useEffect(function () {
