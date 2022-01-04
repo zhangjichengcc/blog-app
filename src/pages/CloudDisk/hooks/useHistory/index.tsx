@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjc
  * @Date: 2021-12-28 16:19:25
- * @LastEditTime: 2021-12-30 18:14:24
+ * @LastEditTime: 2022-01-04 10:23:17
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\hooks\useHistory\index.tsx
@@ -43,15 +43,15 @@ const useHistory = function (
    * @param route
    */
   function push(node: BreadCrumbNode): void {
-    const { previous } = node;
+    const { pId } = node;
     let _history = [];
-    if (!previous) {
+    if (!pId) {
       // 若不存在previous则代表根节点
       _history.push(node);
     } else {
       for (let i = 0; i < history.length; i++) {
         const item = history[i];
-        if (node.previous?.id === item.id) {
+        if (node.pId === item.id) {
           _history.push(item, node);
           break;
         }

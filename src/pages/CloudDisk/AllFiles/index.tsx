@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2021-12-31 19:39:26
+ * @LastEditTime: 2022-01-04 11:36:57
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -16,6 +16,7 @@ import React, {
 } from 'react';
 import request from 'utils/request';
 import { Table } from 'antd';
+import { ContainerOutlined, CloudDownloadOutlined } from '@ant-design/icons';
 import HistoryBar from '../components/HistoryBar';
 import FileIcon, { getFileType } from '../components/FileIcon';
 import BreadCrumbNode from 'utils/BreadCrumbNode';
@@ -24,6 +25,7 @@ import styles from './index.less';
 
 interface DataType {
   id: string;
+  // pId: string;
   name: string;
   size: number;
   type: 'file' | 'directory';
@@ -34,15 +36,34 @@ const columns = [
   {
     title: 'Name',
     dataIndex: 'name',
-    render: (text: string) => (
-      <a style={{ display: 'flex', alignItems: 'center' }}>
-        <FileIcon
-          type={getFileType(text)}
-          style={{ fontSize: 20, marginRight: 8 }}
-        />
-        {text}
-      </a>
-    ),
+    render: (text: string, record: DataType) => {
+      switch (record.id) {
+        case 'resources':
+          return (
+            <a style={{ display: 'flex', alignItems: 'center' }}>
+              <ContainerOutlined style={{ fontSize: 20, marginRight: 8 }} />
+              {text}
+            </a>
+          );
+        case 'public':
+          return (
+            <a style={{ display: 'flex', alignItems: 'center' }}>
+              <CloudDownloadOutlined style={{ fontSize: 20, marginRight: 8 }} />
+              {text}
+            </a>
+          );
+        default:
+          return (
+            <a style={{ display: 'flex', alignItems: 'center' }}>
+              <FileIcon
+                type={getFileType(text)}
+                style={{ fontSize: 20, marginRight: 8 }}
+              />
+              {text}
+            </a>
+          );
+      }
+    },
   },
   {
     title: 'Size',
@@ -56,28 +77,32 @@ const columns = [
 
 const data: DataType[] = [
   {
-    id: '1',
-    name: '我的收藏',
-    size: 10249,
-    type: 'directory',
-    createTime: '2021/12/29 12:00:00',
-  },
-  {
     id: 'resources',
+    // pId: 'all',
     name: '我的资源',
     size: 10249,
     type: 'directory',
     createTime: '2021/12/29 12:00:00',
   },
   {
-    id: 'download',
-    name: '我的下载',
+    id: 'public',
+    // pId: 'all',
+    name: '共享文件',
+    size: 10249,
+    type: 'directory',
+    createTime: '2021/12/29 12:00:00',
+  },
+  {
+    id: 'myasd',
+    // pId: 'all',
+    name: '我的收藏',
     size: 10249,
     type: 'directory',
     createTime: '2021/12/29 12:00:00',
   },
   {
     id: '2',
+    // pId: ''
     name: 'test.txt',
     size: 10249,
     type: 'directory',
@@ -146,6 +171,7 @@ const AllFiles: FC<any> = (props) => {
   async function addHistory(node: BreadCrumbNode) {
     const { id } = node;
     await fetchData(id);
+    onHistoryChange(node);
     push(node);
   }
 
@@ -191,8 +217,9 @@ const AllFiles: FC<any> = (props) => {
   async function openDir(record: DataType) {
     const { type, id, name } = record;
     if (type === 'directory') {
-      const node = new BreadCrumbNode(id, name, currentNode);
+      const node = new BreadCrumbNode(id, name, currentNode.id);
       await fetchData(id);
+      onHistoryChange(node);
       push(node);
       setCurrentNode(node);
     }

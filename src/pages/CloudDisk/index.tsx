@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-21 14:41:34
- * @LastEditTime: 2021-12-30 18:50:13
+ * @LastEditTime: 2022-01-04 11:34:13
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\index.tsx
@@ -12,9 +12,8 @@ import { Button, Input, Menu, Badge } from 'antd';
 import AllFiles from './AllFiles';
 import {
   FolderOutlined,
-  ProfileOutlined,
+  ContainerOutlined,
   CloudDownloadOutlined,
-  CloudUploadOutlined,
 } from '@ant-design/icons';
 
 import BreadCrumbNode from 'utils/BreadCrumbNode';
@@ -24,15 +23,13 @@ import styles from './index.less';
 const { Search } = Input;
 const { Item, ItemGroup } = Menu;
 
-type MenuKeyProps = 'all' | 'myResource' | 'myDownload';
-
 const allMenu = new BreadCrumbNode('all', '全部文件');
-const resourcesMenu = new BreadCrumbNode('resources', '我的资源', allMenu);
-const downloadMenu = new BreadCrumbNode('download', '我的下载', allMenu);
+const resourcesMenu = new BreadCrumbNode('resources', '我的资源', 'all');
+const downloadMenu = new BreadCrumbNode('public', '共享文件', 'all');
 
 const tabMenus = [
   { node: allMenu, icon: <FolderOutlined /> },
-  { node: resourcesMenu, icon: <ProfileOutlined /> },
+  { node: resourcesMenu, icon: <ContainerOutlined /> },
   { node: downloadMenu, icon: <CloudDownloadOutlined /> },
 ];
 
@@ -53,7 +50,6 @@ const CloudDisk: FC<any> = (props) => {
   async function openDir(node: BreadCrumbNode) {
     const { current }: { current: any } = AllFilesRef;
     await current?.addHistory?.(node);
-    setNavTab(node.id);
   }
 
   function onAllFilesMenuChange(node: BreadCrumbNode) {
