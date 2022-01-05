@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-05 15:17:37
+ * @LastEditTime: 2022-01-05 18:37:26
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -33,7 +33,7 @@ const data: fileDataProps[] = [
     name: '我的资源',
     size: 10249,
     type: 'directory',
-    createTime: '2021/12/29 12:00:00',
+    createTime: '2021/12/29 12:00',
   },
   {
     id: 'public',
@@ -41,7 +41,7 @@ const data: fileDataProps[] = [
     name: '共享文件',
     size: 10249,
     type: 'directory',
-    createTime: '2021/12/29 12:00:00',
+    createTime: '2021/12/29 12:00',
   },
   {
     id: 'myasd',
@@ -49,7 +49,7 @@ const data: fileDataProps[] = [
     name: '我的收藏',
     size: 10249,
     type: 'directory',
-    createTime: '2021/12/29 12:00:00',
+    createTime: '2021/12/29 12:00',
   },
   {
     id: '2',
@@ -57,42 +57,42 @@ const data: fileDataProps[] = [
     name: 'test.txt',
     size: 10249,
     type: 'directory',
-    createTime: '2021/12/29 12:00:00',
+    createTime: '2021/12/29 12:00',
   },
   {
     id: '3',
     name: 'test.png',
     size: 10249,
     type: 'directory',
-    createTime: '2021/12/29 12:00:00',
+    createTime: '2021/12/29 12:00',
   },
   {
     id: '4',
     name: 'test.pdf',
     size: 10249,
     type: 'directory',
-    createTime: '2021/12/29 12:00:00',
+    createTime: '2021/12/29 12:00',
   },
   {
     id: '5',
     name: 'test.docx',
     size: 10249,
     type: 'directory',
-    createTime: '2021/12/29 12:00:00',
+    createTime: '2021/12/29 12:00',
   },
   {
     id: '6',
     name: 'test.xlsx',
     size: 10249,
     type: 'directory',
-    createTime: '2021/12/29 12:00:00',
+    createTime: '2021/12/29 12:00',
   },
   {
     id: '7',
     name: 'test.zip',
     size: 10249,
     type: 'directory',
-    createTime: '2021/12/29 12:00:00',
+    createTime: '2021/12/29 12:00',
   },
 ];
 
@@ -105,6 +105,7 @@ const AllFiles: FC<any> = (props) => {
 
   const [fileList, setFileList] = useState<fileDataProps[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [newDirectory, setNewDirectory] = useState({
     id: '_new',
     name: '新建文件夹',
@@ -116,29 +117,6 @@ const AllFiles: FC<any> = (props) => {
     new BreadCrumbNode('all', '全部文件'),
   );
   const historyList = [new BreadCrumbNode('all', '全部文件')];
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      render: (_text: string, record: fileDataProps) => (
-        <ColumnsName
-          record={record}
-          addNewDir={newDirSuccess}
-          onNameChanged={onNameChanged}
-        />
-      ),
-    },
-    {
-      title: 'Size',
-      dataIndex: 'size',
-    },
-    {
-      title: 'CreateTime',
-      dataIndex: 'createTime',
-    },
-  ];
 
   /**
    * 调用 HistoryBar 内部方法 添加记录
@@ -209,15 +187,11 @@ const AllFiles: FC<any> = (props) => {
 
   /**
    * 选择table项
-   * @param selectedRowKeys
-   * @param selectedRows
+   * @param selectedKey
    */
-  function onSelectedRowKeysChange(
-    selectedRowKeys: React.Key[],
-    selectedRows: fileDataProps[],
-  ) {
-    onSelectedChange(selectedRowKeys);
-    setSelectedRowKeys(selectedRowKeys);
+  function onRowClick(item: fileDataProps) {
+    // onSelectedChange(selectedRowKeys);
+    setSelectedKeys([item.id]);
   }
 
   /**
@@ -230,7 +204,7 @@ const AllFiles: FC<any> = (props) => {
       size: 0,
       edit: true,
       type: 'directory',
-      createTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+      createTime: moment().format('YYYY-MM-DD HH:mm'),
     };
     setFileList([item, ...fileList]);
   }
@@ -273,28 +247,12 @@ const AllFiles: FC<any> = (props) => {
         </span>
       </div>
       <div>
-        <Table
-          // rowSelection={{
-          //   type: 'checkbox',
-          //   selectedRowKeys: selectedRowKeys,
-          //   onChange: onSelectedRowKeysChange,
-          // }}
-          rowClassName={styles.tableRow}
-          onRow={(record) => {
-            return {
-              // onMouseEnter: e => this.tableRowMouseEnter(e, record),
-              // onMouseLeave: e => this.tableRowMouseLeave(e, record),
-              onDoubleClick: () => openDir(record),
-            };
-          }}
-          size="small"
-          loading={loading}
-          onChange={onTableChange}
-          columns={columns}
-          dataSource={fileList}
-        />
         <FilesTable
           data={fileList}
+          selectedKeys={selectedKeys}
+          onClick={onRowClick}
+          onDoubleClick={openDir}
+          // loading={true}
           // onNameOk
           // onNameCancel
         />
