@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-04 15:43:02
- * @LastEditTime: 2022-01-04 17:13:10
+ * @LastEditTime: 2022-01-05 15:27:59
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\ColumnsName\index.tsx
@@ -56,7 +56,7 @@ const ColumnsName: FC<any> = (props) => {
   if (id === 'resources') {
     return (
       <a style={{ display: 'flex', alignItems: 'center' }}>
-        <ContainerOutlined style={{ fontSize: 20, marginRight: 8 }} />
+        <ContainerOutlined style={{ fontSize: 16, marginRight: 4 }} />
         {name}
       </a>
     );
@@ -65,7 +65,7 @@ const ColumnsName: FC<any> = (props) => {
   if (id === 'public') {
     return (
       <a style={{ display: 'flex', alignItems: 'center' }}>
-        <CloudDownloadOutlined style={{ fontSize: 20, marginRight: 8 }} />
+        <CloudDownloadOutlined style={{ fontSize: 16, marginRight: 4 }} />
         {name}
       </a>
     );
@@ -75,7 +75,7 @@ const ColumnsName: FC<any> = (props) => {
     <a style={{ display: 'flex', alignItems: 'center' }}>
       <FileIcon
         type={getFileType(name)}
-        style={{ fontSize: 20, marginRight: 8 }}
+        style={{ fontSize: 16, marginRight: 4 }}
       />
       {name}
     </a>

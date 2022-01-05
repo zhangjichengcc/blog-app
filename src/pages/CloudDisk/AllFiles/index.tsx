@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-04 18:12:19
+ * @LastEditTime: 2022-01-05 15:17:37
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -14,15 +14,11 @@ import React, {
   useEffect,
   useImperativeHandle,
 } from 'react';
-// import { DataType } from '../index.d.ts'
+// import { fileDataProps } from '../index.d.ts'
+import classnames from 'classnames';
 import moment from 'moment';
 import { Table, Input } from 'antd';
-import {
-  ContainerOutlined,
-  CloudDownloadOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-} from '@ant-design/icons';
+import FilesTable from './components/FilesTable';
 import HistoryBar from '../components/HistoryBar';
 import FileIcon, { getFileType } from '../components/FileIcon';
 import ColumnsName from './components/ColumnsName';
@@ -30,7 +26,7 @@ import BreadCrumbNode from 'utils/BreadCrumbNode';
 
 import styles from './index.less';
 
-const data: DataType[] = [
+const data: fileDataProps[] = [
   {
     id: 'resources',
     // pId: 'all',
@@ -107,7 +103,7 @@ const AllFiles: FC<any> = (props) => {
 
   const HistoryBarRef = useRef(null);
 
-  const [fileList, setFileList] = useState<DataType[]>([]);
+  const [fileList, setFileList] = useState<fileDataProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [newDirectory, setNewDirectory] = useState({
     id: '_new',
@@ -126,7 +122,7 @@ const AllFiles: FC<any> = (props) => {
     {
       title: 'Name',
       dataIndex: 'name',
-      render: (_text: string, record: DataType) => (
+      render: (_text: string, record: fileDataProps) => (
         <ColumnsName
           record={record}
           addNewDir={newDirSuccess}
@@ -200,7 +196,7 @@ const AllFiles: FC<any> = (props) => {
    * 打开文件夹
    * @param record
    */
-  async function openDir(record: DataType) {
+  async function openDir(record: fileDataProps) {
     const { type, id, name } = record;
     if (type === 'directory') {
       const node = new BreadCrumbNode(id, name, currentNode.id);
@@ -218,7 +214,7 @@ const AllFiles: FC<any> = (props) => {
    */
   function onSelectedRowKeysChange(
     selectedRowKeys: React.Key[],
-    selectedRows: DataType[],
+    selectedRows: fileDataProps[],
   ) {
     onSelectedChange(selectedRowKeys);
     setSelectedRowKeys(selectedRowKeys);
@@ -228,7 +224,7 @@ const AllFiles: FC<any> = (props) => {
    * 新建文件夹
    */
   function newDir() {
-    const item: DataType = {
+    const item: fileDataProps = {
       id: '_new',
       name: '新建文件夹',
       size: 0,
@@ -242,7 +238,7 @@ const AllFiles: FC<any> = (props) => {
   /**
    * 新建文件夹确认
    */
-  function newDirSuccess(item: DataType) {
+  function newDirSuccess(item: fileDataProps) {
     const [editItem, releaseItem, downloadItem, ...others] = fileList;
     setFileList([releaseItem, downloadItem, item, ...others]);
   }
@@ -278,11 +274,12 @@ const AllFiles: FC<any> = (props) => {
       </div>
       <div>
         <Table
-          rowSelection={{
-            type: 'checkbox',
-            selectedRowKeys: selectedRowKeys,
-            onChange: onSelectedRowKeysChange,
-          }}
+          // rowSelection={{
+          //   type: 'checkbox',
+          //   selectedRowKeys: selectedRowKeys,
+          //   onChange: onSelectedRowKeysChange,
+          // }}
+          rowClassName={styles.tableRow}
           onRow={(record) => {
             return {
               // onMouseEnter: e => this.tableRowMouseEnter(e, record),
@@ -290,10 +287,16 @@ const AllFiles: FC<any> = (props) => {
               onDoubleClick: () => openDir(record),
             };
           }}
+          size="small"
           loading={loading}
           onChange={onTableChange}
           columns={columns}
           dataSource={fileList}
+        />
+        <FilesTable
+          data={fileList}
+          // onNameOk
+          // onNameCancel
         />
       </div>
     </div>
