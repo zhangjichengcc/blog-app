@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-05 18:37:26
+ * @LastEditTime: 2022-01-06 11:01:49
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -95,8 +95,6 @@ const data: fileDataProps[] = [
     createTime: '2021/12/29 12:00',
   },
 ];
-
-const test: API.testProps = 'aaaaa';
 
 const AllFiles: FC<any> = (props) => {
   const { cRef, onHistoryChange, onSelectedChange } = props;
@@ -243,7 +241,7 @@ const AllFiles: FC<any> = (props) => {
           onReload={onReload}
         />
         <span>
-          共<span className={styles.activeText}>{12}</span>个
+          共<span className={styles.activeText}>{fileList.length}</span>个
         </span>
       </div>
       <div>
@@ -252,7 +250,7 @@ const AllFiles: FC<any> = (props) => {
           selectedKeys={selectedKeys}
           onClick={onRowClick}
           onDoubleClick={openDir}
-          // loading={true}
+          loading={loading}
           // onNameOk
           // onNameCancel
         />
