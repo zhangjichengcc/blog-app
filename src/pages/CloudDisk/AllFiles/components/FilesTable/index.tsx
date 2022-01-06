@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-01-06 10:58:11
+ * @LastEditTime: 2022-01-06 15:34:40
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
@@ -11,10 +11,14 @@ import React, { FC, useMemo } from 'react';
 import classnames from 'classnames';
 import { Spin } from 'antd';
 import ColumnsName from '../ColumnsName';
+import { renderType } from 'utils/filesType';
 import { thousands } from 'utils/math';
 import { renderSize } from 'utils/utils';
 
 import styles from './index.less';
+
+// 判断单击双击
+let timer: NodeJS.Timeout | null = null;
 
 const FilesTable: FC<any> = (props) => {
   const {
@@ -26,14 +30,62 @@ const FilesTable: FC<any> = (props) => {
     loading = false,
   } = props;
 
-  function onHandleClick(item: fileDataProps) {
-    onClick(item);
+  // 重命名
+  function rename() {
+    debugger;
   }
 
-  function onHandleDoubleClick(item: fileDataProps) {
-    onDoubleClick(item);
+  // 选择table item
+  function onTableClick(
+    e: React.MouseEvent<HTMLDivElement>,
+    item: fileDataProps,
+  ) {
+    if (!!timer) {
+      onHandleDoubleClick(e, item);
+      // 若触发双击则阻止首次单击事件
+      clearTimeout(timer);
+      timer = null;
+    } else {
+      timer = setTimeout(() => {
+        timer = null;
+        onHandleClick(e, item);
+      }, 300);
+    }
   }
 
+  // 右键单击
+  function onTableContextMenu(
+    e: React.MouseEvent<HTMLDivElement>,
+    item: fileDataProps,
+  ) {
+    e.preventDefault();
+    console.log('onTableContextMenu');
+  }
+
+  // 单击table item
+  function onHandleClick(
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    item: fileDataProps,
+  ) {
+    console.log('onHandleClick');
+    // if (selectedKeys.includes(item.id)) {
+    //   rename();
+    // } else {
+    //   onClick(item);
+    // }
+  }
+
+  // 双击table item
+  function onHandleDoubleClick(
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    item: fileDataProps,
+  ) {
+    console.log('onHandleDoubleClick');
+    // e.preventDefault();
+    // onDoubleClick(item);
+  }
+
+  // 格式化文件大小
   const RenderSize = useMemo(
     () =>
       function (props: { size: number }) {
@@ -50,41 +102,6 @@ const FilesTable: FC<any> = (props) => {
       },
     [],
   );
-
-  function renderType(type: string): string {
-    const typeMap: { [key in FilesType | 'dir']?: string } = {
-      dir: '文件夹',
-      pdf: 'PDF 文档',
-      ppt: 'PPT 文档',
-      gif: 'GIF 图片文件',
-      png: 'PNG 图片文件',
-      jpg: 'JPG 图片文件',
-      jpeg: 'JPEG 图片文件',
-      ico: 'ICO 图片文件',
-      webp: 'WEBP 图片文件',
-      svg: 'SVG 图片文件',
-      doc: 'DOC 文档',
-      docx: 'DOCX 文档',
-      xls: 'XLS 工作表',
-      xlsx: 'XLSX 工作表',
-      mp4: 'MP4 视频文件',
-      avi: 'AVI 视频文件',
-      rm: 'RMVB 视频文件',
-      rmvb: 'RMVB 视频文件',
-      '3gp': '3GP 视频文件',
-      mp3: 'MP3 音频文件',
-      wave: 'WAVE 音频文件',
-      midi: 'MIDI音频文件',
-      zip: 'ZIP 压缩文件',
-      rar: 'RAR 压缩文件',
-      exe: '应用程序',
-      pkg: '应用程序',
-      app: '应用程序',
-      dmg: '镜像文件',
-    };
-
-    return typeMap[type as FilesType] || '未知文件';
-  }
 
   return (
     <div className={styles.fileTable}>
@@ -106,8 +123,8 @@ const FilesTable: FC<any> = (props) => {
               <div
                 key={id}
                 className={classnames(styles.tr, selected ? styles.active : '')}
-                onClick={(_e) => onHandleClick(item)}
-                onDoubleClick={(_e) => onHandleDoubleClick(item)}
+                onClick={(e) => onTableClick(e, item)}
+                onContextMenu={(e) => onTableContextMenu(e, item)}
               >
                 <span className={styles.td}>
                   <ColumnsName
