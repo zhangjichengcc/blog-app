@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-01-07 17:52:01
+ * @LastEditTime: 2022-01-07 18:55:00
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
  */
 
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { Spin, Popover } from 'antd';
 import ColumnsName from '../ColumnsName';
@@ -19,8 +19,37 @@ import styles from './index.less';
 
 // 判断单击双击
 let timer: NodeJS.Timeout | null = null;
-// 判断重命名操作
-let renameTimer: NodeJS.Timeout | null = null;
+
+const RenderSize: FC<{ size: number }> = (props) => {
+  const { size } = props;
+  const [_$0, $1, $2] = renderSize(size).match(/^([0-9\.]+)(\w+)$/) as string[];
+  const num = thousands($1);
+  return (
+    <>
+      <span>{num}</span>
+      <span style={{ marginLeft: 5 }}>{$2}</span>
+    </>
+  );
+};
+
+const PopoverContent: FC<any> = (props) => {
+  function onClick(e: React.MouseEvent<HTMLDivElement>) {
+    e.preventDefault();
+    e.nativeEvent.stopImmediatePropagation();
+  }
+
+  return (
+    <div className={styles.popoverContent} onClick={onClick}>
+      <span>打开</span>
+      <span>删除</span>
+      <span>复制</span>
+      <span>发送到</span>
+      <span>分享</span>
+      <span>下载</span>
+      <span>新建文件夹</span>
+    </div>
+  );
+};
 
 const FilesTable: FC<any> = (props) => {
   const {
@@ -36,7 +65,7 @@ const FilesTable: FC<any> = (props) => {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
   // 重命名
-  function rename() {
+  function rename(item: fileDataProps) {
     debugger;
   }
 
@@ -45,37 +74,19 @@ const FilesTable: FC<any> = (props) => {
     e: React.MouseEvent<HTMLDivElement>,
     item: fileDataProps,
   ) {
-    e.preventDefault();
+    e.preventDefault(); // 阻止默认事件
     setSelectedKeys([item.id]);
     setContextMenuKeys([item.id]);
     console.log('onTableContextMenu');
   }
 
-  // 格式化文件大小
-  const RenderSize = useMemo(
-    () =>
-      function (props: { size: number }) {
-        const [_$0, $1, $2] = renderSize(props.size).match(
-          /^([0-9\.]+)(\w+)$/,
-        ) as string[];
-        const num = thousands($1);
-        return (
-          <>
-            <span>{num}</span>
-            <span style={{ marginLeft: 5 }}>{$2}</span>
-          </>
-        );
-      },
-    [],
-  );
-
   // 单击table item
   function onTableItemClick(
-    e: React.MouseEvent<HTMLDivElement>,
+    _e: React.MouseEvent<HTMLDivElement>,
     item: fileDataProps,
   ) {
     if (selectedKeys.includes(item.id)) {
-      console.log('rename');
+      rename(item);
     } else {
       console.log('select');
     }
@@ -83,7 +94,7 @@ const FilesTable: FC<any> = (props) => {
 
   // 双击table items
   function onTableItemDoubleClick(
-    e: React.MouseEvent<HTMLDivElement>,
+    _e: React.MouseEvent<HTMLDivElement>,
     item: fileDataProps,
   ) {
     onDoubleClick && onDoubleClick(item);
@@ -113,9 +124,14 @@ const FilesTable: FC<any> = (props) => {
     }
   }
 
-  function onTableClick(_e: any) {
-    setContextMenuKeys([]);
-  }
+  useEffect(() => {
+    document.body.addEventListener('click', () => {
+      setContextMenuKeys([]);
+    });
+    return () => {
+      document.body.removeEventListener('click', () => {});
+    };
+  }, []);
 
   return (
     <div className={styles.fileTable}>
@@ -126,7 +142,7 @@ const FilesTable: FC<any> = (props) => {
           <span className={styles.td}>类型</span>
           <span className={styles.td}>大小</span>
         </div>
-        <div className={styles.tbody} onClick={onTableClick}>
+        <div className={styles.tbody}>
           {data.map((item: fileDataProps) => {
             const { name, createTime, size, id } = item;
             const selected = selectedKeys.includes(id);
@@ -135,17 +151,14 @@ const FilesTable: FC<any> = (props) => {
               ? name.replace(/.*\.(\w+)$/, '$1')
               : 'dir';
             return (
-              <Popover content={'tianye shabi'} visible={popoverVisiable}>
-                <div
-                  key={id}
-                  className={classnames(
-                    styles.tr,
-                    selected ? styles.active : '',
-                  )}
-                  onClick={(e) => onHandleItemClick(e, item)}
-                  // onDoubleClick={e => onHandleDoubleClick(e, item)}
-                  onContextMenu={(e) => onTableItemContextMenu(e, item)}
-                >
+              <div
+                key={id}
+                className={classnames(styles.tr, selected ? styles.active : '')}
+                onClick={(e) => onHandleItemClick(e, item)}
+                // onDoubleClick={e => onHandleDoubleClick(e, item)}
+                onContextMenu={(e) => onTableItemContextMenu(e, item)}
+              >
+                <Popover content={PopoverContent} visible={popoverVisiable}>
                   <span className={styles.td}>
                     <ColumnsName
                       record={item}
@@ -153,13 +166,13 @@ const FilesTable: FC<any> = (props) => {
                       onNameChanged={onNameOk}
                     />
                   </span>
-                  <span className={styles.td}>{createTime}</span>
-                  <span className={styles.td}>{renderType(type)}</span>
-                  <span className={styles.td}>
-                    <RenderSize size={size} />
-                  </span>
-                </div>
-              </Popover>
+                </Popover>
+                <span className={styles.td}>{createTime}</span>
+                <span className={styles.td}>{renderType(type)}</span>
+                <span className={styles.td}>
+                  <RenderSize size={size} />
+                </span>
+              </div>
             );
           })}
         </div>
