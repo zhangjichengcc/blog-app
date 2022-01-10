@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-06 11:01:49
+ * @LastEditTime: 2022-01-10 11:47:29
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -137,6 +137,7 @@ const AllFiles: FC<any> = (props) => {
   async function onMenuChange(node: BreadCrumbNode) {
     await fetchData(node.id);
     onHistoryChange(node);
+    setCurrentNode(node);
   }
 
   // 页面刷新
@@ -197,7 +198,7 @@ const AllFiles: FC<any> = (props) => {
    */
   function newDir() {
     const item: fileDataProps = {
-      id: '_new',
+      id: '_new', // ! 约定 新建文件夹id为_new
       name: '新建文件夹',
       size: 0,
       edit: true,

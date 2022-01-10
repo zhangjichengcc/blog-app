@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:38:14
- * @LastEditTime: 2022-01-07 18:53:29
+ * @LastEditTime: 2022-01-10 14:19:56
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\components\HistoryBar\index.tsx
@@ -12,9 +12,9 @@ import BreadCrumbNode from '@/utils/BreadCrumbNode';
 import useHistory from '../../hooks/useHistory';
 import {
   ReloadOutlined,
-  LeftOutlined,
-  RightOutlined,
   CaretRightOutlined,
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
 } from '@ant-design/icons';
 
 import styles from './index.less';
@@ -91,11 +91,15 @@ const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
   return (
     <div className={styles.historyBar}>
       <div className={styles.leftBar}>
-        <LeftOutlined
+        {/* <LeftOutlined
+          className={leftActive ? styles.active : ''}
+          onClick={goBack}
+        /> */}
+        <ArrowLeftOutlined
           className={leftActive ? styles.active : ''}
           onClick={goBack}
         />
-        <RightOutlined
+        <ArrowRightOutlined
           className={rightActive ? styles.active : ''}
           onClick={forward}
         />

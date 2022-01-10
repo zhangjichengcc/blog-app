@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-01-07 18:55:00
+ * @LastEditTime: 2022-01-10 11:48:33
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
@@ -128,7 +128,8 @@ const FilesTable: FC<any> = (props) => {
     document.body.addEventListener('click', () => {
       setContextMenuKeys([]);
     });
-    return () => {
+    return function () {
+      debugger;
       document.body.removeEventListener('click', () => {});
     };
   }, []);
