@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-10 11:47:29
+ * @LastEditTime: 2022-01-17 18:20:59
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -14,7 +14,6 @@ import React, {
   useEffect,
   useImperativeHandle,
 } from 'react';
-// import { fileDataProps } from '../index.d.ts'
 import classnames from 'classnames';
 import moment from 'moment';
 import { Table, Input } from 'antd';
@@ -22,6 +21,7 @@ import FilesTable from './components/FilesTable';
 import HistoryBar from '../components/HistoryBar';
 import FileIcon, { getFileType } from '../components/FileIcon';
 import ColumnsName from './components/ColumnsName';
+import { getDistMenu } from '@/services/cloudDist';
 import BreadCrumbNode from 'utils/BreadCrumbNode';
 
 import styles from './index.less';
@@ -146,15 +146,18 @@ const AllFiles: FC<any> = (props) => {
   }
 
   // 获取数据
-  function fetchData(id: string) {
+  function fetchData(id?: string) {
     setLoading(true);
     console.log(id);
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        setFileList(data);
-        setLoading(false);
-        resolve();
-      }, 2500);
+    // return new Promise<void>((resolve, reject) => {
+    //   setTimeout(() => {
+    //     setFileList(data);
+    //     setLoading(false);
+    //     resolve();
+    //   }, 2500);
+    // });
+    getDistMenu({ id }).then((res) => {
+      debugger;
     });
   }
 
@@ -162,7 +165,7 @@ const AllFiles: FC<any> = (props) => {
    * 初始化
    */
   function init() {
-    fetchData('all');
+    fetchData();
   }
 
   function onTableChange() {
