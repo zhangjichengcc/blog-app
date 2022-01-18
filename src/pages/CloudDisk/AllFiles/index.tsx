@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-18 18:10:13
+ * @LastEditTime: 2022-01-18 18:52:40
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -34,15 +34,7 @@ const AllFiles: FC<any> = (props) => {
   const [fileList, setFileList] = useState<fileDataProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  const [newDirectory, setNewDirectory] = useState({
-    id: '_new',
-    name: '新建文件夹',
-    size: 0,
-    type: 'directory',
-    createTime: moment().format('YYYY-MM-DD HH:mm:ss'),
-  });
   const [currentNode, setCurrentNode] = useState<BreadCrumbNode>();
-  const [historyList, setHistoryList] = useState<BreadCrumbNode[]>([]);
 
   /**
    * 调用 HistoryBar 内部方法 添加记录
@@ -105,7 +97,7 @@ const AllFiles: FC<any> = (props) => {
   async function openDir(record: fileDataProps) {
     const { _id, name, attribute } = record;
     if (attribute.type === 'dir') {
-      const node = new BreadCrumbNode(_id, name, currentNode.id);
+      const node = new BreadCrumbNode(_id, name, currentNode?.id);
       await fetchData(_id);
       onHistoryChange(node);
       push(node);

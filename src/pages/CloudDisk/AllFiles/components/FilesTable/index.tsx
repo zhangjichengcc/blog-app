@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-01-18 11:29:21
+ * @LastEditTime: 2022-01-18 18:54:18
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
@@ -14,6 +14,7 @@ import ColumnsName from '../ColumnsName';
 import { renderType } from 'utils/filesType';
 import { thousands } from 'utils/math';
 import { renderSize } from 'utils/utils';
+import moment from 'moment';
 
 import styles from './index.less';
 
@@ -145,7 +146,8 @@ const FilesTable: FC<any> = (props) => {
         <div className={styles.tbody}>
           {data.map((item: fileDataProps) => {
             const { name, attribute, _id: id } = item;
-            const { size, create_time: createTime } = attribute;
+            const { size, create_time } = attribute;
+            const createTime = moment(create_time).format('YYYY-MM-DD HH:mm');
             const selected = selectedKeys.includes(id);
             const popoverVisiable = contextMenuKeys.includes(id);
             const type = name.includes('.')

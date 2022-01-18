@@ -1,7 +1,7 @@
 /*
- * @Author: your name
+ * @Author: zhangjicheng
  * @Date: 2022-01-06 11:04:14
- * @LastEditTime: 2022-01-06 11:04:16
+ * @LastEditTime: 2022-01-18 18:59:08
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\utils\filesType.ts
@@ -19,6 +19,7 @@ export function renderType(type: string): string {
     ico: 'ICO 图片文件',
     webp: 'WEBP 图片文件',
     svg: 'SVG 图片文件',
+    txt: 'TXT 文本文件',
     doc: 'DOC 文档',
     docx: 'DOCX 文档',
     xls: 'XLS 工作表',

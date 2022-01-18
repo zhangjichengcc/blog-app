@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-06 09:46:56
- * @LastEditTime: 2022-01-06 10:46:27
+ * @LastEditTime: 2022-01-18 18:58:03
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\typings\filesType.d.ts
@@ -21,6 +21,8 @@ declare type ExcType = 'xls' | 'xlsx';
 declare type PdfType = 'pdf';
 // ppt 文档
 declare type PptType = 'ppt';
+// txt 文档
+declare type TxtType = 'txt';
 
 /* ------------------------------------------------------------------------------ */
 
@@ -58,7 +60,7 @@ declare type ApplyType = 'exe' | 'pkg' | 'dmg' | 'app';
 /**
  * 文档
  */
-declare type DocType = WordType | ExcType | PdfType | PptType;
+declare type DocType = TxtType | WordType | ExcType | PdfType | PptType;
 
 /**
  * 媒体
