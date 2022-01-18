@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-17 16:21:21
- * @LastEditTime: 2022-01-17 18:42:15
+ * @LastEditTime: 2022-01-18 10:22:19
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\components\TopUserBar\index.tsx
@@ -11,6 +11,7 @@ import React, { FC, useState } from 'react';
 import { Avatar, Modal, Input } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { oauthPwd } from '@/services/user';
+import { setToken } from 'utils/authority';
 
 import styles from './index.less';
 
@@ -24,7 +25,9 @@ const TopUserBar: FC<any> = (props) => {
       password: form.pwd,
     };
     oauthPwd(params).then((res) => {
-      debugger;
+      const { data, code } = res;
+      const { token } = data;
+      setToken(token);
     });
   }
 

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-01-10 11:48:33
+ * @LastEditTime: 2022-01-18 11:29:21
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
@@ -75,8 +75,8 @@ const FilesTable: FC<any> = (props) => {
     item: fileDataProps,
   ) {
     e.preventDefault(); // 阻止默认事件
-    setSelectedKeys([item.id]);
-    setContextMenuKeys([item.id]);
+    setSelectedKeys([item._id]);
+    setContextMenuKeys([item._id]);
     console.log('onTableContextMenu');
   }
 
@@ -85,7 +85,7 @@ const FilesTable: FC<any> = (props) => {
     _e: React.MouseEvent<HTMLDivElement>,
     item: fileDataProps,
   ) {
-    if (selectedKeys.includes(item.id)) {
+    if (selectedKeys.includes(item._id)) {
       rename(item);
     } else {
       console.log('select');
@@ -106,7 +106,7 @@ const FilesTable: FC<any> = (props) => {
     item: fileDataProps,
   ) {
     // 设置选中状态，不放在单击事件中处理，减少延迟
-    setSelectedKeys([item.id]);
+    setSelectedKeys([item._id]);
     // 双击判断
     if (timer) {
       // 300ms 内再次触发认为是双击，阻止timeout 防止触发单击事件
@@ -129,7 +129,6 @@ const FilesTable: FC<any> = (props) => {
       setContextMenuKeys([]);
     });
     return function () {
-      debugger;
       document.body.removeEventListener('click', () => {});
     };
   }, []);
@@ -145,7 +144,8 @@ const FilesTable: FC<any> = (props) => {
         </div>
         <div className={styles.tbody}>
           {data.map((item: fileDataProps) => {
-            const { name, createTime, size, id } = item;
+            const { name, attribute, _id: id } = item;
+            const { size, create_time: createTime } = attribute;
             const selected = selectedKeys.includes(id);
             const popoverVisiable = contextMenuKeys.includes(id);
             const type = name.includes('.')
