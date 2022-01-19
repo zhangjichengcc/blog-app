@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-18 18:52:40
+ * @LastEditTime: 2022-01-19 10:50:44
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -120,7 +120,7 @@ const AllFiles: FC<any> = (props) => {
   function newDir() {
     const item: fileDataProps = {
       _id: '_new', // ! 约定 新建文件夹id为_new
-      parent_id: currentNode.id,
+      parent_id: currentNode?.id as string,
       name: '新建文件夹',
       lock: false,
       attribute: {
