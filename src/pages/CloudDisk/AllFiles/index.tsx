@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-19 10:50:44
+ * @LastEditTime: 2022-01-20 18:53:40
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -21,7 +21,7 @@ import FilesTable from './components/FilesTable';
 import HistoryBar from '../components/HistoryBar';
 import FileIcon, { getFileType } from '../components/FileIcon';
 import ColumnsName from './components/ColumnsName';
-import { getDistMenu } from '@/services/cloudDist';
+import { getDistMenu, insertDir, deleteFile } from '@/services/cloudDist';
 import BreadCrumbNode from 'utils/BreadCrumbNode';
 
 import styles from './index.less';
@@ -68,14 +68,6 @@ const AllFiles: FC<any> = (props) => {
   // 获取数据
   function fetchData(id?: string) {
     setLoading(true);
-    console.log(id);
-    // return new Promise<void>((resolve, reject) => {
-    //   setTimeout(() => {
-    //     setFileList(data);
-    //     setLoading(false);
-    //     resolve();
-    //   }, 2500);
-    // });
     getDistMenu({ id }).then((res) => {
       const { data, code } = res;
       if (code === 0) {
@@ -110,7 +102,6 @@ const AllFiles: FC<any> = (props) => {
    * @param selectedKey
    */
   function onRowClick(item: fileDataProps) {
-    // onSelectedChange(selectedRowKeys);
     setSelectedKeys([item._id]);
   }
 
@@ -123,6 +114,7 @@ const AllFiles: FC<any> = (props) => {
       parent_id: currentNode?.id as string,
       name: '新建文件夹',
       lock: false,
+      // edit: true,
       attribute: {
         name: '新建文件夹',
         size: 0,
@@ -135,17 +127,33 @@ const AllFiles: FC<any> = (props) => {
   }
 
   /**
-   * 新建文件夹确认
+   * 删除文件
+   * @param item
    */
-  function newDirSuccess(item: fileDataProps) {
-    const [editItem, releaseItem, downloadItem, ...others] = fileList;
-    setFileList([releaseItem, downloadItem, item, ...others]);
+  function onFileDelete(item: fileDataProps) {
+    const { _id, parent_id } = item;
+    deleteFile({ id: _id })
+      .then((_res) => {
+        fetchData(parent_id);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   /**
-   * 修改文件名
+   * 重命名/新建文件完成
    */
-  function onNameChanged() {}
+  function onNameOk(payload: { parent_id: any; name: any }) {
+    const { parent_id, name } = payload;
+    insertDir({ id: parent_id, name })
+      .then((res) => {
+        fetchData(parent_id);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 
   /**
    * 初始化
@@ -154,13 +162,11 @@ const AllFiles: FC<any> = (props) => {
     setLoading(true);
     getDistMenu({})
       .then((res) => {
-        const { data, code } = res;
-        if (code === 0) {
-          setFileList(data.files);
-          const rootNode = new BreadCrumbNode(data._id, '全部文件');
-          setCurrentNode(rootNode);
-          push(rootNode);
-        }
+        const { data } = res;
+        setFileList(data.files);
+        const rootNode = new BreadCrumbNode(data._id, '全部文件');
+        setCurrentNode(rootNode);
+        push(rootNode);
       })
       .catch((e) => {
         console.warn(e);
@@ -172,7 +178,6 @@ const AllFiles: FC<any> = (props) => {
 
   useImperativeHandle(cRef, () => ({
     addHistory,
-    onNameChanged,
     newDir,
   }));
 
@@ -199,9 +204,9 @@ const AllFiles: FC<any> = (props) => {
           selectedKeys={selectedKeys}
           onClick={onRowClick}
           onDoubleClick={openDir}
+          onDelete={onFileDelete}
           loading={loading}
-          // onNameOk
-          // onNameCancel
+          onNameOk={onNameOk}
         />
       </div>
     </div>

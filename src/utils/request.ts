@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-09 15:56:30
- * @LastEditTime: 2022-01-18 10:32:24
+ * @LastEditTime: 2022-01-20 18:48:23
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\utils\request.ts
@@ -64,9 +64,9 @@ const errorHandler = (error: { response: any; message: any }) => {
   }
   const res = {
     code: -1,
-    msg: message,
+    message,
   };
-  return res;
+  throw res;
 };
 
 // 检验状态码， 200 表示请求成功

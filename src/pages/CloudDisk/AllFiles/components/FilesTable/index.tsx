@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-01-18 18:54:18
+ * @LastEditTime: 2022-01-20 18:53:35
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
@@ -34,19 +34,25 @@ const RenderSize: FC<{ size: number }> = (props) => {
 };
 
 const PopoverContent: FC<any> = (props) => {
+  const { data, onDelete } = props;
+
   function onClick(e: React.MouseEvent<HTMLDivElement>) {
     e.preventDefault();
     e.nativeEvent.stopImmediatePropagation();
   }
 
+  function onHandleClick() {
+    onDelete(data);
+  }
+
   return (
     <div className={styles.popoverContent} onClick={onClick}>
       <span>打开</span>
-      <span>删除</span>
-      <span>复制</span>
-      <span>发送到</span>
-      <span>分享</span>
-      <span>下载</span>
+      <span onClick={onHandleClick}>删除</span>
+      {/* <span>复制</span> */}
+      {/* <span>发送到</span> */}
+      {/* <span>分享</span> */}
+      {/* <span>下载</span> */}
       <span>新建文件夹</span>
     </div>
   );
@@ -56,6 +62,7 @@ const FilesTable: FC<any> = (props) => {
   const {
     data,
     // selectedKeys = [],
+    onDelete,
     onClick,
     onDoubleClick,
     onNameOk,
@@ -68,6 +75,11 @@ const FilesTable: FC<any> = (props) => {
   // 重命名
   function rename(item: fileDataProps) {
     debugger;
+  }
+
+  // 删除
+  function onHandleDelete(item: fileDataProps) {
+    onDelete(item);
   }
 
   // 右键单击
@@ -87,7 +99,7 @@ const FilesTable: FC<any> = (props) => {
     item: fileDataProps,
   ) {
     if (selectedKeys.includes(item._id)) {
-      rename(item);
+      return;
     } else {
       console.log('select');
     }
@@ -161,13 +173,14 @@ const FilesTable: FC<any> = (props) => {
                 // onDoubleClick={e => onHandleDoubleClick(e, item)}
                 onContextMenu={(e) => onTableItemContextMenu(e, item)}
               >
-                <Popover content={PopoverContent} visible={popoverVisiable}>
+                <Popover
+                  content={
+                    <PopoverContent data={item} onDelete={onHandleDelete} />
+                  }
+                  visible={popoverVisiable}
+                >
                   <span className={styles.td}>
-                    <ColumnsName
-                      record={item}
-                      addNewDir={onNameOk}
-                      onNameChanged={onNameOk}
-                    />
+                    <ColumnsName record={item} addNewDir={onNameOk} />
                   </span>
                 </Popover>
                 <span className={styles.td}>{createTime}</span>
