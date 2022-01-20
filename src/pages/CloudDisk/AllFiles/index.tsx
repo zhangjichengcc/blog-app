@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-20 18:53:40
+ * @LastEditTime: 2022-01-20 23:06:30
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -16,13 +16,14 @@ import React, {
 } from 'react';
 import classnames from 'classnames';
 import moment from 'moment';
-import { Table, Input } from 'antd';
+import { Table, Input, Modal } from 'antd';
 import FilesTable from './components/FilesTable';
 import HistoryBar from '../components/HistoryBar';
 import FileIcon, { getFileType } from '../components/FileIcon';
 import ColumnsName from './components/ColumnsName';
 import { getDistMenu, insertDir, deleteFile } from '@/services/cloudDist';
 import BreadCrumbNode from 'utils/BreadCrumbNode';
+import to from 'utils/promiseTools';
 
 import styles from './index.less';
 
@@ -66,16 +67,15 @@ const AllFiles: FC<any> = (props) => {
   }
 
   // 获取数据
-  function fetchData(id?: string) {
+  async function fetchData(id?: string): Promise<fileDataProps[]> {
     setLoading(true);
-    getDistMenu({ id }).then((res) => {
-      const { data, code } = res;
-      if (code === 0) {
-        setFileList(data.files);
-        if (!id) setCurrentNode(new BreadCrumbNode(data._id, '全部文件'));
-        setLoading(false);
-      }
-    });
+    const [err, res] = await to(getDistMenu({ id }));
+    setLoading(false);
+    if (err) return Promise.reject(err);
+    const { data } = res;
+    if (!id) setCurrentNode(new BreadCrumbNode(data._id, '全部文件'));
+    setFileList(data.files);
+    return data.files;
   }
 
   function onTableChange() {
@@ -90,7 +90,11 @@ const AllFiles: FC<any> = (props) => {
     const { _id, name, attribute } = record;
     if (attribute.type === 'dir') {
       const node = new BreadCrumbNode(_id, name, currentNode?.id);
-      await fetchData(_id);
+      const [err, res] = await to(fetchData(_id));
+      if (err) {
+        console.error(err);
+        return;
+      }
       onHistoryChange(node);
       push(node);
       setCurrentNode(node);
@@ -98,23 +102,17 @@ const AllFiles: FC<any> = (props) => {
   }
 
   /**
-   * 选择table项
-   * @param selectedKey
-   */
-  function onRowClick(item: fileDataProps) {
-    setSelectedKeys([item._id]);
-  }
-
-  /**
    * 新建文件夹
+   * 入参 list、node 为可选，兼容右键新建文件夹方法调用
    */
-  function newDir() {
+  function newDir(list?: fileDataProps[], node?: BreadCrumbNode) {
+    const _list = list || fileList;
+    const _node = node || currentNode;
     const item: fileDataProps = {
       _id: '_new', // ! 约定 新建文件夹id为_new
-      parent_id: currentNode?.id as string,
+      parent_id: _node?.id as string,
       name: '新建文件夹',
       lock: false,
-      // edit: true,
       attribute: {
         name: '新建文件夹',
         size: 0,
@@ -123,7 +121,31 @@ const AllFiles: FC<any> = (props) => {
         create_time: moment().format('YYYY-MM-DD HH:mm'),
       },
     };
-    setFileList([item, ...fileList]);
+    setFileList([item, ..._list]);
+  }
+
+  /**
+   * 右键表格项，新建文件夹
+   * 进入文件夹，然后新建文件夹
+   * ! 注意此处方法无法复用 openDir fetchData, fetchData中写入表格数据为异步，会导致添加新建元素延迟，需要单独处理 filesList
+   * @param record
+   */
+  async function onFileNew(record: fileDataProps) {
+    const { _id, name } = record;
+    setLoading(true);
+    const [err, res] = await to(getDistMenu({ id: _id }));
+    setLoading(false);
+    const node = new BreadCrumbNode(_id, name, currentNode?.id);
+    if (err) {
+      console.error(err);
+      return;
+    }
+    const { data } = res;
+    onHistoryChange(node);
+    push(node);
+    setCurrentNode(node);
+    // 此处传入新的filesList、currentNode, 以规避setFilesList及currentNode的延迟
+    newDir(data.files, node);
   }
 
   /**
@@ -146,6 +168,14 @@ const AllFiles: FC<any> = (props) => {
    */
   function onNameOk(payload: { parent_id: any; name: any }) {
     const { parent_id, name } = payload;
+    const isRepeat = fileList.filter((item) => item.name === name).length > 1;
+    if (isRepeat) {
+      Modal.error({
+        title: '文件重名',
+        content: `此目标已包含名为"${name}"的文件夹，请修改名称重试！`,
+      });
+      return;
+    }
     insertDir({ id: parent_id, name })
       .then((res) => {
         fetchData(parent_id);
@@ -201,10 +231,9 @@ const AllFiles: FC<any> = (props) => {
       <div>
         <FilesTable
           data={fileList}
-          selectedKeys={selectedKeys}
-          onClick={onRowClick}
           onDoubleClick={openDir}
           onDelete={onFileDelete}
+          onNew={onFileNew}
           loading={loading}
           onNameOk={onNameOk}
         />

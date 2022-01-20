@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-01-20 18:53:35
+ * @LastEditTime: 2022-01-20 21:36:29
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
@@ -34,36 +34,75 @@ const RenderSize: FC<{ size: number }> = (props) => {
 };
 
 const PopoverContent: FC<any> = (props) => {
-  const { data, onDelete } = props;
+  const { data, onDelete, onOpen, onNew } = props;
 
   function onClick(e: React.MouseEvent<HTMLDivElement>) {
     e.preventDefault();
     e.nativeEvent.stopImmediatePropagation();
   }
 
-  function onHandleClick() {
+  function onHandleDelete() {
     onDelete(data);
+  }
+
+  function onHandleOpen() {
+    onOpen(data);
+  }
+
+  function onHandleNew() {
+    onNew(data);
   }
 
   return (
     <div className={styles.popoverContent} onClick={onClick}>
-      <span>打开</span>
-      <span onClick={onHandleClick}>删除</span>
+      <span onClick={onHandleOpen}>打开</span>
+      <span onClick={onHandleDelete}>删除</span>
       {/* <span>复制</span> */}
       {/* <span>发送到</span> */}
       {/* <span>分享</span> */}
       {/* <span>下载</span> */}
-      <span>新建文件夹</span>
+      <span onClick={onHandleNew}>新建文件夹</span>
     </div>
   );
 };
 
-const FilesTable: FC<any> = (props) => {
+type FilesTableProps = {
+  /**
+   * 表格数据
+   */
+  data: fileDataProps[];
+  /**
+   * 删除文件
+   */
+  onDelete?: (item: fileDataProps) => void;
+  /**
+   * 打开文件
+   */
+  onOpen?: (item: fileDataProps) => void;
+  /**
+   * 新建文件
+   */
+  onNew?: (item: fileDataProps) => void;
+  /**
+   * 双击列表项
+   */
+  onDoubleClick?: (item: fileDataProps) => void;
+  /**
+   * 命名完成
+   */
+  onNameOk?: (item: fileDataProps) => void;
+  /**
+   * 表格加载状态
+   */
+  loading?: boolean;
+};
+
+const FilesTable: FC<FilesTableProps> = (props) => {
   const {
     data,
-    // selectedKeys = [],
     onDelete,
-    onClick,
+    onOpen,
+    onNew,
     onDoubleClick,
     onNameOk,
     loading = false,
@@ -74,12 +113,22 @@ const FilesTable: FC<any> = (props) => {
 
   // 重命名
   function rename(item: fileDataProps) {
-    debugger;
+    typeof onNameOk === 'function' && onNameOk(item);
   }
 
   // 删除
   function onHandleDelete(item: fileDataProps) {
-    onDelete(item);
+    typeof onDelete === 'function' && onDelete(item);
+  }
+
+  // 打开文件
+  function onHandleOpen(item: fileDataProps) {
+    typeof onOpen === 'function' && onOpen(item);
+  }
+
+  // 新建文件
+  function onHandleNew(item: fileDataProps) {
+    typeof onNew === 'function' && onNew(item);
   }
 
   // 右键单击
@@ -175,7 +224,12 @@ const FilesTable: FC<any> = (props) => {
               >
                 <Popover
                   content={
-                    <PopoverContent data={item} onDelete={onHandleDelete} />
+                    <PopoverContent
+                      data={item}
+                      onDelete={onHandleDelete}
+                      onOpen={onHandleOpen}
+                      onNew={onHandleNew}
+                    />
                   }
                   visible={popoverVisiable}
                 >
