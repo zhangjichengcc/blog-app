@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-01-20 21:36:29
+ * @LastEditTime: 2022-01-21 18:56:17
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
@@ -34,7 +34,7 @@ const RenderSize: FC<{ size: number }> = (props) => {
 };
 
 const PopoverContent: FC<any> = (props) => {
-  const { data, onDelete, onOpen, onNew } = props;
+  const { data, onDelete, onOpen, onNew, onRename } = props;
 
   function onClick(e: React.MouseEvent<HTMLDivElement>) {
     e.preventDefault();
@@ -53,10 +53,15 @@ const PopoverContent: FC<any> = (props) => {
     onNew(data);
   }
 
+  function onHandleRename() {
+    onRename(data);
+  }
+
   return (
     <div className={styles.popoverContent} onClick={onClick}>
       <span onClick={onHandleOpen}>打开</span>
       <span onClick={onHandleDelete}>删除</span>
+      <span onClick={onHandleRename}>重命名</span>
       {/* <span>复制</span> */}
       {/* <span>发送到</span> */}
       {/* <span>分享</span> */}
@@ -92,6 +97,10 @@ type FilesTableProps = {
    */
   onNameOk?: (item: fileDataProps) => void;
   /**
+   * 重命名文件
+   */
+  onRename?: (item: fileDataProps) => void;
+  /**
    * 表格加载状态
    */
   loading?: boolean;
@@ -103,6 +112,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
     onDelete,
     onOpen,
     onNew,
+    onRename,
     onDoubleClick,
     onNameOk,
     loading = false,
@@ -111,24 +121,28 @@ const FilesTable: FC<FilesTableProps> = (props) => {
   const [contextMenuKeys, setContextMenuKeys] = useState<string[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
-  // 重命名
-  function rename(item: fileDataProps) {
-    typeof onNameOk === 'function' && onNameOk(item);
-  }
-
   // 删除
   function onHandleDelete(item: fileDataProps) {
+    setContextMenuKeys([]);
     typeof onDelete === 'function' && onDelete(item);
   }
 
   // 打开文件
   function onHandleOpen(item: fileDataProps) {
+    setContextMenuKeys([]);
     typeof onOpen === 'function' && onOpen(item);
   }
 
   // 新建文件
   function onHandleNew(item: fileDataProps) {
+    setContextMenuKeys([]);
     typeof onNew === 'function' && onNew(item);
+  }
+
+  // 重命名文件
+  function onHandleRename(item: fileDataProps) {
+    setContextMenuKeys([]);
+    typeof onRename === 'function' && onRename(item);
   }
 
   // 右键单击
@@ -229,6 +243,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
                       onDelete={onHandleDelete}
                       onOpen={onHandleOpen}
                       onNew={onHandleNew}
+                      onRename={onHandleRename}
                     />
                   }
                   visible={popoverVisiable}

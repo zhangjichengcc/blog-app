@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-04 15:43:02
- * @LastEditTime: 2022-01-20 20:12:24
+ * @LastEditTime: 2022-01-21 18:52:56
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\ColumnsName\index.tsx
@@ -25,7 +25,9 @@ const ColumnsName: FC<any> = (props) => {
   const [_name, setName] = useState(record.name);
   const inputRef = useRef(null);
 
-  const { name, _id, lock } = record;
+  const { name, _id, lock, edit } = record;
+
+  const _edit = edit || _id === '_new';
 
   function onBlur() {
     addNewDir({ ...record, name: _name });
@@ -45,7 +47,7 @@ const ColumnsName: FC<any> = (props) => {
 
   useEffect(
     function () {
-      if (_id === '_new') {
+      if (_edit) {
         const { current }: { current: any } = inputRef;
         current?.focus();
       }
@@ -53,7 +55,7 @@ const ColumnsName: FC<any> = (props) => {
     [record],
   );
 
-  if (_id === '_new') {
+  if (_edit) {
     return (
       <div className={styles.newDirName}>
         <FileIcon

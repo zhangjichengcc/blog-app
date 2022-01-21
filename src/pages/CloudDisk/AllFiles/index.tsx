@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-21 11:25:02
+ * @LastEditTime: 2022-01-21 19:01:19
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -21,7 +21,12 @@ import FilesTable from './components/FilesTable';
 import HistoryBar from '../components/HistoryBar';
 import FileIcon, { getFileType } from '../components/FileIcon';
 import ColumnsName from './components/ColumnsName';
-import { getDistMenu, insertDir, deleteFile } from '@/services/cloudDist';
+import {
+  getDistMenu,
+  insertDir,
+  deleteFile,
+  renameFile,
+} from '@/services/cloudDist';
 import BreadCrumbNode from 'utils/BreadCrumbNode';
 import to from 'utils/promiseTools';
 
@@ -78,10 +83,6 @@ const AllFiles: FC<any> = (props) => {
     return data.files;
   }
 
-  function onTableChange() {
-    debugger;
-  }
-
   /**
    * 打开文件夹
    * @param record
@@ -114,7 +115,6 @@ const AllFiles: FC<any> = (props) => {
       name: '新建文件夹',
       lock: false,
       attribute: {
-        name: '新建文件夹',
         size: 0,
         type: 'dir',
         url: '',
@@ -166,8 +166,8 @@ const AllFiles: FC<any> = (props) => {
   /**
    * 重命名/新建文件完成
    */
-  function onNameOk(payload: { parent_id: any; name: any }) {
-    const { parent_id, name } = payload;
+  function onNameOk(payload: fileDataProps) {
+    const { parent_id, name, _id } = payload;
     const isRepeat = fileList.filter((item) => item.name === name).length > 1;
     if (isRepeat) {
       Modal.error({
@@ -176,13 +176,38 @@ const AllFiles: FC<any> = (props) => {
       });
       return;
     }
-    insertDir({ id: parent_id, name })
-      .then((res) => {
-        fetchData(parent_id);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    // 新建文件
+    if (_id === '_new') {
+      insertDir({ id: parent_id, name })
+        .then((res) => {
+          fetchData(parent_id);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      // 重命名
+      renameFile({ id: _id, name })
+        .then((res) => {
+          fetchData(parent_id);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }
+
+  /**
+   * 修改文件名
+   * 修改edit状态，使名称可编辑
+   */
+  function onFileRename(payload: fileDataProps) {
+    const { _id } = payload;
+    const _list = fileList.map((item) => ({
+      ...item,
+      edit: item._id === _id,
+    }));
+    setFileList(_list);
   }
 
   /**
@@ -235,8 +260,9 @@ const AllFiles: FC<any> = (props) => {
           onDelete={onFileDelete}
           onNew={onFileNew}
           onOpen={openDir}
-          loading={loading}
           onNameOk={onNameOk}
+          onRename={onFileRename}
+          loading={loading}
         />
       </div>
     </div>
