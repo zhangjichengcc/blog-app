@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-01-21 18:56:17
+ * @LastEditTime: 2022-01-24 18:52:40
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
@@ -162,7 +162,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
     item: fileDataProps,
   ) {
     if (selectedKeys.includes(item._id)) {
-      return;
+      onHandleRename(item);
     } else {
       console.log('select');
     }
@@ -181,6 +181,8 @@ const FilesTable: FC<FilesTableProps> = (props) => {
     e: React.MouseEvent<HTMLDivElement>,
     item: fileDataProps,
   ) {
+    e.stopPropagation(); // ? 阻止合成事件冒泡，这里用来阻止触发body的click事件
+    // e.nativeEvent.stopImmediatePropagation(); // ? 阻止合成事件与最外层document上的事件间的冒泡
     // 设置选中状态，不放在单击事件中处理，减少延迟
     setSelectedKeys([item._id]);
     // 双击判断
@@ -202,7 +204,8 @@ const FilesTable: FC<FilesTableProps> = (props) => {
 
   useEffect(() => {
     document.body.addEventListener('click', () => {
-      setContextMenuKeys([]);
+      setContextMenuKeys([]); // 点击空白处清空menukeys，即关闭右键弹窗
+      setSelectedKeys([]); // 点击空白处取消选中
     });
     return function () {
       document.body.removeEventListener('click', () => {});
