@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-21 19:01:19
+ * @LastEditTime: 2022-01-26 17:27:36
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -26,6 +26,7 @@ import {
   insertDir,
   deleteFile,
   renameFile,
+  uploadFile,
 } from '@/services/cloudDist';
 import BreadCrumbNode from 'utils/BreadCrumbNode';
 import to from 'utils/promiseTools';
@@ -36,10 +37,10 @@ const AllFiles: FC<any> = (props) => {
   const { cRef, onHistoryChange, onSelectedChange } = props;
 
   const HistoryBarRef = useRef(null);
+  const fileRef = useRef(null);
 
   const [fileList, setFileList] = useState<fileDataProps[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [currentNode, setCurrentNode] = useState<BreadCrumbNode>();
 
   /**
@@ -122,6 +123,29 @@ const AllFiles: FC<any> = (props) => {
       },
     };
     setFileList([item, ..._list]);
+  }
+
+  /**
+   * 触发上传文件
+   * @param record
+   * @returns
+   */
+  function upload() {
+    const { current }: { current: any } = fileRef;
+    current?.click();
+  }
+  // 上传文件
+  function onFileChange(e: any) {
+    const { files = [] } = e.target;
+    const { id = null } = currentNode as any;
+    const [file] = files;
+    uploadFile({ id, file })
+      .then((res) => {
+        fetchData(id);
+      })
+      .catch((err) => {
+        debugger;
+      });
   }
 
   /**
@@ -231,9 +255,11 @@ const AllFiles: FC<any> = (props) => {
       });
   }
 
+  // 透传方法，父元素通过 ref.current 获取子元素方法
   useImperativeHandle(cRef, () => ({
     addHistory,
     newDir,
+    upload,
   }));
 
   useEffect(function () {
@@ -242,6 +268,12 @@ const AllFiles: FC<any> = (props) => {
 
   return (
     <div className={styles.view}>
+      <input
+        type="file"
+        ref={fileRef}
+        onChange={onFileChange}
+        style={{ position: 'absolute', width: 0, height: 0 }}
+      />
       <div className={styles.topBar}>
         {/* 传递cRef，用于获取子组件添加历史记录方法 addHistory */}
         <HistoryBar

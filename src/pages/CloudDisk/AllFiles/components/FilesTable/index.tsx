@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-01-24 18:52:40
+ * @LastEditTime: 2022-01-26 18:11:52
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
@@ -45,7 +45,7 @@ const PopoverContent: FC<any> = (props) => {
     onDelete(data);
   }
 
-  function onHandleOpen() {
+  function onHandleOpen(e: React.MouseEvent<HTMLDivElement>) {
     onOpen(data);
   }
 
@@ -59,14 +59,22 @@ const PopoverContent: FC<any> = (props) => {
 
   return (
     <div className={styles.popoverContent} onClick={onClick}>
-      <span onClick={onHandleOpen}>打开</span>
-      <span onClick={onHandleDelete}>删除</span>
-      <span onClick={onHandleRename}>重命名</span>
+      <span data-type="popover" onClick={onHandleOpen}>
+        打开
+      </span>
+      <span data-type="popover" onClick={onHandleDelete}>
+        删除
+      </span>
+      <span data-type="popover" onClick={onHandleRename}>
+        重命名
+      </span>
       {/* <span>复制</span> */}
       {/* <span>发送到</span> */}
       {/* <span>分享</span> */}
       {/* <span>下载</span> */}
-      <span onClick={onHandleNew}>新建文件夹</span>
+      <span data-type="popover" onClick={onHandleNew}>
+        新建文件夹
+      </span>
     </div>
   );
 };
@@ -183,8 +191,13 @@ const FilesTable: FC<FilesTableProps> = (props) => {
   ) {
     e.stopPropagation(); // ? 阻止合成事件冒泡，这里用来阻止触发body的click事件
     // e.nativeEvent.stopImmediatePropagation(); // ? 阻止合成事件与最外层document上的事件间的冒泡
+    const {
+      target: { dataset },
+    } = e as any; // ? 获取点击元素的自定义属性 data-type, 若为popover则阻止，解决点击popover触发item点击事件的bug
+    if (dataset.type === 'popover') return;
     // 设置选中状态，不放在单击事件中处理，减少延迟
     setSelectedKeys([item._id]);
+    setContextMenuKeys([]); // 清空menukeys，即关闭右键弹窗
     // 双击判断
     if (timer) {
       // 300ms 内再次触发认为是双击，阻止timeout 防止触发单击事件

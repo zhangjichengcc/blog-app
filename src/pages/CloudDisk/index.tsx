@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-21 14:41:34
- * @LastEditTime: 2022-01-04 17:06:09
+ * @LastEditTime: 2022-01-26 15:06:12
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\index.tsx
@@ -66,12 +66,20 @@ const CloudDisk: FC<any> = (props) => {
     current?.newDir();
   }
 
+  // 上传文件
+  function uploadFile() {
+    const { current }: { current: any } = AllFilesRef;
+    current?.upload();
+  }
+
   return (
     <div className={styles.cloudDisk}>
       <div className={styles.headerWrap}>
         <span className={styles.title}>XX网盘</span>
         <div className={styles.toolsBar}>
-          <Button disabled={!!AllFilesSelectedKeys.length}>上传</Button>
+          <Button disabled={!!AllFilesSelectedKeys.length} onClick={uploadFile}>
+            上传
+          </Button>
           <Button disabled={!!AllFilesSelectedKeys.length} onClick={createDir}>
             新建文件夹
           </Button>
