@@ -1,8 +1,8 @@
 /*
- * @Author: your name
+ * @Author: zhangjicheng
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-01-26 17:27:36
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-08 18:24:17
+ * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
  */
@@ -15,8 +15,8 @@ import React, {
   useImperativeHandle,
 } from 'react';
 import classnames from 'classnames';
-import moment from 'moment';
-import { Table, Input, Modal } from 'antd';
+import moment from 'js-moment';
+import { Table, Input, Modal, Image } from 'antd';
 import FilesTable from './components/FilesTable';
 import HistoryBar from '../components/HistoryBar';
 import FileIcon, { getFileType } from '../components/FileIcon';
@@ -30,6 +30,7 @@ import {
 } from '@/services/cloudDist';
 import BreadCrumbNode from 'utils/BreadCrumbNode';
 import to from 'utils/promiseTools';
+import { getType } from 'utils/filesType';
 
 import styles from './index.less';
 
@@ -42,6 +43,7 @@ const AllFiles: FC<any> = (props) => {
   const [fileList, setFileList] = useState<fileDataProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentNode, setCurrentNode] = useState<BreadCrumbNode>();
+  const [visibleUrl, setVisibleUrl] = useState('');
 
   /**
    * 调用 HistoryBar 内部方法 添加记录
@@ -86,7 +88,7 @@ const AllFiles: FC<any> = (props) => {
 
   /**
    * 打开文件夹
-   * @param record
+   * @param {record}
    */
   async function openDir(record: fileDataProps) {
     const { _id, name, attribute } = record;
@@ -100,6 +102,37 @@ const AllFiles: FC<any> = (props) => {
       onHistoryChange(node);
       push(node);
       setCurrentNode(node);
+    }
+  }
+
+  function openImg(record: fileDataProps) {
+    setVisibleUrl(record.attribute.url);
+  }
+
+  /**
+   * 打开文件判断
+   * @param {record}
+   */
+  function onOpen(record: fileDataProps) {
+    const {
+      attribute: { type },
+    } = record;
+    const _type = getType(type);
+    switch (_type) {
+      case 'dir':
+        openDir(record);
+        break;
+      case 'img':
+        openImg(record);
+        break;
+      case 'media':
+        // openMedia(record);
+        break;
+      case 'pdf':
+        // openPdf(record);
+        break;
+      default:
+        return;
     }
   }
 
@@ -288,15 +321,27 @@ const AllFiles: FC<any> = (props) => {
       <div>
         <FilesTable
           data={fileList}
-          onDoubleClick={openDir}
+          onDoubleClick={onOpen}
           onDelete={onFileDelete}
           onNew={onFileNew}
-          onOpen={openDir}
+          onOpen={onOpen}
           onNameOk={onNameOk}
           onRename={onFileRename}
           loading={loading}
         />
       </div>
+      <Image
+        width={200}
+        style={{ display: 'none' }}
+        src={visibleUrl}
+        preview={{
+          visible: !!visibleUrl,
+          src: visibleUrl,
+          onVisibleChange: (value) => {
+            setVisibleUrl('');
+          },
+        }}
+      />
     </div>
   );
 };
