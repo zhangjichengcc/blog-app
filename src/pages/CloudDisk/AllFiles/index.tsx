@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-02-11 15:33:34
+ * @LastEditTime: 2022-02-11 19:11:52
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -19,7 +19,7 @@ import moment from 'js-moment';
 import { Table, Input, Modal, Image } from 'antd';
 import FilesTable from './components/FilesTable';
 import HistoryBar from '../components/HistoryBar';
-import MediaPlayer from 'components/MediaPlayer';
+import FilePlayer from '@/components/FilePlayer';
 import {
   getDistMenu,
   insertDir,
@@ -29,6 +29,7 @@ import {
 } from '@/services/cloudDist';
 import BreadCrumbNode from 'utils/BreadCrumbNode';
 import to from 'utils/promiseTools';
+import { sleep } from 'utils/utils';
 import { getCategory } from 'utils/filesType';
 
 import styles from './index.less';
@@ -42,9 +43,7 @@ const AllFiles: FC<any> = (props) => {
   const [fileList, setFileList] = useState<fileDataProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentNode, setCurrentNode] = useState<BreadCrumbNode>();
-  const [visibleFile, setVisibleFile] = useState<any>(null);
-
-  const { attribute = {} } = (visibleFile as any) || {};
+  const [visibleFile, setVisibleFile] = useState<any>({ visiable: false });
 
   /**
    * 调用 HistoryBar 内部方法 添加记录
@@ -95,6 +94,7 @@ const AllFiles: FC<any> = (props) => {
     const { _id, name, attribute } = record;
     if (attribute.type === 'dir') {
       const node = new BreadCrumbNode(_id, name, currentNode?.id);
+      node.current = record;
       const [err, res] = await to(fetchData(_id));
       if (err) {
         console.error(err);
@@ -107,11 +107,16 @@ const AllFiles: FC<any> = (props) => {
   }
 
   function openMedia(record: fileDataProps) {
-    setVisibleFile(record);
+    setVisibleFile({ ...record, visible: true });
+    console.log(currentNode);
   }
 
   function onMediaCancel() {
-    setVisibleFile(false);
+    setVisibleFile({ ...visibleFile, visible: false });
+    sleep(300).then(() => {
+      // 处理关闭动画效果，延迟移除文件属性，否则将失去关闭动画
+      setVisibleFile({ visible: false });
+    });
   }
 
   /**
@@ -134,7 +139,7 @@ const AllFiles: FC<any> = (props) => {
         openMedia(record);
         break;
       case 'pdf':
-        // openPdf(record);
+        openMedia(record);
         break;
       default:
         return;
@@ -335,22 +340,10 @@ const AllFiles: FC<any> = (props) => {
           loading={loading}
         />
       </div>
-      {/* <Image
-        width={200}
-        style={{ display: 'none' }}
-        src={visibleUrl}
-        preview={{
-          visible: !!visibleUrl,
-          src: visibleUrl,
-          onVisibleChange: (value) => {
-            setVisibleUrl('');
-          },
-        }}
-      /> */}
-      <MediaPlayer
-        url={attribute?.url}
+      <FilePlayer
+        url={visibleFile?.attribute?.url}
         name={visibleFile?.name}
-        visible={!!visibleFile}
+        visible={visibleFile.visible}
         onCancel={onMediaCancel}
       />
     </div>
