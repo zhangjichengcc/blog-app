@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-02-08 15:16:25
- * @LastEditors: OBKoro1
+ * @LastEditTime: 2022-02-11 10:33:15
+ * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
  */
@@ -11,7 +11,7 @@ import React, { FC, useMemo, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { Spin, Popover } from 'antd';
 import ColumnsName from '../ColumnsName';
-import { renderType } from 'utils/filesType';
+import { renderType, getType } from 'utils/filesType';
 import { thousands } from 'utils/math';
 import { renderSize } from 'utils/utils';
 import moment from 'moment';
@@ -241,9 +241,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
             const createTime = moment(create_time).format('YYYY-MM-DD HH:mm');
             const selected = selectedKeys.includes(id);
             const popoverVisiable = contextMenuKeys.includes(id);
-            const type = name.includes('.')
-              ? name.replace(/.*\.(\w+)$/, '$1')
-              : 'dir';
+            const type = getType(name);
             return (
               <div
                 key={id}

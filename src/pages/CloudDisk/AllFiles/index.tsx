@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-02-08 18:24:17
+ * @LastEditTime: 2022-02-11 15:33:34
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -19,8 +19,7 @@ import moment from 'js-moment';
 import { Table, Input, Modal, Image } from 'antd';
 import FilesTable from './components/FilesTable';
 import HistoryBar from '../components/HistoryBar';
-import FileIcon, { getFileType } from '../components/FileIcon';
-import ColumnsName from './components/ColumnsName';
+import MediaPlayer from 'components/MediaPlayer';
 import {
   getDistMenu,
   insertDir,
@@ -30,7 +29,7 @@ import {
 } from '@/services/cloudDist';
 import BreadCrumbNode from 'utils/BreadCrumbNode';
 import to from 'utils/promiseTools';
-import { getType } from 'utils/filesType';
+import { getCategory } from 'utils/filesType';
 
 import styles from './index.less';
 
@@ -43,7 +42,9 @@ const AllFiles: FC<any> = (props) => {
   const [fileList, setFileList] = useState<fileDataProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentNode, setCurrentNode] = useState<BreadCrumbNode>();
-  const [visibleUrl, setVisibleUrl] = useState('');
+  const [visibleFile, setVisibleFile] = useState<any>(null);
+
+  const { attribute = {} } = (visibleFile as any) || {};
 
   /**
    * 调用 HistoryBar 内部方法 添加记录
@@ -105,8 +106,12 @@ const AllFiles: FC<any> = (props) => {
     }
   }
 
-  function openImg(record: fileDataProps) {
-    setVisibleUrl(record.attribute.url);
+  function openMedia(record: fileDataProps) {
+    setVisibleFile(record);
+  }
+
+  function onMediaCancel() {
+    setVisibleFile(false);
   }
 
   /**
@@ -117,16 +122,16 @@ const AllFiles: FC<any> = (props) => {
     const {
       attribute: { type },
     } = record;
-    const _type = getType(type);
+    const _type = getCategory(type);
     switch (_type) {
       case 'dir':
         openDir(record);
         break;
       case 'img':
-        openImg(record);
+        openMedia(record);
         break;
       case 'media':
-        // openMedia(record);
+        openMedia(record);
         break;
       case 'pdf':
         // openPdf(record);
@@ -177,7 +182,7 @@ const AllFiles: FC<any> = (props) => {
         fetchData(id);
       })
       .catch((err) => {
-        debugger;
+        console.warn(err);
       });
   }
 
@@ -330,7 +335,7 @@ const AllFiles: FC<any> = (props) => {
           loading={loading}
         />
       </div>
-      <Image
+      {/* <Image
         width={200}
         style={{ display: 'none' }}
         src={visibleUrl}
@@ -341,6 +346,12 @@ const AllFiles: FC<any> = (props) => {
             setVisibleUrl('');
           },
         }}
+      /> */}
+      <MediaPlayer
+        url={attribute?.url}
+        name={visibleFile?.name}
+        visible={!!visibleFile}
+        onCancel={onMediaCancel}
       />
     </div>
   );
