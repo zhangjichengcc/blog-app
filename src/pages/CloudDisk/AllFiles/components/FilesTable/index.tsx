@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-02-11 10:33:15
+ * @LastEditTime: 2022-02-16 19:05:15
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
@@ -11,6 +11,7 @@ import React, { FC, useMemo, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { Spin, Popover } from 'antd';
 import ColumnsName from '../ColumnsName';
+import PopoverContent from '../PopoverContent';
 import { renderType, getType } from 'utils/filesType';
 import { thousands } from 'utils/math';
 import { renderSize } from 'utils/utils';
@@ -30,52 +31,6 @@ const RenderSize: FC<{ size: number }> = (props) => {
       <span>{num}</span>
       <span style={{ marginLeft: 5 }}>{$2}</span>
     </>
-  );
-};
-
-const PopoverContent: FC<any> = (props) => {
-  const { data, onDelete, onOpen, onNew, onRename } = props;
-
-  function onClick(e: React.MouseEvent<HTMLDivElement>) {
-    e.preventDefault();
-    e.nativeEvent.stopImmediatePropagation();
-  }
-
-  function onHandleDelete() {
-    onDelete(data);
-  }
-
-  function onHandleOpen(e: React.MouseEvent<HTMLDivElement>) {
-    onOpen(data);
-  }
-
-  function onHandleNew() {
-    onNew(data);
-  }
-
-  function onHandleRename() {
-    onRename(data);
-  }
-
-  return (
-    <div className={styles.popoverContent} onClick={onClick}>
-      <span data-type="popover" onClick={onHandleOpen}>
-        打开
-      </span>
-      <span data-type="popover" onClick={onHandleDelete}>
-        删除
-      </span>
-      <span data-type="popover" onClick={onHandleRename}>
-        重命名
-      </span>
-      {/* <span>复制</span> */}
-      {/* <span>发送到</span> */}
-      {/* <span>分享</span> */}
-      {/* <span>下载</span> */}
-      <span data-type="popover" onClick={onHandleNew}>
-        新建文件夹
-      </span>
-    </div>
   );
 };
 
@@ -269,7 +224,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
                 <span className={styles.td}>{createTime}</span>
                 <span className={styles.td}>{renderType(type)}</span>
                 <span className={styles.td}>
-                  <RenderSize size={size} />
+                  {type !== 'dir' && <RenderSize size={size} />}
                 </span>
               </div>
             );

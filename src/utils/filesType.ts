@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2022-01-06 11:04:14
- * @LastEditTime: 2022-02-11 11:36:22
+ * @LastEditTime: 2022-02-16 18:41:42
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\utils\filesType.ts
@@ -43,7 +43,11 @@ export function renderType(type: string): string {
   return typeMap[type as FilesType] || '未知文件';
 }
 
-// 获取文件类型
+/**
+ * 获取文件类型
+ * @param name
+ * @returns
+ */
 export function getType(name: string = ''): string {
   return name.includes('.')
     ? name.replace(/.*\.(?<name>\w+)$/, '$<name>')

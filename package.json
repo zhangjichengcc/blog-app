@@ -26,6 +26,7 @@
     "antd": "^4.17.4",
     "griffith": "^1.23.0",
     "img-compress": "^1.0.0",
+    "js-file-download": "^0.4.12",
     "js-moment": "^2.2.2",
     "qs": "^6.10.1",
     "react": "17.x",
