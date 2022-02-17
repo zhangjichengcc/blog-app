@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-02-16 18:40:36
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-02-16 19:04:12
+ * @LastEditTime: 2022-02-17 18:40:15
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\PopoverContent\index.tsx
  * @Description:
  *
@@ -15,7 +15,7 @@ import { getType } from 'utils/filesType';
 import styles from './index.less';
 
 const PopoverContent: FC<any> = (props) => {
-  const { data, onDelete, onOpen, onNew, onRename } = props;
+  const { data, onDelete, onOpen, onNew, onRename, onDownLoad } = props;
 
   const { name } = data;
   const type = getType(name);
@@ -41,7 +41,9 @@ const PopoverContent: FC<any> = (props) => {
     onRename(data);
   }
 
-  function onHandleDownLoad() {}
+  function onHandleDownLoad() {
+    onDownLoad(data);
+  }
 
   return (
     <div className={styles.popoverContent} onClick={onClick}>
@@ -57,10 +59,16 @@ const PopoverContent: FC<any> = (props) => {
       {/* <span>复制</span> */}
       {/* <span>发送到</span> */}
       {/* <span>分享</span> */}
-      {type !== 'dir' && <span onClick={onHandleDownLoad}>下载</span>}
-      <span data-type="popover" onClick={onHandleNew}>
-        新建文件夹
-      </span>
+      {type !== 'dir' && (
+        <span data-type="popover" onClick={onHandleDownLoad}>
+          下载
+        </span>
+      )}
+      {type === 'dir' && (
+        <span data-type="popover" onClick={onHandleNew}>
+          新建文件夹
+        </span>
+      )}
     </div>
   );
 };

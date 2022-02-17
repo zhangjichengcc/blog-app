@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-02-14 10:10:40
+ * @LastEditTime: 2022-02-17 18:25:03
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -14,12 +14,14 @@ import React, {
   useEffect,
   useImperativeHandle,
 } from 'react';
+import avi from 'assets/cloudDisk/avi.png';
 import classnames from 'classnames';
 import moment from 'js-moment';
+import fileDownload from 'js-file-download';
 import { Table, Input, Modal, Image } from 'antd';
 import FilesTable from './components/FilesTable';
 import HistoryBar from '../components/HistoryBar';
-import FilePlayer from '@/components/FilePlayer';
+import FilePlayer from 'components/FilePlayer';
 import {
   getDistMenu,
   insertDir,
@@ -278,6 +280,21 @@ const AllFiles: FC<any> = (props) => {
   }
 
   /**
+   * 文件下载
+   * @param payload
+   */
+  function onDownLoad(payload: fileDataProps) {
+    const { attribute, name } = payload;
+    const { url } = attribute;
+    fetch(url)
+      .then((res) => res.blob())
+      .then((res) => {
+        fileDownload(res, name);
+      });
+    // fileDownload(url, name);
+  }
+
+  /**
    * 初始化
    */
   function init() {
@@ -337,6 +354,7 @@ const AllFiles: FC<any> = (props) => {
           onOpen={onOpen}
           onNameOk={onNameOk}
           onRename={onFileRename}
+          onDownLoad={onDownLoad}
           loading={loading}
         />
       </div>

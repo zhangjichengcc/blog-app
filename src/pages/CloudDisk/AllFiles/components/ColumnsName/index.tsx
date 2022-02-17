@@ -1,21 +1,16 @@
 /*
  * @Author: your name
  * @Date: 2022-01-04 15:43:02
- * @LastEditTime: 2022-01-21 18:52:56
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-17 15:45:43
+ * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\ColumnsName\index.tsx
  */
 
 import React, { FC, useState, useEffect, useRef } from 'react';
 import { Input } from 'antd';
-import FileIcon, { getFileType } from '../../../components/FileIcon';
-import {
-  ContainerOutlined,
-  CloudDownloadOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-} from '@ant-design/icons';
+import FileIcon, { getFileType } from 'components/FileIcon';
+import { ContainerOutlined } from '@ant-design/icons';
 
 import styles from './index.less';
 
