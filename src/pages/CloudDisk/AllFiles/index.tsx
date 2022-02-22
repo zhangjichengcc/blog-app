@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-02-17 18:25:03
+ * @LastEditTime: 2022-02-22 17:21:02
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
@@ -18,7 +18,7 @@ import avi from 'assets/cloudDisk/avi.png';
 import classnames from 'classnames';
 import moment from 'js-moment';
 import fileDownload from 'js-file-download';
-import { Table, Input, Modal, Image } from 'antd';
+import { Modal } from 'antd';
 import FilesTable from './components/FilesTable';
 import HistoryBar from '../components/HistoryBar';
 import FilePlayer from 'components/FilePlayer';
@@ -37,7 +37,7 @@ import { getCategory } from 'utils/filesType';
 import styles from './index.less';
 
 const AllFiles: FC<any> = (props) => {
-  const { cRef, onHistoryChange, onSelectedChange } = props;
+  const { cRef, onSelectedChange } = props;
 
   const HistoryBarRef = useRef(null);
   const fileRef = useRef(null);
@@ -60,14 +60,14 @@ const AllFiles: FC<any> = (props) => {
   async function addHistory(node: BreadCrumbNode) {
     const { id } = node;
     await fetchData(id);
-    onHistoryChange(node);
+    // onHistoryChange(node);
     push(node);
   }
 
   // 面包屑导航变化触发
   async function onMenuChange(node: BreadCrumbNode) {
     await fetchData(node.id);
-    onHistoryChange(node);
+    // onHistoryChange(node);
     setCurrentNode(node);
   }
 
@@ -102,7 +102,7 @@ const AllFiles: FC<any> = (props) => {
         console.error(err);
         return;
       }
-      onHistoryChange(node);
+      // onHistoryChange(node);
       push(node);
       setCurrentNode(node);
     }
@@ -210,7 +210,7 @@ const AllFiles: FC<any> = (props) => {
       return;
     }
     const { data } = res;
-    onHistoryChange(node);
+    // onHistoryChange(node);
     push(node);
     setCurrentNode(node);
     // 此处传入新的filesList、currentNode, 以规避setFilesList及currentNode的延迟

@@ -31,6 +31,33 @@
     margin-top: 10px;
     .menu {
       width: 200px;
+      :global {
+        .ant-menu-item {
+          margin: 0;
+        }
+      }
+      .menuLabel {
+        font-size: 13px;
+        color: #999;
+        margin: 0 0 0 28px;
+        line-height: normal;
+        padding: 10px 0px 10px 10px;
+        position: relative;
+        &:before {
+          content: '';
+          position: absolute;
+          width: 2px;
+          height: 13px;
+          left: 0;
+          top: 14px;
+          background-color: #bdbdbd;
+        }
+      }
+      .menuItem {
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+      }
     }
     .mainBody {
       flex: 1;

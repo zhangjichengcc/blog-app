@@ -1,41 +1,59 @@
 /*
  * @Author: your name
  * @Date: 2021-12-21 14:41:34
- * @LastEditTime: 2022-01-26 15:06:12
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-22 18:58:15
+ * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\index.tsx
  */
 
 import React, { FC, useState, useRef } from 'react';
-import { Button, Input, Menu, Badge } from 'antd';
+import { Button, Input, Menu, Tabs, Badge } from 'antd';
 import AllFiles from './AllFiles';
-import moment from 'moment';
-import {
-  FolderOutlined,
-  ContainerOutlined,
-  CloudDownloadOutlined,
-} from '@ant-design/icons';
+import { ImgIcon } from 'components/Icon';
+import downloadImg from 'assets/cloudDisk/folder_download.png';
+import ownerImg from 'assets/cloudDisk/folder_owner.png';
+import publicImg from 'assets/cloudDisk/folder_public.png';
+import uploadImg from 'assets/cloudDisk/folder_upload.png';
 
 import BreadCrumbNode from 'utils/BreadCrumbNode';
 
 import styles from './index.less';
 
 const { Search } = Input;
+const { TabPane } = Tabs;
 const { Item, ItemGroup } = Menu;
 
-const allMenu = new BreadCrumbNode('all', '全部文件');
-const resourcesMenu = new BreadCrumbNode('resources', '我的资源', 'all');
-const downloadMenu = new BreadCrumbNode('public', '共享文件', 'all');
-
 const tabMenus = [
-  { node: allMenu, icon: <FolderOutlined /> },
-  { node: resourcesMenu, icon: <ContainerOutlined /> },
-  { node: downloadMenu, icon: <CloudDownloadOutlined /> },
+  {
+    value: 'private',
+    label: '我的文件',
+    icon: <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={ownerImg} />,
+  },
+  {
+    value: 'public',
+    label: '共享文件',
+    icon: <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={publicImg} />,
+  },
+];
+
+const transMenus = [
+  {
+    value: 'upload',
+    label: '正在上传',
+    icon: <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={uploadImg} />,
+  },
+  {
+    value: 'download',
+    label: '正在下载',
+    icon: (
+      <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={downloadImg} />
+    ),
+  },
 ];
 
 const CloudDisk: FC<any> = (props) => {
-  const [navTab, setNavTab] = useState<string>(allMenu.id);
+  const [navTab, setNavTab] = useState<string>(tabMenus[0].value);
   const [AllFilesSelectedKeys, setAllFilesSelectedKeys] = useState<string[]>(
     [],
   );
@@ -72,6 +90,10 @@ const CloudDisk: FC<any> = (props) => {
     current?.upload();
   }
 
+  function onTabChange(key: string) {
+    setNavTab(key);
+  }
+
   return (
     <div className={styles.cloudDisk}>
       <div className={styles.headerWrap}>
@@ -100,51 +122,57 @@ const CloudDisk: FC<any> = (props) => {
       </div>
       <div className={styles.content}>
         <Menu selectedKeys={[navTab]} mode="inline" className={styles.menu}>
+          <p className={styles.menuLabel}>文件列表</p>
           {tabMenus.map((item) => (
-            <Item key={item.node.id} onClick={() => openDir(item.node)}>
-              {item.icon}
-              <span>{item.node.name}</span>
+            <Item key={item.value} onClick={() => onTabChange(item.value)}>
+              <span className={styles.menuItem}>
+                {item.icon}
+                <span>{item.label}</span>
+              </span>
             </Item>
           ))}
-          {/* <ItemGroup title="传输列表">
-            <Item
-              key="upload"
-              onClick={() => {
-                this.setNavTab('upload');
-                this.onTabChange('uploadPage');
-              }}
-            >
-              <Badge count={uploadCount} offset={[13, 0]} overflowCount={99}>
-                <CloudUploadOutlined />
-                <span>正在上传</span>
-              </Badge>
-            </Item>
-            <Item
-              key="download"
-              onClick={() => {
-                this.setNavTab('download');
-                this.onTabChange('loadingPage');
-              }}
-            >
-              <Badge count={loadingCount} offset={[13, 0]} overflowCount={99}>
-                <div
-                  ref={e => {
-                    this.downLoadingNav = e;
-                  }}
+          <p className={styles.menuLabel}>传输列表</p>
+          {transMenus.map((item) => (
+            <Item onClick={() => onTabChange(item.value)}>
+              <span className={styles.menuItem}>
+                {item.icon}
+                <Badge
+                  key={item.value}
+                  count={9}
+                  size="small"
+                  offset={[13, 0]}
+                  overflowCount={99}
                 >
-                  <Icon type="download" />
-                  <span>正在下载</span>
-                </div>
-              </Badge>
+                  <span style={{ fontSize: 13 }}>{item.label}</span>
+                </Badge>
+              </span>
             </Item>
-          </ItemGroup> */}
+          ))}
         </Menu>
         <div className={styles.mainBody}>
-          <AllFiles
-            cRef={AllFilesRef}
-            onHistoryChange={onAllFilesMenuChange}
-            onSelectedChange={onSelectedChange}
-          />
+          <Tabs
+            onChange={onTabChange}
+            animated
+            activeKey={navTab}
+            tabBarStyle={{ display: 'none' }}
+          >
+            <TabPane tab="myFiles" key="private">
+              <AllFiles
+                cRef={AllFilesRef}
+                // onHistoryChange={onAllFilesMenuChange}
+                onSelectedChange={onSelectedChange}
+              />
+            </TabPane>
+            <TabPane tab="publicFiles" key="public">
+              publicFiles
+            </TabPane>
+            <TabPane tab="uploadFiles" key="upload">
+              uploadFiles
+            </TabPane>
+            <TabPane tab="downloadFiles" key="download">
+              downloadFiles
+            </TabPane>
+          </Tabs>
         </div>
       </div>
     </div>
