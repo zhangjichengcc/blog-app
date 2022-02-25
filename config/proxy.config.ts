@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-11-09 17:16:46
- * @LastEditTime: 2022-02-10 18:57:07
+ * @LastEditTime: 2022-02-23 15:32:30
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\config\proxy.config.ts
@@ -10,6 +10,10 @@
 const { ApiTarget } = process.env;
 
 const proxyConfig = {
+  '/api/v1': {
+    target: 'http://172.16.122.17:9090', // 税小蜜 付华
+    changeOrigin: true,
+  },
   '/api': {
     target: ApiTarget,
     // pathRewrite: { '^/api': '' },

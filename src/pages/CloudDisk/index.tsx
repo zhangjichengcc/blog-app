@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-21 14:41:34
- * @LastEditTime: 2022-02-22 18:58:15
+ * @LastEditTime: 2022-02-24 14:56:26
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\index.tsx
@@ -22,7 +22,7 @@ import styles from './index.less';
 
 const { Search } = Input;
 const { TabPane } = Tabs;
-const { Item, ItemGroup } = Menu;
+const { Item, ItemGroup, SubMenu } = Menu;
 
 const tabMenus = [
   {
@@ -122,32 +122,34 @@ const CloudDisk: FC<any> = (props) => {
       </div>
       <div className={styles.content}>
         <Menu selectedKeys={[navTab]} mode="inline" className={styles.menu}>
-          <p className={styles.menuLabel}>文件列表</p>
-          {tabMenus.map((item) => (
-            <Item key={item.value} onClick={() => onTabChange(item.value)}>
-              <span className={styles.menuItem}>
-                {item.icon}
-                <span>{item.label}</span>
-              </span>
-            </Item>
-          ))}
-          <p className={styles.menuLabel}>传输列表</p>
-          {transMenus.map((item) => (
-            <Item onClick={() => onTabChange(item.value)}>
-              <span className={styles.menuItem}>
-                {item.icon}
-                <Badge
-                  key={item.value}
-                  count={9}
-                  size="small"
-                  offset={[13, 0]}
-                  overflowCount={99}
-                >
-                  <span style={{ fontSize: 13 }}>{item.label}</span>
-                </Badge>
-              </span>
-            </Item>
-          ))}
+          {/* <li className={styles.menuLabel}>文件列表</li> */}
+          <ItemGroup title={<span className={styles.menuLabel}>文件列表</span>}>
+            {tabMenus.map((item) => (
+              <Item key={item.value} onClick={() => onTabChange(item.value)}>
+                <span className={styles.menuItem}>
+                  {item.icon}
+                  <span>{item.label}</span>
+                </span>
+              </Item>
+            ))}
+          </ItemGroup>
+          <ItemGroup title={<span className={styles.menuLabel}>传输列表</span>}>
+            {transMenus.map((item) => (
+              <Item key={item.value} onClick={() => onTabChange(item.value)}>
+                <span className={styles.menuItem}>
+                  {item.icon}
+                  <Badge
+                    count={9}
+                    size="small"
+                    offset={[13, 0]}
+                    overflowCount={99}
+                  >
+                    <span style={{ fontSize: 13 }}>{item.label}</span>
+                  </Badge>
+                </span>
+              </Item>
+            ))}
+          </ItemGroup>
         </Menu>
         <div className={styles.mainBody}>
           <Tabs
