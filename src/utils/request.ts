@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-09 15:56:30
- * @LastEditTime: 2021-12-21 10:49:49
+ * @LastEditTime: 2022-01-26 16:50:39
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\utils\request.ts
@@ -15,6 +15,7 @@
 // import { extend } from 'umi-request';
 import { stringify } from 'qs';
 import { notification } from 'antd';
+import { getToken } from 'utils/authority';
 
 const codeMessage: { [key: number]: string } = {
   200: '服务器成功返回请求的数据。',
@@ -63,9 +64,9 @@ const errorHandler = (error: { response: any; message: any }) => {
   }
   const res = {
     code: -1,
-    msg: message,
+    message,
   };
-  return res;
+  throw res;
 };
 
 // 检验状态码， 200 表示请求成功
@@ -82,9 +83,13 @@ export default function request(option: any) {
   // Authorization 需要改成登录后获取
   const defaultOptions = {
     credentials: 'include',
-    // headers: {
-    //   Authorization: getAuthorization() || '',
-    // },
+    headers: {
+      Authorization: `Bearer ${getToken()}` || '',
+    },
+  };
+  option.headers = {
+    ...option.headers,
+    Authorization: `Bearer ${getToken()}` || '',
   };
   const newOptions = {
     ...defaultOptions,

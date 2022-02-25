@@ -17,21 +17,18 @@
       "components/*": ["src/components/*"],
       "utils/*": ["src/utils/*"]
     },
+    // "typeRoots": ["src/**/*"],
+    // "rootDirs": ["/src", "/test", "/mock", "./typings"],
     "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "mock/**/*",
-    "src/**/*",
-    "config/**/*",
-    // ".umirc.ts",
-    "typings.d.ts"
-  ],
+  "include": ["mock/**/*", "src/**/*", "config/**/*", "typings.d.ts"],
   "exclude": [
     "node_modules",
     "lib",
     "es",
     "dist",
-    "typings",
+    // "src/**/*.d.ts",
+    // "typings",
     "**/__test__",
     "test",
     "docs",

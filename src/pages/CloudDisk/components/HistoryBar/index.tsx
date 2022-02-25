@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:38:14
- * @LastEditTime: 2021-12-29 00:19:02
+ * @LastEditTime: 2022-02-25 23:57:18
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\CloudDisk\components\HistoryBar\index.tsx
@@ -12,9 +12,9 @@ import BreadCrumbNode from '@/utils/BreadCrumbNode';
 import useHistory from '../../hooks/useHistory';
 import {
   ReloadOutlined,
-  LeftOutlined,
-  RightOutlined,
   CaretRightOutlined,
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
 } from '@ant-design/icons';
 
 import styles from './index.less';
@@ -30,13 +30,17 @@ type HistoryBarProps = {
    */
   history?: BreadCrumbNode[];
   /**
-   * @node
+   * 面包屑导航变化触发
    */
-  onChange?: (node: BreadCrumbNode) => void;
+  onChange?: (node: BreadCrumbNode) => Promise<any>;
+  /**
+   * 页面刷新
+   */
+  onReload?: (node: BreadCrumbNode) => void;
 };
 
 const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
-  const { history: _history = [], cRef, onChange } = props;
+  const { history: _history = [], cRef, onChange, onReload } = props;
   const [history, currentIdx, visualHistory, go, push] = useHistory(_history);
 
   const leftActive = currentIdx > 0;
@@ -45,30 +49,38 @@ const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
   /**
    * 后退
    */
-  function goBack() {
-    leftActive && go(-1);
-    // ! 注意 currentIdx 需要 -1, 方法触发时，currentIdx 并未更新
-    typeof onChange === 'function' && onChange(history[currentIdx - 1]);
+  async function goBack() {
+    if (!leftActive) return;
+    if (typeof onChange === 'function') {
+      await onChange(history[currentIdx - 1]);
+    }
+    go(-1);
   }
 
   /**
    * 前进
    */
-  function forward() {
-    rightActive && go(1);
-    typeof onChange === 'function' && onChange(history[currentIdx + 1]);
+  async function forward() {
+    if (!rightActive) return;
+    if (typeof onChange === 'function') {
+      await onChange(history[currentIdx + 1]);
+    }
+    go(1);
   }
 
   /**
    * 刷新
    */
-  function reload() {}
+  function reload() {
+    typeof onReload === 'function' && onReload(history[currentIdx]);
+  }
 
   /**
    * 点击指定目录触发
    * @param item
    */
-  function onHandleClick(item: BreadCrumbNode) {
+  async function onHandleClick(item: BreadCrumbNode) {
+    typeof onChange === 'function' && (await onChange(item));
     push(item);
     typeof onChange === 'function' && onChange(item);
   }
@@ -80,11 +92,15 @@ const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
   return (
     <div className={styles.historyBar}>
       <div className={styles.leftBar}>
-        <LeftOutlined
+        {/* <LeftOutlined
+          className={leftActive ? styles.active : ''}
+          onClick={goBack}
+        /> */}
+        <ArrowLeftOutlined
           className={leftActive ? styles.active : ''}
           onClick={goBack}
         />
-        <RightOutlined
+        <ArrowRightOutlined
           className={rightActive ? styles.active : ''}
           onClick={forward}
         />
