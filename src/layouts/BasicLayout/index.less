@@ -4,3 +4,21 @@
   background-color: @bg-color;
   min-height: 100vh;
 }
+
+.basicLayoutHeader {
+  padding: 0px;
+  height: 48px;
+  line-height: 48px;
+  width: 100%;
+  z-index: 19;
+}
+
+.drawerClass {
+  :global {
+    .ant-drawer-content-wrapper {
+      .ant-drawer-body {
+        padding: 0;
+      }
+    }
+  }
+}

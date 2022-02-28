@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-08 16:10:07
- * @LastEditTime: 2022-02-25 19:01:11
+ * @LastEditTime: 2022-02-28 14:45:30
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\Login\index.tsx
@@ -20,6 +20,7 @@ import {
   WechatOutlined,
   WeiboOutlined,
 } from '@ant-design/icons';
+import { renderSize } from 'utils/utils';
 import { oauthPwd } from '@/services/user';
 import logoImg from 'assets/global/logo.png';
 import styles from './index.less';
@@ -27,6 +28,8 @@ import styles from './index.less';
 const Login: FC<any> = (props): React.ReactElement => {
   const [form] = Form.useForm();
   const [spinning, setSpinning] = useState(false);
+
+  renderSize(1111);
 
   // 登录
   const onFinish = (values: any) => {
