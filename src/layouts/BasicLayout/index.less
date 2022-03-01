@@ -6,11 +6,18 @@
 }
 
 .basicLayoutHeader {
-  padding: 0px;
-  height: 48px;
-  line-height: 48px;
+  padding: 0 16px;
+  height: @menu-height;
+  line-height: @menu-height;
   width: 100%;
   z-index: 19;
+  display: flex;
+  .menuIcon {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.65);
+  }
 }
 
 .drawerClass {
@@ -21,4 +28,12 @@
       }
     }
   }
+}
+
+.drawerTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
 }
