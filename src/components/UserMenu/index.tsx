@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-03-01 22:59:24
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-03-01 23:06:05
+ * @LastEditTime: 2022-03-01 23:47:44
  * @FilePath: \blog-app\src\components\UserMenu\index.tsx
  * @Description:
  *
@@ -23,7 +23,11 @@ const menuHeaderDropdown = (
 );
 
 const UserMenu: FC = () => {
-  return <Dropdown overlay={menuHeaderDropdown}>hover 展示菜单</Dropdown>;
+  return (
+    <HeaderDropdown overlay={menuHeaderDropdown}>
+      <span>aa</span>
+    </HeaderDropdown>
+  );
 };
 
 export default UserMenu;
