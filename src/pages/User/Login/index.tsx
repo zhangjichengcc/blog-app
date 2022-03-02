@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-08 16:10:07
- * @LastEditTime: 2022-02-26 00:57:49
+ * @LastEditTime: 2022-03-02 23:38:51
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\Login\index.tsx
@@ -11,7 +11,7 @@ import React, { FC, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { history } from 'umi';
 import { Form, Input, Button, message, Avatar, Spin } from 'antd';
-import { setToken } from 'utils/authority';
+import { setUserInfo, setToken } from 'utils/authority';
 import {
   FacebookOutlined,
   GithubOutlined,
@@ -21,6 +21,7 @@ import {
   WechatOutlined,
   WeiboOutlined,
 } from '@ant-design/icons';
+import { renderSize } from 'utils/utils';
 import { oauthPwd } from '@/services/user';
 import logoImg from 'assets/global/logo.png';
 import styles from './index.less';
@@ -28,6 +29,8 @@ import styles from './index.less';
 const Login: FC<any> = (props): React.ReactElement => {
   const [form] = Form.useForm();
   const [spinning, setSpinning] = useState(false);
+
+  renderSize(1111);
 
   // 登录
   const onFinish = (values: any) => {
@@ -39,19 +42,15 @@ const Login: FC<any> = (props): React.ReactElement => {
     };
     oauthPwd(params)
       .then((res) => {
-        const { data, code } = res;
-        if (code === 0) {
-          const { token } = data;
-          setToken(token);
-          message.success('登录成功');
-          history.goBack();
-        } else {
-          message.error('登录失败');
-        }
+        const { data } = res;
+        const { token } = data;
+        setUserInfo(data);
+        setToken(token);
+        history.goBack();
       })
       .catch((err) => {
-        message.error('登录失败');
-        console.log(err);
+        message.error('登录失败，请检查用户名或密码');
+        console.error(err);
       });
   };
 
@@ -86,10 +85,6 @@ const Login: FC<any> = (props): React.ReactElement => {
 
   return (
     <div className={styles.view}>
-      <div className={styles.textArea}>
-        <p>exchange for developers</p>
-        <p>A developer exchange and sharing platform</p>
-      </div>
       <Spin tip="正在跳转第三方平台..." spinning={spinning}>
         <Form
           form={form}
@@ -130,7 +125,7 @@ const Login: FC<any> = (props): React.ReactElement => {
             <span style={{ marginLeft: 8 }}>or</span>
             <span
               style={{ marginLeft: 8, color: '#1890ff', cursor: 'pointer' }}
-              onClick={() => history.push('/register')}
+              onClick={() => history.replace('/user/register')}
             >
               register now!
             </span>

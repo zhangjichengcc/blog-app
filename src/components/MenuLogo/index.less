@@ -1,19 +1,19 @@
-@def-height: 46px;
+@import '~@/defined.less';
 
 .topMenu {
   display: inline-flex;
   align-items: center;
-  height: @def-height;
+  height: @menu-height;
   user-select: none;
   cursor: pointer;
-  >img {
+  > img {
     padding-bottom: 5px;
-    height: @def-height;
+    height: 40px;
   }
   > span {
     color: #fff;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 18px;
+    font-weight: 600;
     padding: 0 5px;
   }
 }

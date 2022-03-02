@@ -4,3 +4,37 @@
   background-color: @bg-color;
   min-height: 100vh;
 }
+
+.basicLayoutHeader {
+  padding: 0 16px;
+  height: @menu-height;
+  line-height: @menu-height;
+  width: 100%;
+  z-index: 19;
+  display: flex;
+  align-items: center;
+  .menuIcon {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    color: @menu-color;
+  }
+}
+
+.drawerClass {
+  :global {
+    .ant-drawer-content-wrapper {
+      .ant-drawer-body {
+        padding: 0;
+      }
+    }
+  }
+}
+
+.drawerTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+}

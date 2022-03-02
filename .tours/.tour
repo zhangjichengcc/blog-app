@@ -1,0 +1,21 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "页面大小变化监听",
+  "steps": [
+    {
+      "file": "src/app.ts",
+      "description": "触发 clientResize 事件，此事件在utils中注册",
+      "line": 23
+    },
+    {
+      "file": "src/utils/utils.ts",
+      "description": "注册事件 clientResize，在没次页面变化时触发该事件绑定的方法，各组件可通过该方法将事件绑定到 clientResize 中",
+      "line": 38
+    },
+    {
+      "file": "src/utils/utils.ts",
+      "description": "绑定事件，在app.ts中触发",
+      "line": 39
+    }
+  ]
+}
