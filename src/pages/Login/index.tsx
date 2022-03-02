@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-08 16:10:07
- * @LastEditTime: 2022-02-28 14:45:30
+ * @LastEditTime: 2022-03-02 18:35:20
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\Login\index.tsx
@@ -11,6 +11,7 @@ import React, { FC, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { history } from 'umi';
 import { Form, Input, Button, message, Avatar, Spin } from 'antd';
+import { setUserInfo } from 'utils/authority';
 import {
   FacebookOutlined,
   GithubOutlined,
@@ -40,7 +41,8 @@ const Login: FC<any> = (props): React.ReactElement => {
       password,
     };
     oauthPwd(params).then((res) => {
-      debugger;
+      const { data } = res;
+      setUserInfo(data);
     });
   };
 

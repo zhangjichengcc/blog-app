@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-16 15:05:50
- * @LastEditTime: 2022-03-01 23:02:48
+ * @LastEditTime: 2022-03-02 11:06:07
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\layouts\BasicLayout\index.tsx
@@ -44,7 +44,6 @@ const BasicLayout: FC<any> = (props) => {
       return (
         <div className={styles.drawerTitle}>
           <span>Veigar</span>
-          <UserMenu />
           {menuMode === 'inline' && (
             <>
               {drawerVisiable ? (
@@ -72,10 +71,11 @@ const BasicLayout: FC<any> = (props) => {
 
   useEffect(function () {
     onWindowResize(handleResize);
-  });
+  }, []);
 
   return (
     <Layout className={styles.basicLayout}>
+      {/* 移动端侧边栏菜单 */}
       {menuMode === 'inline' && (
         <Drawer
           title={DrawerTitle}
@@ -89,8 +89,13 @@ const BasicLayout: FC<any> = (props) => {
           <Routes2Menu routes={routes} route={route} theme="light" />
         </Drawer>
       )}
+      {/* pc端顶部菜单 */}
       <Header className={styles.basicLayoutHeader}>
-        <MenuLogo onClick={onLogoClick} style={{ paddingRight: '3vw' }} />
+        <MenuLogo
+          onClick={onLogoClick}
+          style={{ paddingRight: 10 }}
+          label={menuMode === 'inline' ? '' : 'Veigar'}
+        />
         {menuMode === 'inline' && (
           <>
             {drawerVisiable ? (
@@ -109,7 +114,7 @@ const BasicLayout: FC<any> = (props) => {
         {menuMode === 'horizontal' && (
           <Routes2Menu routes={routes} route={route} mode="horizontal" />
         )}
-        <UserMenu />
+        <UserMenu style={{ marginLeft: 'auto' }} />
       </Header>
       <Content>
         <div>
