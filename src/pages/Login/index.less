@@ -2,10 +2,28 @@
 
 .view {
   display: flex;
-  justify-content: center;
-  padding-top: 10vh;
+  max-width: 1200px;
+  height: 100vh;
+  margin: 0 auto;
+  justify-content: space-around;
+  align-items: center;
+  .textArea {
+    color: #fff;
+    > p {
+      &:nth-child(1) {
+        width: 300px;
+        font-size: 47px;
+        font-weight: bold;
+        line-height: 1.2;
+        padding-bottom: 50px;
+      }
+      &:nth-child(2) {
+        font-size: 16px;
+      }
+    }
+  }
   .form {
-    width: 400px;
+    width: 300px;
     padding: 16px;
     background-color: #fff;
     box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.1);

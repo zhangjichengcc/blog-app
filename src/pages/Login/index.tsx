@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-11-08 16:10:07
- * @LastEditTime: 2022-02-25 19:01:11
- * @LastEditors: zhangjicheng
+ * @LastEditTime: 2022-02-26 00:57:49
+ * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\pages\Login\index.tsx
  */
@@ -11,6 +11,7 @@ import React, { FC, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { history } from 'umi';
 import { Form, Input, Button, message, Avatar, Spin } from 'antd';
+import { setToken } from 'utils/authority';
 import {
   FacebookOutlined,
   GithubOutlined,
@@ -36,9 +37,22 @@ const Login: FC<any> = (props): React.ReactElement => {
       name: username,
       password,
     };
-    oauthPwd(params).then((res) => {
-      debugger;
-    });
+    oauthPwd(params)
+      .then((res) => {
+        const { data, code } = res;
+        if (code === 0) {
+          const { token } = data;
+          setToken(token);
+          message.success('登录成功');
+          history.goBack();
+        } else {
+          message.error('登录失败');
+        }
+      })
+      .catch((err) => {
+        message.error('登录失败');
+        console.log(err);
+      });
   };
 
   // github 单点登录
@@ -72,6 +86,10 @@ const Login: FC<any> = (props): React.ReactElement => {
 
   return (
     <div className={styles.view}>
+      <div className={styles.textArea}>
+        <p>exchange for developers</p>
+        <p>A developer exchange and sharing platform</p>
+      </div>
       <Spin tip="正在跳转第三方平台..." spinning={spinning}>
         <Form
           form={form}
