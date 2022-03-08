@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-11-09 15:56:30
- * @LastEditTime: 2022-01-26 16:50:39
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-07 15:14:09
+ * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\utils\request.ts
  */
@@ -70,9 +70,10 @@ const errorHandler = (error: { response: any; message: any }) => {
 };
 
 // 检验状态码， 200 表示请求成功
-const checkStatus = (response: any) => {
-  if (response.status >= 200 && response.status < 300) return response;
-  const error = new _Error(response.statusText);
+const checkStatus = async (response: any) => {
+  // if (response.status >= 200 && response.status < 300 || ) return response;
+  if (response instanceof Response) return response;
+  const error = new _Error(response);
   error.code = response.status;
   error.response = response;
   throw error;

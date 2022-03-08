@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 16:34:42
- * @LastEditTime: 2022-02-28 16:21:44
+ * @LastEditTime: 2022-03-08 21:53:52
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\utils\utils.ts
@@ -45,4 +45,63 @@ export function sleep(time: number) {
  */
 export function onWindowResize(cb: (args: any) => void) {
   ResizeEventEm.on('clientResize', cb);
+}
+
+/**
+ * 函数节流
+ * @param cb 回调方法
+ * @param delay 延迟时间，默认 300ms
+ * @returns
+ */
+export function throttle(
+  /**
+   * 回调方法
+   */
+  cb: (...args: any) => any,
+  /**
+   * 延迟时间，默认 300ms
+   */
+  delay: number,
+): (args: any) => void {
+  let timer: number | null = null;
+  return function (...args) {
+    // @ts-ignore
+    const that = this;
+    if (timer) return;
+    timer = window.setTimeout(() => {
+      cb.call(that, ...args);
+      clearTimeout(timer as number);
+      timer = null;
+    }, delay || 300);
+  };
+}
+
+/**
+ * 函数防抖
+ * @param cb 回调方法
+ * @param delay 延迟时间，默认 300ms
+ * @returns
+ */
+export function debounce(
+  /**
+   * 回调方法
+   */
+  cb: (...args: any) => any,
+  /**
+   * 延迟时间，默认 300ms
+   */
+  delay?: number,
+): (args: any) => void {
+  let timer: number | null = null;
+  return function (...args) {
+    // @ts-ignore
+    const that = this || window;
+    if (timer) {
+      clearTimeout(timer as number);
+      timer = null;
+    }
+    timer = window.setTimeout(() => {
+      cb.call(that, ...args);
+    }, delay || 300);
+  };
 }

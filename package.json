@@ -24,6 +24,7 @@
   "dependencies": {
     "@ant-design/pro-layout": "^6.5.0",
     "antd": "^4.17.4",
+    "antd-img-crop": "^4.1.0",
     "griffith": "^1.23.0",
     "img-compress": "^1.0.0",
     "js-file-download": "^0.4.12",

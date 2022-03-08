@@ -1,8 +1,8 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2022-03-01 22:59:24
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-02 23:51:56
+ * @LastEditors: zhangjicheng
+ * @LastEditTime: 2022-03-08 22:02:59
  * @FilePath: \blog-app\src\components\UserMenu\index.tsx
  * @Description:
  *
@@ -11,7 +11,14 @@
 
 import { FC } from 'react';
 import { Menu, Avatar, Modal } from 'antd';
-import { UserOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  ExclamationCircleOutlined,
+  LoginOutlined,
+  LogoutOutlined,
+  SolutionOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { history } from 'umi';
 import { getUserInfo } from 'utils/authority';
 import { removeToken, removeUserInfo } from 'utils/authority';
@@ -36,7 +43,7 @@ const UserMenu: FC<UserMenuProps> = (props) => {
   const { size = 30, style = {} } = props;
 
   const userInfo = getUserInfo();
-  const { username = '' } = userInfo;
+  const { username = '', avatar } = userInfo;
 
   function logout() {
     confirm({
@@ -56,22 +63,31 @@ const UserMenu: FC<UserMenuProps> = (props) => {
     <Menu selectedKeys={[]}>
       {username ? (
         <>
-          <Menu.Item key="center">User center</Menu.Item>
-          <Menu.Item key="settings">Personal settings</Menu.Item>
+          <Menu.Item key="center">
+            <UserOutlined style={{ marginRight: 6 }} />
+            User center
+          </Menu.Item>
+          <Menu.Item key="settings">
+            <SettingOutlined style={{ marginRight: 6 }} />
+            Personal settings
+          </Menu.Item>
           <Menu.Divider />
           <Menu.Item key="logout" onClick={logout}>
+            <LogoutOutlined style={{ marginRight: 6 }} />
             Log out
           </Menu.Item>
         </>
       ) : (
         <>
           <Menu.Item key="login" onClick={() => history.push('/user/login')}>
+            <LoginOutlined style={{ marginRight: 6 }} />
             Sign in
           </Menu.Item>
           <Menu.Item
             key="register"
             onClick={() => history.push('/user/register')}
           >
+            <SolutionOutlined style={{ marginRight: 6 }} />
             Sign up
           </Menu.Item>
         </>
@@ -82,7 +98,11 @@ const UserMenu: FC<UserMenuProps> = (props) => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <div className={styles.userMenu} style={style}>
-        <Avatar size={size} icon={<UserOutlined />} />
+        {avatar ? (
+          <Avatar size={size} src={avatar} />
+        ) : (
+          <Avatar size={size} icon={<UserOutlined />} />
+        )}
         <span className={styles.userName}>{username || '游客'}</span>
       </div>
     </HeaderDropdown>
