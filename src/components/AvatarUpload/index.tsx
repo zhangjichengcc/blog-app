@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-03-05 23:15:42
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-03-09 18:00:55
+ * @LastEditTime: 2022-03-09 18:17:39
  * @FilePath: \blog-app\src\components\AvatarUpload\index.tsx
  * @Description:
  *
@@ -15,8 +15,8 @@ import { UploadFile } from 'antd/lib/upload/interface';
 import { uploadFile } from '@/services/global';
 import ImgCrop from 'antd-img-crop';
 import { UploadOutlined } from '@ant-design/icons';
-// import 'antd/es/modal/style';
-// import 'antd/es/slider/style';
+import 'antd/es/modal/style';
+import 'antd/es/slider/style';
 
 interface UploadFileProps extends UploadFile {
   name: string;
