@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-02-28 11:00:50
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-03-09 18:30:23
+ * @LastEditTime: 2022-03-11 15:53:28
  * @FilePath: \blog-app\src\components\HeaderDropdown\index.tsx
  * @Description:
  *
@@ -15,25 +15,20 @@ import classNames from 'classnames';
 import styles from './index.less';
 
 export type HeaderDropdownProps = {
-  overlayClassName?: string;
-  overlay: React.ReactNode | (() => React.ReactNode) | any;
-  placement?:
-    | 'bottomLeft'
-    | 'bottomRight'
-    | 'topLeft'
-    | 'topCenter'
-    | 'topRight'
-    | 'bottomCenter';
-} & Omit<DropDownProps, 'overlay'>;
+  overlay: DropDownProps['overlay'];
+} & DropDownProps;
 
-const HeaderDropdown: React.FC<HeaderDropdownProps> = ({
-  overlayClassName: cls,
-  ...restProps
-}) => (
-  <Dropdown
-    overlayClassName={classNames(styles.container, cls)}
-    {...restProps}
-  />
-);
+const HeaderDropdown: React.FC<HeaderDropdownProps> = (props) => {
+  const { className, children, overlay } = props;
+
+  return (
+    <Dropdown
+      placement="bottomRight"
+      overlayClassName={classNames(styles.container, className)}
+      overlay={overlay}
+      children={children}
+    />
+  );
+};
 
 export default HeaderDropdown;

@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-03-01 22:59:24
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-03-08 22:02:59
+ * @LastEditTime: 2022-03-10 10:30:10
  * @FilePath: \blog-app\src\components\UserMenu\index.tsx
  * @Description:
  *
@@ -96,7 +96,7 @@ const UserMenu: FC<UserMenuProps> = (props) => {
   );
 
   return (
-    <HeaderDropdown overlay={menuHeaderDropdown}>
+    <HeaderDropdown overlay={menuHeaderDropdown} placement="topRight">
       <div className={styles.userMenu} style={style}>
         {avatar ? (
           <Avatar size={size} src={avatar} />
