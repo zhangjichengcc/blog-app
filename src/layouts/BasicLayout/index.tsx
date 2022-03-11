@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-16 15:05:50
- * @LastEditTime: 2022-03-02 11:06:07
+ * @LastEditTime: 2022-03-11 22:34:37
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\layouts\BasicLayout\index.tsx
@@ -10,12 +10,11 @@
 import React, { FC, useState, useEffect, useMemo } from 'react';
 import { Layout, Drawer } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
-import { onWindowResize } from '@utils';
 import { history } from 'umi';
 import Routes2Menu from 'components/Routes2Menu';
 import MenuLogo from 'components/MenuLogo';
 import UserMenu from 'components/UserMenu';
-import { getBreakpointWidth } from 'utils/attribute';
+import { matchScreenModel } from 'utils/theme';
 
 import styles from './index.less';
 
@@ -33,10 +32,8 @@ const BasicLayout: FC<any> = (props) => {
 
   // 页面大小变化触发
   function handleResize() {
-    let clientW = document.documentElement.clientWidth;
-    // 获取md相应宽度
-    const md = getBreakpointWidth('md');
-    setMenuMode(clientW < md ? 'inline' : 'horizontal');
+    const include_sm = matchScreenModel('screen_sm');
+    setMenuMode(include_sm ? 'inline' : 'horizontal');
   }
 
   const DrawerTitle = useMemo(
@@ -70,7 +67,7 @@ const BasicLayout: FC<any> = (props) => {
   }
 
   useEffect(function () {
-    onWindowResize(handleResize);
+    handleResize();
   }, []);
 
   return (

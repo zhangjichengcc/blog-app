@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 16:34:42
- * @LastEditTime: 2022-03-09 16:34:21
+ * @LastEditTime: 2022-03-11 17:39:39
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\src\utils\utils.ts
@@ -10,7 +10,7 @@
 import { baseLog } from 'utils/math';
 import EventEmitter from 'utils/eventEmitter';
 
-const ResizeEventEm = new EventEmitter();
+// const ResizeEventEm = new EventEmitter();
 
 /**
  * 格式化文件大小 B、KB...
@@ -45,9 +45,9 @@ export function sleep(time: number) {
  * 监听可视化窗口大小变化
  * @param cb 接收回调函数，变化触发
  */
-export function onWindowResize(cb: (args: any) => void) {
-  ResizeEventEm.on('clientResize', cb);
-}
+// export function onWindowResize(cb: (args: any) => void) {
+//   ResizeEventEm.on('clientResize', cb);
+// }
 
 /**
  * 函数节流
@@ -108,4 +108,4 @@ export function debounce(
   };
 }
 
-export { ResizeEventEm };
+// export { ResizeEventEm };

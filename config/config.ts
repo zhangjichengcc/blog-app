@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-08 15:46:05
- * @LastEditTime: 2022-03-09 18:32:16
+ * @LastEditTime: 2022-03-11 17:45:02
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog-app\config\config.ts
@@ -43,6 +43,7 @@ export default defineConfig({
     models: path.resolve(__dirname, '../src/models'),
     themes: path.resolve(__dirname, '../src/themes'),
     assets: path.resolve(__dirname, '../src/assets'),
+    hooks: path.resolve(__dirname, '../src/hooks'),
     public: path.resolve(__dirname, '../public'),
     config: path.resolve(__dirname, '../config'),
   },
