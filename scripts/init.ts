@@ -1,15 +1,15 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-11-10 11:26:51
- * @LastEditTime: 2021-11-10 16:18:53
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-21 15:55:39
+ * @LastEditors: zhangjicheng
  * @Description: 生成环境文件
  * @HowToDo: npm run bootstrap:dev/prod
  */
 
-const fs = require('fs')
-const path = require('path')
-const chalk = require('chalk')
+const fs = require('fs');
+const path = require('path');
+const chalk = require('chalk');
 
 const log = console.log;
 
@@ -24,8 +24,12 @@ const env = process.env.UMI_ENV || 'dev';
 
 log(chalk.blue(`配置环境：${env}\n开始写入配置文件...\n`));
 
-const defaultEnvFile = fs.readFileSync(path.join(__dirname, `../config/env/default.env`))
-const currentEnvFile = fs.readFileSync(path.join(__dirname, `../config/env/${env}.env`))
+const defaultEnvFile = fs.readFileSync(
+  path.join(__dirname, `../config/env/default.env`),
+);
+const currentEnvFile = fs.readFileSync(
+  path.join(__dirname, `../config/env/${env}.env`),
+);
 
 /** 拼接环境配置 */
 const env_content = `
@@ -39,7 +43,7 @@ const env_content = `
 # ------------------------------------------------------\n\n
 ${defaultEnvFile}\n
 ${currentEnvFile}
-`
+`;
 
 /** 写入配置 */
 fs.writeFile(path.join(__dirname, '../.env'), env_content, (err) => {
@@ -47,6 +51,6 @@ fs.writeFile(path.join(__dirname, '../.env'), env_content, (err) => {
     log(chalk.red(`生成失败！\n${err}`));
   } else {
     log(chalk.green(`配置写入完成 .env \n\n`));
-    log(chalk.green.bgBlue(env_content))
+    log(chalk.green.bgBlue(env_content));
   }
-})
+});
