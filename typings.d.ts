@@ -1,11 +1,11 @@
 /*
- * @Author: your name
- * @Date: 2021-11-08 15:30:44
- * @LastEditTime: 2022-02-08 17:06:34
+ * @Author: zhangjicheng
+ * @Date: 2022-08-24 18:50:32
  * @LastEditors: zhangjicheng
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\typings.d.ts
+ * @LastEditTime: 2022-08-24 19:10:25
+ * @FilePath: \blog5.0_front-end\typings.d.ts
  */
+// import 'umi/typings';
 declare module '*.css';
 declare module '*.less';
 declare module '*.png';

@@ -1,11 +1,14 @@
 {
   "private": true,
+  "author":"zhangjicheng <zhangjichengcc@163.com>",
   "scripts": {
-    "start": "umi dev",
+    "dev": "umi dev",
     "build": "umi build",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "npm run dev",
     "bootstrap:dev": "cross-env UMI_ENV=dev node scripts/init.ts ",
     "bootstrap:prod": "cross-env UMI_ENV=prod node scripts/init.ts ",
-    "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage"
@@ -22,31 +25,11 @@
     ]
   },
   "dependencies": {
-    "@ant-design/pro-layout": "^6.5.0",
-    "antd": "^4.17.4",
-    "antd-img-crop": "^4.1.0",
-    "griffith": "^1.23.0",
-    "img-compress": "^1.0.0",
-    "js-file-download": "^0.4.12",
-    "js-moment": "^2.2.2",
-    "qs": "^6.10.1",
-    "react": "17.x",
-    "react-dom": "17.x",
-    "react-pdf": "^5.7.1",
-    "umi": "^3.5.20"
+    "umi": "^4.0.13"
   },
   "devDependencies": {
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/react-pdf": "^5.0.9",
-    "@umijs/preset-react": "1.x",
-    "@umijs/test": "^3.5.20",
-    "chalk": "^4.1.2",
-    "cross-env": "^7.0.3",
-    "lint-staged": "^10.0.7",
-    "prettier": "^2.2.0",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.1.2",
-    "yorkie": "^2.0.0"
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "typescript": "^4.1.2"
   }
 }
