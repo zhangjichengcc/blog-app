@@ -4,11 +4,11 @@
 /config/config.local.ts
 # production
 /dist
+/dist.zip
 
 # misc
 .DS_Store
 /src/.umi
 /src/.umi-production
 /src/.umi-test
-/dist
 /.env.local
