@@ -30,8 +30,6 @@
     "lib",
     "es",
     "dist",
-    // "src/**/*.d.ts",
-    // "typings",
     "**/__test__",
     "test",
     "docs",
