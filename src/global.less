@@ -1,3 +1,5 @@
+@import './defined.less';
+
 html,
 body,
 :global(#root) {
@@ -13,6 +15,7 @@ body,
 
 body {
   margin: 0;
+  color: @default-color;
 }
 
 html,
@@ -43,6 +46,8 @@ p {
   font-weight: normal;
 }
 
-.ant-layout-footer {
-  background-color: transparent !important;
+ul,
+ol,
+dl {
+  list-style: none;
 }
