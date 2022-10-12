@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 16:34:42
- * @LastEditTime: 2022-03-11 17:39:39
+ * @LastEditTime: 2022-10-12 17:18:30
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\utils\utils.ts
+ * @FilePath: \blog5.0_front-end\src\utils\utils.ts
  */
 
 import { baseLog } from 'utils/math';
@@ -59,15 +59,14 @@ export function throttle(
   /**
    * 回调方法
    */
-  cb: (...args: any) => any,
+  cb: (...args: unknown[]) => unknown,
   /**
    * 延迟时间，默认 300ms
    */
-  delay: number,
-): (args: any) => void {
+  delay?: number,
+): (args?: unknown) => void {
   let timer: number | null = null;
   return function (...args) {
-    // @ts-ignore
     const that = this;
     if (timer) return;
     timer = window.setTimeout(() => {
