@@ -2,8 +2,8 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 15:47:48
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-13 16:28:17
- * @FilePath: /blog5.0_front-end/src/components/Header/PcHeader/index.tsx
+ * @LastEditTime: 2022-10-14 10:22:14
+ * @FilePath: \blog5.0_front-end\src\components\Header\PcHeader\index.tsx
  */
 import { FC } from 'react';
 import Logo from '@/components/Logo';
@@ -33,10 +33,12 @@ const Header: FC<Props> = (props) => {
 
   return (
     <div className={classnames({[styles.Header]: true, [styles.active]: scroll?.top && scroll?.top > 200})}>
-      <Logo />
-      <div className={styles.rightContent}>
-        <Menu menu={menu} />
-        <button>Download CV</button>
+      <div className={styles.container}>
+        <Logo />
+        <div className={styles.rightContent}>
+          <Menu menu={menu} />
+          <button>Download CV</button>
+        </div>
       </div>
     </div>
   )
