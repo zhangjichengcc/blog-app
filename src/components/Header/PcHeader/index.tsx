@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 15:47:48
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-12 23:59:56
+ * @LastEditTime: 2022-10-13 16:28:17
  * @FilePath: /blog5.0_front-end/src/components/Header/PcHeader/index.tsx
  */
 import { FC } from 'react';
@@ -34,7 +34,10 @@ const Header: FC<Props> = (props) => {
   return (
     <div className={classnames({[styles.Header]: true, [styles.active]: scroll?.top && scroll?.top > 200})}>
       <Logo />
-      <Menu menu={menu} />
+      <div className={styles.rightContent}>
+        <Menu menu={menu} />
+        <button>Download CV</button>
+      </div>
     </div>
   )
 }
