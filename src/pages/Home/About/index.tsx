@@ -2,17 +2,19 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:09:35
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-14 18:46:05
+ * @LastEditTime: 2022-10-17 18:48:35
  * @FilePath: \blog5.0_front-end\src\pages\Home\About\index.tsx
  */
-
+import { forwardRef } from 'react';
 import styles from './index.less';
 
-export default function About() {
+const About = forwardRef<HTMLDivElement>((_props, ref) => {
 
   return (
-    <div className={styles.about}>
+    <div ref={ref} className={styles.about}>
       
     </div>
   )
-}
+})
+
+export default About;
