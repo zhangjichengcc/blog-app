@@ -31,12 +31,14 @@
     "antd": "^4.23.5",
     "classnames": "^2.3.2",
     "react-redux": "^8.0.4",
+    "tween-functions": "^1.2.0",
     "umi": "^4.0.13"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/react-redux": "^7.1.24",
+    "@types/tween-functions": "^1.2.0",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
     "eslint": "^8.23.0",
