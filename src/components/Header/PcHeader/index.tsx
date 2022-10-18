@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 15:47:48
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-18 16:23:07
+ * @LastEditTime: 2022-10-18 19:07:16
  * @FilePath: \blog5.0_front-end\src\components\Header\PcHeader\index.tsx
  */
 import { FC, useEffect, useRef } from 'react';
@@ -16,7 +16,8 @@ import tweenFunctions from 'tween-functions';
 
 import styles from './index.less';
 
-let top = 0;
+type TweenFunctionsType = 'linear' | 'easeInQuad' | 'easeOutQuad' | 'easeInOutQuad' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeInQuart' | 'easeOutQuart' | 'easeInOutQuart' | 'easeInQuint' | 'easeOutQuint' | 'easeInOutQuint' | 'easeInSine' | 'easeOutSine' | 'easeInOutSine' | 'easeInExpo' | 'easeOutExpo' | 'easeInOutExpo' | 'easeInCirc' | 'easeOutCirc' | 'easeInOutCirc' | 'easeInElastic' | 'easeOutElastic' | 'easeInOutElastic' | 'easeInBack' | 'easeOutBack' | 'easeInOutBack' | 'easeInBounce' | 'easeOutBounce' | 'easeInOutBounce';
+
 
 interface Props {
   menu: Array<MenuItem>
@@ -25,9 +26,11 @@ interface Props {
 class Scroller {
 
   element: HTMLElement | Window;
-  easing: string;
+  easing: TweenFunctionsType;
   scrollId: number | undefined;
+  source: number;
   target: number;
+  duration: number;
   prevTimestamp: number;
 
   constructor(element?: HTMLElement) {
@@ -36,17 +39,19 @@ class Scroller {
     this.easing = 'easeOutCubic';
     this.prevTimestamp = 0;
     this.target = 0;
+    this.source = 0;
+    this.duration = 250;
   }
 
   step(timestamp: number) {
     if (!this.prevTimestamp) this.prevTimestamp = timestamp; 
     const currentTime = timestamp - this.prevTimestamp;
-    const value = tweenFunctions.easeInQuad(currentTime, 0, this.target!, 300 );
-    // this.prevTimestamp = timestamp;
-    console.log(value)
+    const value = tweenFunctions[this.easing](currentTime, this.source, this.target, this.duration);
     this.element.scrollTo(0, value);
     if (value < this.target) {
       this.scrollId = requestAnimationFrame(this.step.bind(this));
+    } else {
+      this.source = this.target;
     }
   }
 
