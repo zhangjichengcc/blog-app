@@ -14,6 +14,7 @@ specifiers:
   classnames: ^2.3.2
   eslint: ^8.23.0
   eslint-plugin-react: ^7.31.1
+  js-moment: ^3.1.0
   react-redux: ^8.0.4
   redux-devtools: ^3.7.0
   tween-functions: ^1.2.0
@@ -26,6 +27,7 @@ dependencies:
   ahooks: 3.7.1_react@18.1.0
   antd: 4.23.5_ef5jwxihqo6n7gxfmzogljlgcm
   classnames: 2.3.2
+  js-moment: 3.1.0
   react-redux: 8.0.4_kxqenw6urtdnwfshr3oz5b6jxq
   tween-functions: 1.2.0
   umi: 4.0.13_baqfwbeenmoqnj3sxid7u6uaay
@@ -4663,6 +4665,10 @@ packages:
 
   /js-cookie/2.2.1:
     resolution: {integrity: sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==}
+    dev: false
+
+  /js-moment/3.1.0:
+    resolution: {integrity: sha512-T1YdR7ohZc8xYxIJShy+My1Yuxazg3xk6Bg+8WxS4Fh1K4SGndho01bZfAxnFcgv7XOJVg4kA3169fc61jt5kA==}
     dev: false
 
   /js-tokens/4.0.0:
