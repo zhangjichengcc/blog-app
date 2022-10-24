@@ -2,17 +2,17 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-24 15:43:04
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-24 18:22:02
- * @FilePath: \blog5.0_front-end\src\utils\scrolljs.ts
+ * @LastEditTime: 2022-10-25 00:18:56
+ * @FilePath: /blog5.0_front-end/src/utils/scrolljs.ts
  */
 import tweenFunctions from 'tween-functions';
 
-type TweenFunctionsType = keyof tweenFunctions.TweenFunctions
+// type TweenFunctionsType = keyof tweenFunctions.TweenFunctions
 
 class Scroller {
 
   // element: HTMLElement | Window;
-  easing: TweenFunctionsType;
+  // easing: TweenFunctionsType;
   scrollId: number | undefined;
   source: number;
   target: number;
@@ -22,7 +22,7 @@ class Scroller {
   constructor() {
     this.scrollId;
     // this.element = element || window;
-    this.easing = 'easeOutCubic';
+    // this.easing = 'easeOutCubic';
     this.prevTimestamp = 0;
     this.target = 0;
     this.source = 0;

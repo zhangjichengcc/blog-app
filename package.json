@@ -32,8 +32,6 @@
     "classnames": "^2.3.2",
     "js-moment": "^3.1.0",
     "react-redux": "^8.0.4",
-    "scroller": "^1.0.0",
-    "scroller.js": "^1.0.0",
     "tween-functions": "^1.2.0",
     "umi": "^4.0.13"
   },
