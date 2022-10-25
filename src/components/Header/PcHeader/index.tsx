@@ -2,14 +2,14 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 15:47:48
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-24 17:23:03
+ * @LastEditTime: 2022-10-25 18:35:53
  * @FilePath: \blog5.0_front-end\src\components\Header\PcHeader\index.tsx
  */
 import { FC, useEffect, useRef } from 'react';
 import Logo from '@/components/Logo';
 import Menu, { MenuItem } from './Menu';
 import classnames from 'classnames';
-import Scroller from '@/utils/scrolljs';
+import Scroller from '@/utils/scroller';
 import { useScroll } from 'ahooks';
 
 

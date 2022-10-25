@@ -2,13 +2,13 @@
  * @Author: zhangjicheng
  * @Date: 2022-08-29 11:40:01
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-14 19:10:27
+ * @LastEditTime: 2022-10-25 19:06:29
  * @FilePath: \blog5.0_front-end\src\layouts\BaseLayout\index.tsx
  */
 import { FC, ReactNode } from 'react';
 import { Outlet } from 'umi';
 import { selectHomeMenu } from '@/store/features/home/homeSlice';
-import store from '@/store';
+import store, { useAppSelector } from '@/store';
 // import { useSelector } from 'react-redux';
 import Header from '@/components/Header';
 
@@ -36,9 +36,11 @@ const menus = [
 
 const Layout: FC<{children: ReactNode}> = () => {
 
+  const menu = useAppSelector(state => state.home.homeMenu);
+
   return (
     <div className={styles.layouts}>
-      <Header menu={menus} />
+      <Header menu={menu} />
       <Outlet />
     </div>
   );

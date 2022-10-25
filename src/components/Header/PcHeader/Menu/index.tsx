@@ -2,10 +2,12 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:41:44
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-24 17:16:09
+ * @LastEditTime: 2022-10-25 19:08:03
  * @FilePath: \blog5.0_front-end\src\components\Header\PcHeader\Menu\index.tsx
  */
+import { useEffect, useRef } from 'react';
 import styles from './index.less';
+import Scroller from '@/utils/scroller';
 
 /**
  * DomReact 属性
@@ -49,13 +51,23 @@ export default function Menu(props: Props) {
     menu,
   } = props;
 
+  const scroller = useRef<Scroller>();
+
+  function goView(item: MenuItem) {
+    scroller.current?.scrollTo(item.domRect.top)
+  }
+
+  useEffect(function() {
+    scroller.current = new Scroller();
+  }, [])
+
   return (
     <ul className={styles.menu}>
       {
         menu.map((item) => {
           const {label} = item;
           return (
-            <li key={label}>{label}</li>
+            <li onClick={() => goView(item)} key={label}>{label}</li>
           )
         })
       }
