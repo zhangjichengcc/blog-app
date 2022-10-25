@@ -2,12 +2,15 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:41:44
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-25 19:08:03
- * @FilePath: \blog5.0_front-end\src\components\Header\PcHeader\Menu\index.tsx
+ * @LastEditTime: 2022-10-26 00:57:55
+ * @FilePath: /blog5.0_front-end/src/components/Header/PcHeader/Menu/index.tsx
  */
-import { useEffect, useRef } from 'react';
-import styles from './index.less';
+import { useEffect, useRef, useState } from 'react';
+import classnames from 'classnames';
 import Scroller from '@/utils/scroller';
+import { useScroll } from 'ahooks';
+
+import styles from './index.less';
 
 /**
  * DomReact 属性
@@ -27,8 +30,11 @@ type DomRect = {
  * 菜单项
  */
 interface MenuItem {
+  /** 菜单关键字 */
+  key: string,
   /** 菜单名称 */
   label: string,
+  /** dom定位信息 */
   domRect: DomRect
 }
 
@@ -52,10 +58,30 @@ export default function Menu(props: Props) {
   } = props;
 
   const scroller = useRef<Scroller>();
+  const scroll = useScroll();
+  const [activeKey, setActiveKey] = useState(menu[0]?.key);
+
+  
 
   function goView(item: MenuItem) {
-    scroller.current?.scrollTo(item.domRect.top)
+    scroller.current?.scrollTo(item.domRect.top);
+    setActiveKey(item.key);
   }
+
+  function matchActive() {
+    if (!scroll) return;
+    for(const item of menu) {
+      const { domRect: {top, height}, key } = item;
+      if (scroll?.top > top - 100 && scroll?.top < top + height - 100) {
+        setActiveKey(key);
+        break;
+      }
+    }
+  }
+
+  useEffect(function() {
+    matchActive();
+  }, [scroll?.top])
 
   useEffect(function() {
     scroller.current = new Scroller();
@@ -67,7 +93,7 @@ export default function Menu(props: Props) {
         menu.map((item) => {
           const {label} = item;
           return (
-            <li onClick={() => goView(item)} key={label}>{label}</li>
+            <li className={classnames({[styles.active]: activeKey === item.key})} onClick={() => goView(item)} key={label}>{label}</li>
           )
         })
       }

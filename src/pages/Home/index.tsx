@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2022-03-02 23:05:49
- * @LastEditTime: 2022-10-24 17:16:39
+ * @LastEditTime: 2022-10-26 00:40:28
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog5.0_front-end\src\pages\Home\index.tsx
+ * @FilePath: /blog5.0_front-end/src/pages/Home/index.tsx
  */
 
 import { FC, useEffect, useRef } from 'react';
@@ -35,12 +35,12 @@ const Home: FC = () => {
 
   useEffect(() => {
     const menu: Array<MenuItem> = [
-      {label: 'Home', domRect: getDomRect(bannerDom.current)},
-      {label: 'About', domRect: getDomRect(aboutDom.current)},
-      {label: 'Portfolio', domRect: getDomRect(portfolioDom.current)},
-      {label: 'Service', domRect: getDomRect(serviceDom.current)},
-      {label: 'Contact', domRect: getDomRect(contactDom.current)},
-      {label: 'Blog', domRect: getDomRect(blogDom.current)},
+      {label: 'Home', key: 'home', domRect: getDomRect(bannerDom.current)},
+      {label: 'About', key: 'about', domRect: getDomRect(aboutDom.current)},
+      {label: 'Portfolio', key: 'portfolio', domRect: getDomRect(portfolioDom.current)},
+      {label: 'Service', key: 'service', domRect: getDomRect(serviceDom.current)},
+      {label: 'Contact', key: 'contact', domRect: getDomRect(contactDom.current)},
+      {label: 'Blog', key: 'blog', domRect: getDomRect(blogDom.current)},
     ]
     appDispatch(setMenu(menu))
   }, [bannerDom.current])
