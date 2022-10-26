@@ -2,14 +2,14 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 15:47:48
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-25 18:35:53
+ * @LastEditTime: 2022-10-26 10:46:32
  * @FilePath: \blog5.0_front-end\src\components\Header\PcHeader\index.tsx
  */
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect } from 'react';
 import Logo from '@/components/Logo';
 import Menu, { MenuItem } from './Menu';
 import classnames from 'classnames';
-import Scroller from '@/utils/scroller';
+// import Scroller from '@/utils/scroller';
 import { useScroll } from 'ahooks';
 
 
@@ -27,24 +27,15 @@ const Header: FC<Props> = (props) => {
 
   const scroll = useScroll();
 
-  const scroller = useRef<Scroller>();
+  // const scroller = useRef<Scroller>();
 
-  globalThis.scroller = scroller.current;
-
-  // useEffect(function() {
-  //   run();
-  // }, [scroll?.top])
 
   function scrollFn() {
-    // const dom = window;
-    // window.scrollTo(0, top);
-    // top += 10;
-    // window.requestAnimationFrame(scrollFn);
-    scroller.current?.scrollTo(700)
+    // scroller.current?.scrollTo(700)
   }
 
   useEffect(() => {
-    scroller.current = new Scroller();
+    // scroller.current = new Scroller();
   }, [])
 
   return (

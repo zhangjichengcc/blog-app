@@ -2,14 +2,15 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-14 14:52:20
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-14 19:02:03
+ * @LastEditTime: 2022-10-26 10:32:27
  * @FilePath: \blog5.0_front-end\src\store\features\home\homeSlice.ts
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../index';
+import { type MenuItem } from '@/components/Header';
 
 interface HomeState {
-  homeMenu: Array<any>;
+  homeMenu: Array<MenuItem>;
 }
 
 const initialState: HomeState = {

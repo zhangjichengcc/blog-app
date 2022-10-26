@@ -2,12 +2,13 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:41:44
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-26 00:57:55
- * @FilePath: /blog5.0_front-end/src/components/Header/PcHeader/Menu/index.tsx
+ * @LastEditTime: 2022-10-26 19:05:17
+ * @FilePath: \blog5.0_front-end\src\components\Header\PcHeader\Menu\index.tsx
  */
 import { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
 import Scroller from '@/utils/scroller';
+import { deepClone } from '@/utils/utils';
 import { useScroll } from 'ahooks';
 
 import styles from './index.less';
@@ -54,8 +55,10 @@ interface Props {
 export default function Menu(props: Props) {
 
   const {
-    menu,
+    menu = [],
   } = props;
+
+  const menus = deepClone(menu).sort((a, b) => b?.domRect?.top - a?.domRect?.top);
 
   const scroller = useRef<Scroller>();
   const scroll = useScroll();
@@ -65,14 +68,13 @@ export default function Menu(props: Props) {
 
   function goView(item: MenuItem) {
     scroller.current?.scrollTo(item.domRect.top);
-    setActiveKey(item.key);
   }
 
   function matchActive() {
     if (!scroll) return;
-    for(const item of menu) {
-      const { domRect: {top, height}, key } = item;
-      if (scroll?.top > top - 100 && scroll?.top < top + height - 100) {
+    for(const item of menus) {
+      const { domRect: { top }, key } = item;
+      if (scroll?.top >= top - 100) {
         setActiveKey(key);
         break;
       }
