@@ -2,13 +2,13 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:41:44
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-26 19:05:17
+ * @LastEditTime: 2022-10-27 20:58:17
  * @FilePath: \blog5.0_front-end\src\components\Header\PcHeader\Menu\index.tsx
  */
 import { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
-import Scroller from '@/utils/scroller';
-import { deepClone } from '@/utils/utils';
+import Scroller from '@zhangjicheng/scroller';
+import { deepClone } from '@/utils';
 import { useScroll } from 'ahooks';
 
 import styles from './index.less';
@@ -67,7 +67,10 @@ export default function Menu(props: Props) {
   
 
   function goView(item: MenuItem) {
-    scroller.current?.scrollTo(item.domRect.top);
+    function cb(y: number) {
+      console.log(y);
+    }
+    scroller.current?.scrollTo(item.domRect.top, cb);
   }
 
   function matchActive() {

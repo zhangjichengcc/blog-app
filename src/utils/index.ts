@@ -1,14 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 16:34:42
- * @LastEditTime: 2022-10-26 19:05:08
+ * @LastEditTime: 2022-10-27 21:39:40
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog5.0_front-end\src\utils\utils.ts
+ * @FilePath: \blog5.0_front-end\src\utils\index.ts
  */
 
 import { baseLog } from 'utils/math';
-import EventEmitter from 'utils/eventEmitter';
+// import EventEmitter from 'utils/eventEmitter';
 
 // const ResizeEventEm = new EventEmitter();
 
@@ -41,18 +41,26 @@ export function sleep(time: number) {
   });
 }
 
+// todo 优化克隆方法
+
 /**
  * 深拷贝
  * @param source T extends any
  * @returns T
  */
 export function deepClone<T>(source: T): T {
-  if (typeof source !== 'object') return source;
-  const result = (Object.prototype.toString.call(source) === '[object Object]' ? {} : []) as T;
-  for (const i in source) {
-    result[i] = deepClone(source[i]);
+  const map = new Map(); // 创建字典，存储每次clone对象，处理自引用
+  function fn(source) {
+    if (typeof source !== 'object') return source;
+    const result = (Array.isArray(source) ? [] : {}) as T;
+    for (const i in source) {
+      // if ()
+      result[i] = deepClone(source[i]);
+    }
+    return result;
   }
-  return result;
+
+  return fn(source);
 }
 
 /**

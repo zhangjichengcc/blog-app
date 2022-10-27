@@ -2,66 +2,119 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-24 15:43:04
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-25 18:01:37
- * @FilePath: \blog5.0_front-end\src\utils\scrolljs.ts
+ * @LastEditTime: 2022-10-27 16:26:39
+ * @FilePath: \blog5.0_front-end\src\utils\scroller.ts
  */
-import tweenFunctions from 'tween-functions';
+// import tweenFunctions from 'tween-functions';
 
-type TweenFunctionsType = keyof tweenFunctions.TweenFunctions
+// type TweenFunctionsType = keyof tweenFunctions.TweenFunctions
+
+// tweenFunctions.easeInBack()
+
+type tweenParams = [
+  /** 当前时间 */
+  time: number,
+  /** 起始值 */
+  start: number,
+  /** 结束值 */
+  end: number,
+  /** 持续时间 */
+  duration: number
+]
+
+/** 匀速运动 */
+function linearTween(...params: tweenParams): number {
+  const [time, start, end, duration] = params;
+  const 
+    v = (end - start) / duration,
+    s = v * time + start;
+  return time > duration ? end : s;
+}
+
+/** 匀减速运动 */
+function easeTween(...params: tweenParams) {
+  const [time, start, end, duration] = params;
+  const
+    v_end = 0,
+    v_begin = (end - start) * 2 / duration - v_end,
+    a = (v_end - v_begin) / duration,
+    v = v_begin + a * time,
+    s = start + (v_begin + v) * time / 2;
+  return time > duration ? end : s;
+}
+
+const tweenFunctions = {
+  /** 匀速运动 */
+  linear: linearTween,
+  /** 匀减速运动 */
+  ease: easeTween,
+}
+
+/** 滚动配置 */
+type Option = {
+  /** 滚动持续时间 */
+  duration?: number,
+  /** 动画函数 */
+  easing?: 'linear' | 'ease',
+}
 
 class Scroller {
 
-  // element: HTMLElement | Window;
-  easing: TweenFunctionsType;
-  scrollId: number | undefined;
-  source: number;
-  target: number;
-  duration: number;
-  prevTimestamp: number;
+  private scrollId: number | undefined;
+  private prevTimestamp: number;
+  /** 滚动起始位置 */
+  public source: number;
+  /** 滚动截止位置 */
+  public target: number;
+  /** 滚动元素，默认window */
+  public element: HTMLElement | Window;
+  /** 滚动动画 */
+  public easing: 'ease' | 'linear';
+  /** 滚动持续时间 默认300ms */
+  public duration: number;
 
-  constructor() {
+  constructor(element?: HTMLElement, option?: Option) {
+    const {
+      duration = 300,
+      easing = 'ease'
+    } = option || {};
+
     this.scrollId;
-    // this.element = element || window;
-    this.easing = 'easeOutCubic';
+    this.element = element || window;
+    this.easing = easing;
     this.prevTimestamp = 0;
     this.target = 0;
     this.source = 0;
-    this.duration = 250;
+    this.duration = duration;
   }
 
-  step(timestamp: number) {
+  /**
+   * 滚动步骤
+   * @param timestamp 
+   */
+  private step(timestamp: number) {
 
     if (!this.prevTimestamp) this.prevTimestamp = timestamp; 
     const currentTime = timestamp - this.prevTimestamp;
-    const v1 = 0;
-    const v0 = (this.target - this.source) * 2 / this.duration - v1;
-    const a =  (v1 - v0) / this.duration;
-    const v = v0 + a * currentTime;
+    const value = tweenFunctions[this.easing](currentTime, this.source, this.target, this.duration);
 
-    const s = (v + v0) * currentTime / 2;
+    if (this.element === window) {
+      window.scrollTo(0, value);
+    } else {
+      (this.element as HTMLElement).scrollTop = value;
+    }
 
-    let value = this.source + s;
-    value = currentTime > this.duration ? this.target : value;
-    window.scrollTo(0, value);
     if (value !== this.target) {
       this.scrollId = requestAnimationFrame(this.step.bind(this));
     }
   }
 
-  // step(timestamp: number) {
-  //   if (!this.prevTimestamp) this.prevTimestamp = timestamp; 
-  //   const currentTime = timestamp - this.prevTimestamp;
-  //   let value = tweenFunctions[this.easing](currentTime, this.source, this.target, this.duration);
-  //   value = currentTime > this.duration ? this.target : value;
-  //   window.scrollTo(0, value);
-  //   if (value !== this.target) {
-  //     console.log(value)
-  //     this.scrollId = requestAnimationFrame(this.step.bind(this));
-  //   }
-  // }
-
+  /**
+   * 滚动方法
+   * @param y 目标位置
+   */
   scrollTo(y: number) {
-    this.source = window.scrollY;
+    this.source = this.element === window ? window.scrollY : (this.element as Element).scrollTop;
     this.prevTimestamp = 0;
     this.target = y;
     this.scrollId = requestAnimationFrame(this.step.bind(this));

@@ -1,10 +1,10 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-02-25 23:56:54
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-10-27 20:59:03
+ * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
+ * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\AllFiles\index.tsx
  */
 
 import React, {
@@ -31,7 +31,7 @@ import {
 } from '@/services/cloudDist';
 import BreadCrumbNode from 'utils/BreadCrumbNode';
 import to from 'utils/promiseTools';
-import { sleep } from 'utils/utils';
+import { sleep } from '@/utils';
 import { getCategory } from 'utils/filesType';
 
 import styles from './index.less';

@@ -14,7 +14,7 @@ import ColumnsName from '../ColumnsName';
 import PopoverContent from '../PopoverContent';
 import { renderType, getType } from 'utils/filesType';
 import { thousands } from 'utils/math';
-import { renderSize } from 'utils/utils';
+import { renderSize } from '@/utils';
 import moment from 'moment';
 
 import styles from './index.less';

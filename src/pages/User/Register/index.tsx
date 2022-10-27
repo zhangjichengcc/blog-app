@@ -1,10 +1,10 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-11-08 16:10:07
- * @LastEditTime: 2022-03-08 22:58:16
+ * @LastEditTime: 2022-10-27 20:58:57
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\pages\User\Register\index.tsx
+ * @FilePath: \blog5.0_front-end\src\pages\User\Register\index.tsx
  */
 
 import React, { FC, useEffect, useState } from 'react';
@@ -12,7 +12,7 @@ import { history } from 'umi';
 import { Form, Input, Button, message, Avatar, Spin, Upload } from 'antd';
 import AvatarUpload from '@/components/AvatarUpload';
 import { register, findUser } from '@/services/user';
-import { debounce } from '@utils';
+import { debounce } from '@/utils';
 
 import styles from './index.less';
 
