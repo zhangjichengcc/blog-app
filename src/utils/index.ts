@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 16:34:42
- * @LastEditTime: 2022-10-27 21:39:40
+ * @LastEditTime: 2022-10-28 00:39:49
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog5.0_front-end\src\utils\index.ts
+ * @FilePath: /blog5.0_front-end/src/utils/index.ts
  */
 
 import { baseLog } from 'utils/math';
@@ -50,11 +50,13 @@ export function sleep(time: number) {
  */
 export function deepClone<T>(source: T): T {
   const map = new Map(); // 创建字典，存储每次clone对象，处理自引用
-  function fn(source) {
+  function fn(source: T): T {
+    if (map.has(source)) return map.get(source);
     if (typeof source !== 'object') return source;
     const result = (Array.isArray(source) ? [] : {}) as T;
+    map.set(source, result);
     for (const i in source) {
-      // if ()
+      if (Object.prototype.toString.call(source) === 'object Object' && !source.hasOwnProperty(i)) continue;
       result[i] = deepClone(source[i]);
     }
     return result;
