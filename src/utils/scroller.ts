@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-24 15:43:04
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-28 20:24:59
+ * @LastEditTime: 2022-10-28 20:42:56
  * @FilePath: \blog5.0_front-end\src\utils\scroller.ts
  */
 // import tweenFunctions from 'tween-functions';
@@ -83,6 +83,7 @@ class Scroller {
     } = option || {};
 
     this.scrollId = 0;
+    this.speed = 50 / 1000;
     this.element = element || window;
     this.easing = easing;
     this.prevTimestamp = 0;
@@ -145,7 +146,7 @@ class Scroller {
    */
   start(speed?: number, callBack?: (y: number) => void) {
     this.scrollCb = callBack;
-    this.speed = (speed || 50 / 1000); // 将速度转为 px/ms
+    this.speed = ((speed || 50) / 1000); // 将速度转为 px/ms
     this.source = this.element === window ? window.scrollY : (this.element as Element).scrollTop;
     this.prevTimestamp = 0;
     this.scrollId = requestAnimationFrame(this.linearStep.bind(this));
