@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:09:35
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-27 16:28:02
+ * @LastEditTime: 2022-10-28 18:19:17
  * @FilePath: \blog5.0_front-end\src\pages\Home\About\index.tsx
  */
 import { forwardRef, useEffect, useRef } from 'react';
@@ -17,13 +17,13 @@ const About = forwardRef<HTMLDivElement>((_props, ref) => {
 
   useEffect(function() {
     if(scrollDom.current) {
-      global.a = scrollDom.current
       scroller.current = new Scroller(scrollDom.current);
+      global.a = scroller.current
     }
   }, [scrollDom])
 
   function scroll() {
-    scroller.current?.scrollTo(800)
+    scroller.current?.scroll(100)
   }
 
   return (
