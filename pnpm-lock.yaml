@@ -9,7 +9,7 @@ specifiers:
   '@types/tween-functions': ^1.2.0
   '@typescript-eslint/eslint-plugin': ^5.35.1
   '@typescript-eslint/parser': ^5.35.1
-  '@zhangjicheng/scroller': 1.0.0-alpha.4
+  '@zhangjicheng/scroller': ^1.1.0
   ahooks: ^3.7.1
   antd: ^4.23.5
   classnames: ^2.3.2
@@ -24,7 +24,7 @@ specifiers:
 dependencies:
   '@reduxjs/toolkit': 1.8.6_m22guw5loofwepdrcougphrsrm
   '@tanstack/react-query': 4.10.3_iyzgk4ls74ludc4c4235ks5ppm
-  '@zhangjicheng/scroller': 1.0.0-alpha.4
+  '@zhangjicheng/scroller': 1.1.0
   ahooks: 3.7.1_react@16.14.0
   antd: 4.23.5_iyzgk4ls74ludc4c4235ks5ppm
   classnames: 2.3.2
@@ -2134,8 +2134,8 @@ packages:
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
     dev: false
 
-  /@zhangjicheng/scroller/1.0.0-alpha.4:
-    resolution: {integrity: sha512-OELoDnGT+fsnXjdKMUl2KgBgy43yb8UNQsjBB2yT6DeqDwxRvh0TcRoVzPPjoz5GCql3pujFI4gOQySxHIQBzg==}
+  /@zhangjicheng/scroller/1.1.0:
+    resolution: {integrity: sha512-N+8adrmQPfo5wE2wadvfG7/X5FtXExEaSxOrLiiMGvEekbCkfmfvpqVxJpfkTq7v8f4dQkxsTqaXUqoha9x0jA==}
     dev: false
 
   /acorn-import-assertions/1.8.0_acorn@8.8.0:
