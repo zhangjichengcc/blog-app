@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-11-03 11:08:47
+ * @LastEditTime: 2022-11-04 00:33:13
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
+ * @FilePath: /blog5.0_front-end/src/pages/CloudDisk/AllFiles/components/FilesTable/index.tsx
  */
 
 import React, { FC, useState, useEffect } from 'react';
@@ -190,16 +190,16 @@ const FilesTable: FC<FilesTableProps> = (props) => {
     <div className={styles.fileTable}>
       <Spin tip="Loading..." spinning={loading}>
         <div className={classnames(styles.tr, styles.header)}>
-          <span className={styles.td}>名称</span>
-          <span className={styles.td}>修改时间</span>
-          <span className={styles.td}>类型</span>
-          <span className={styles.td}>大小</span>
+          <span className={styles.td}>Name</span>
+          <span className={styles.td}>Date Modified</span>
+          <span className={styles.td}>Size</span>
+          <span className={styles.td}>Type</span>
         </div>
         <div className={styles.tbody}>
           {data.map((item: fileDataProps) => {
             const { name, attribute, _id: id } = item;
             const { size, create_time } = attribute;
-            const createTime = moment(create_time).format('YYYY-MM-DD HH:mm');
+            const createTime = moment(create_time.replace(/T/g, ' ').replace(/\.\d{3}Z/g, '')).format('YYYY-MM-dd HH:mm');
             const selected = selectedKeys.includes(id);
             const popoverVisiable = contextMenuKeys.includes(id);
             const type = getType(name);
@@ -229,10 +229,10 @@ const FilesTable: FC<FilesTableProps> = (props) => {
                   </span>
                 </Popover>
                 <span className={styles.td}>{createTime}</span>
-                <span className={styles.td}>{renderType(type)}</span>
                 <span className={styles.td}>
-                  {type !== 'dir' && <RenderSize size={size} />}
+                  {type === 'dir' ? '--' : <RenderSize size={size} />}
                 </span>
+                <span className={styles.td}>{renderType(type)}</span>
               </div>
             );
           })}
