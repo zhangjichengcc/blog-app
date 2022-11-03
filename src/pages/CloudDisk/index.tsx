@@ -1,14 +1,15 @@
 /*
  * @Author: your name
  * @Date: 2021-12-21 14:41:34
- * @LastEditTime: 2022-02-25 23:56:20
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-11-03 16:42:21
+ * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\pages\CloudDisk\index.tsx
+ * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\index.tsx
  */
 
 import React, { FC, useState, useRef } from 'react';
 import { Button, Input, Menu, Tabs, Badge } from 'antd';
+import type { MenuProps, TabsProps } from 'antd';
 import AllFiles from './AllFiles';
 import { ImgIcon } from 'components/Icon';
 import downloadImg from 'assets/cloudDisk/folder_download.png';
@@ -21,44 +22,78 @@ import BreadCrumbNode from 'utils/BreadCrumbNode';
 import styles from './index.less';
 
 const { Search } = Input;
-const { TabPane } = Tabs;
-const { Item, ItemGroup, SubMenu } = Menu;
 
-const tabMenus = [
-  {
-    value: 'private',
-    label: '我的文件',
-    icon: <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={ownerImg} />,
-  },
-  {
-    value: 'public',
-    label: '共享文件',
-    icon: <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={publicImg} />,
-  },
-];
-
-const transMenus = [
-  {
-    value: 'upload',
-    label: '正在上传',
-    icon: <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={uploadImg} />,
-  },
-  {
-    value: 'download',
-    label: '正在下载',
-    icon: (
-      <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={downloadImg} />
-    ),
-  },
-];
-
-const CloudDisk: FC<any> = (props) => {
-  const [navTab, setNavTab] = useState<string>(tabMenus[0].value);
-  const [AllFilesSelectedKeys, setAllFilesSelectedKeys] = useState<string[]>(
-    [],
-  );
-
+const CloudDisk: FC = () => {
+  const [navTab, setNavTab] = useState<string>('private');
+  const [AllFilesSelectedKeys, setAllFilesSelectedKeys] = useState<string[]>([]);
+  
   const AllFilesRef = useRef(null);
+
+  /** tabs列表 */
+  const tabsItems: TabsProps['items'] = [
+    { 
+      label: 'myFiles',
+      key: 'private',
+      children: <AllFiles 
+        cRef={AllFilesRef}
+        // onHistoryChange={onAllFilesMenuChange}
+        onSelectedChange={onSelectedChange}
+      /> 
+    },
+    { 
+      label: 'publicFiles',
+      key: 'public',
+      children: 'publicFiles',
+    },
+    { 
+      label: 'uploadFiles',
+      key: 'upload',
+      children: 'uploadFiles',
+    },
+    { 
+      label: 'downloadFiles',
+      key: 'download',
+      children: 'downloadFiles',
+    },
+  ];
+
+  /** menu列表 */
+  const menuItems: MenuProps['items'] = [
+    {
+      type: 'group',
+      label: <span style={{fontWeight: 500}}>Files List</span>,
+      children: [
+        {
+          key: 'private',
+          label: <span>My Documents</span>,
+          icon: <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={ownerImg} />,
+        },
+        {
+          key: 'public',
+          label: <span>Share Files</span>,
+          icon: <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={publicImg} />,
+        },
+      ]
+    },
+    {
+      type: 'group',
+      label: <span style={{fontWeight: 500}}>Transfers List</span>,
+      children: [
+        {
+          key: 'upload',
+          label: <span>Uploading</span>,
+          icon: <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={uploadImg} />,
+        },
+        {
+          key: 'download',
+          label: <span>DownLoading</span>,
+          icon: (
+            <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={downloadImg} />
+          ),
+        },
+      ]
+    }
+  ]
 
   function onSearch() {}
 
@@ -90,27 +125,29 @@ const CloudDisk: FC<any> = (props) => {
     current?.upload();
   }
 
-  function onTabChange(key: string) {
+  // 选中菜单项
+  function onMenuSelect(e: { key: string; }) {
+    const { key } = e;
     setNavTab(key);
   }
 
   return (
     <div className={styles.cloudDisk}>
       <div className={styles.headerWrap}>
-        <span className={styles.title}>XX网盘</span>
+        <span className={styles.title}>CloudDisk</span>
         <div className={styles.toolsBar}>
           <Button disabled={!!AllFilesSelectedKeys.length} onClick={uploadFile}>
-            上传
+            Upload
           </Button>
           <Button disabled={!!AllFilesSelectedKeys.length} onClick={createDir}>
-            新建文件夹
+            New Folder
           </Button>
           {!!AllFilesSelectedKeys.length && (
             <>
-              <Button>下载</Button>
-              <Button>删除</Button>
-              <Button>移动到</Button>
-              <Button>复制到</Button>
+              <Button>download</Button>
+              <Button>delete</Button>
+              <Button>move to</Button>
+              <Button>copy to</Button>
             </>
           )}
         </div>
@@ -121,60 +158,14 @@ const CloudDisk: FC<any> = (props) => {
         />
       </div>
       <div className={styles.content}>
-        <Menu selectedKeys={[navTab]} mode="inline" className={styles.menu}>
-          {/* <li className={styles.menuLabel}>文件列表</li> */}
-          <ItemGroup title={<span className={styles.menuLabel}>文件列表</span>}>
-            {tabMenus.map((item) => (
-              <Item key={item.value} onClick={() => onTabChange(item.value)}>
-                <span className={styles.menuItem}>
-                  {item.icon}
-                  <span>{item.label}</span>
-                </span>
-              </Item>
-            ))}
-          </ItemGroup>
-          <ItemGroup title={<span className={styles.menuLabel}>传输列表</span>}>
-            {transMenus.map((item) => (
-              <Item key={item.value} onClick={() => onTabChange(item.value)}>
-                <span className={styles.menuItem}>
-                  {item.icon}
-                  <Badge
-                    count={9}
-                    size="small"
-                    offset={[13, 0]}
-                    overflowCount={99}
-                  >
-                    <span style={{ fontSize: 13 }}>{item.label}</span>
-                  </Badge>
-                </span>
-              </Item>
-            ))}
-          </ItemGroup>
-        </Menu>
+        <Menu selectedKeys={[navTab]} mode="inline" onSelect={onMenuSelect} className={styles.menu} items={menuItems} />
         <div className={styles.mainBody}>
           <Tabs
-            onChange={onTabChange}
             animated
             activeKey={navTab}
             tabBarStyle={{ display: 'none' }}
-          >
-            <TabPane tab="myFiles" key="private">
-              <AllFiles
-                cRef={AllFilesRef}
-                // onHistoryChange={onAllFilesMenuChange}
-                onSelectedChange={onSelectedChange}
-              />
-            </TabPane>
-            <TabPane tab="publicFiles" key="public">
-              publicFiles
-            </TabPane>
-            <TabPane tab="uploadFiles" key="upload">
-              uploadFiles
-            </TabPane>
-            <TabPane tab="downloadFiles" key="download">
-              downloadFiles
-            </TabPane>
-          </Tabs>
+            items={tabsItems}
+          />
         </div>
       </div>
     </div>

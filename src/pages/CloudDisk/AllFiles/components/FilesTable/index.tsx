@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-02-17 15:49:12
+ * @LastEditTime: 2022-11-03 11:08:47
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
+ * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
  */
 
-import React, { FC, useMemo, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { Spin, Popover } from 'antd';
 import ColumnsName from '../ColumnsName';
@@ -15,7 +15,7 @@ import PopoverContent from '../PopoverContent';
 import { renderType, getType } from 'utils/filesType';
 import { thousands } from 'utils/math';
 import { renderSize } from '@/utils';
-import moment from 'moment';
+import moment from 'js-moment';
 
 import styles from './index.less';
 
@@ -24,7 +24,7 @@ let timer: NodeJS.Timeout | null = null;
 
 const RenderSize: FC<{ size: number }> = (props) => {
   const { size } = props;
-  const [_$0, $1, $2] = renderSize(size).match(/^([0-9\.]+)(\w+)$/) as string[];
+  const [, $1, $2] = renderSize(size).match(/^([0-9\\.]+)(\w+)$/) as string[];
   const num = thousands($1);
   return (
     <>
@@ -181,6 +181,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
       setSelectedKeys([]); // 点击空白处取消选中
     });
     return function () {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       document.body.removeEventListener('click', () => {});
     };
   }, []);
