@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-11-04 00:33:13
+ * @LastEditTime: 2022-11-07 17:45:07
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: /blog5.0_front-end/src/pages/CloudDisk/AllFiles/components/FilesTable/index.tsx
+ * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
  */
 
 import React, { FC, useState, useEffect } from 'react';
@@ -199,7 +199,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
           {data.map((item: fileDataProps) => {
             const { name, attribute, _id: id } = item;
             const { size, create_time } = attribute;
-            const createTime = moment(create_time.replace(/T/g, ' ').replace(/\.\d{3}Z/g, '')).format('YYYY-MM-dd HH:mm');
+            const createTime = moment(create_time).format('YYYY-MM-dd HH:mm');
             const selected = selectedKeys.includes(id);
             const popoverVisiable = contextMenuKeys.includes(id);
             const type = getType(name);
@@ -222,7 +222,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
                       onDownLoad={onDownLoad}
                     />
                   }
-                  visible={popoverVisiable}
+                  open={popoverVisiable}
                 >
                   <span className={styles.td}>
                     <ColumnsName record={item} addNewDir={onNameOk} />

@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-12-21 14:41:34
- * @LastEditTime: 2022-11-03 16:42:21
+ * @LastEditTime: 2022-11-07 18:44:35
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\index.tsx
  */
 
-import React, { FC, useState, useRef } from 'react';
+import React, { FC, useState, useRef, forwardRef } from 'react';
 import { Button, Input, Menu, Tabs, Badge } from 'antd';
 import type { MenuProps, TabsProps } from 'antd';
 import AllFiles from './AllFiles';
@@ -35,7 +35,7 @@ const CloudDisk: FC = () => {
       label: 'myFiles',
       key: 'private',
       children: <AllFiles 
-        cRef={AllFilesRef}
+        ref={AllFilesRef}
         // onHistoryChange={onAllFilesMenuChange}
         onSelectedChange={onSelectedChange}
       /> 
@@ -114,6 +114,7 @@ const CloudDisk: FC = () => {
     setAllFilesSelectedKeys(keys);
   }
 
+  /** 新建文件夹 */
   function createDir() {
     const { current }: { current: any } = AllFilesRef;
     current?.newDir();

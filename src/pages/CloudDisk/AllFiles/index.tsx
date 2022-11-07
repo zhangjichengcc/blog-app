@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-11-03 10:05:40
+ * @LastEditTime: 2022-11-07 18:50:24
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\AllFiles\index.tsx
@@ -13,6 +13,12 @@ import {
   useRef,
   useEffect,
   useImperativeHandle,
+  forwardRef,
+  RefObject,
+  ReactNode,
+  ForwardRefRenderFunction,
+  ForwardedRef,
+  Ref
 } from 'react';
 import avi from 'assets/cloudDisk/avi.png';
 import classnames from 'classnames';
@@ -36,8 +42,14 @@ import { getCategory } from 'utils/filesType';
 
 import styles from './index.less';
 
-const AllFiles: FC<any> = (props) => {
-  const { cRef, onSelectedChange } = props;
+interface AllFilesProps {
+  onSelectedChange: () => void;
+  // ref: React.MutableRefObject<null>;
+}
+
+const AllFiles: FC<AllFilesProps & {ref: Ref<HTMLElement>}> = (props, cref) => {
+
+  const { ref, onSelectedChange } = props;
 
   const HistoryBarRef = useRef(null);
   const fileRef = useRef(null);
@@ -164,7 +176,7 @@ const AllFiles: FC<any> = (props) => {
         size: 0,
         type: 'dir',
         url: '',
-        create_time: moment().format('YYYY-MM-DD HH:mm'),
+        create_time: moment().format('yyyy-MM-dd HH:mm'),
       },
     };
     setFileList([item, ..._list]);
@@ -316,7 +328,7 @@ const AllFiles: FC<any> = (props) => {
   }
 
   // 透传方法，父元素通过 ref.current 获取子元素方法
-  useImperativeHandle(cRef, () => ({
+  useImperativeHandle(ref, () => ({
     addHistory,
     newDir,
     upload,
@@ -368,4 +380,4 @@ const AllFiles: FC<any> = (props) => {
   );
 };
 
-export default AllFiles;
+export default forwardRef<HTMLElement, AllFilesProps>((props, ref) => <AllFiles {...props} ref={ref}/>);

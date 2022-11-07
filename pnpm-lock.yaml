@@ -21,7 +21,7 @@ specifiers:
   eslint-plugin-react: ^7.31.1
   griffith: ^1.29.0
   js-file-download: ^0.4.12
-  js-moment: ^3.1.0
+  js-moment: ^3.1.1
   qs: ^6.11.0
   react-pdf: ^5.7.2
   react-redux: ^8.0.4
@@ -39,7 +39,7 @@ dependencies:
   classnames: 2.3.2
   griffith: 1.29.0_zkbncb2mrwigeq3keybbaytzya
   js-file-download: 0.4.12
-  js-moment: 3.1.0
+  js-moment: 3.1.1
   qs: 6.11.0
   react-pdf: 5.7.2_g7ajtysgopzbcicx55d7b765ti
   react-redux: 8.0.4_zj5rc5ctm2gyxbwyrmu25b4a7u
@@ -4881,8 +4881,8 @@ packages:
     resolution: {integrity: sha512-rML+NkoD08p5Dllpjo0ffy4jRHeY6Zsapvr/W86N7E0yuzAO6qa5X9+xog6zQNlH102J7IXljNY2FtS6Lj3ucg==}
     dev: false
 
-  /js-moment/3.1.0:
-    resolution: {integrity: sha512-T1YdR7ohZc8xYxIJShy+My1Yuxazg3xk6Bg+8WxS4Fh1K4SGndho01bZfAxnFcgv7XOJVg4kA3169fc61jt5kA==}
+  /js-moment/3.1.1:
+    resolution: {integrity: sha512-b84ufgP5UWfAJE+WqQD76DQdMtbhc//hYqkpvt16ZcXOxh5hGvAREs0lu6GNJGmDNqZDfrYCLvRL5pcn4Cf3nw==}
     dev: false
 
   /js-tokens/4.0.0:

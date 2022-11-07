@@ -34,7 +34,7 @@
     "classnames": "^2.3.2",
     "griffith": "^1.29.0",
     "js-file-download": "^0.4.12",
-    "js-moment": "^3.1.0",
+    "js-moment": "^3.1.1",
     "qs": "^6.11.0",
     "react-pdf": "^5.7.2",
     "react-redux": "^8.0.4",
