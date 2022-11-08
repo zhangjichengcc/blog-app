@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-11-07 18:50:24
+ * @LastEditTime: 2022-11-08 18:23:03
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\AllFiles\index.tsx
@@ -18,7 +18,8 @@ import {
   ReactNode,
   ForwardRefRenderFunction,
   ForwardedRef,
-  Ref
+  Ref,
+  RefForwardingComponent
 } from 'react';
 import avi from 'assets/cloudDisk/avi.png';
 import classnames from 'classnames';
@@ -43,13 +44,24 @@ import { getCategory } from 'utils/filesType';
 import styles from './index.less';
 
 interface AllFilesProps {
-  onSelectedChange: () => void;
+  onSelectedChange: (keys: SetStateAction<string[]>) => void;
   // ref: React.MutableRefObject<null>;
 }
 
-const AllFiles: FC<AllFilesProps & {ref: Ref<HTMLElement>}> = (props, cref) => {
+export interface AllFilesHandles {
+  /**aa */
+  addHistory: any,
+  /**bb */
+  newDir: any,
+  /**cc */
+  upload: any,
+}
 
-  const { ref, onSelectedChange } = props;
+// const AllFiles = forwardRef<AllFilesHandles, AllFilesProps>((props, ref) => {
+
+const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = (props, ref) => {
+
+  const { onSelectedChange } = props;
 
   const HistoryBarRef = useRef(null);
   const fileRef = useRef(null);
@@ -380,4 +392,4 @@ const AllFiles: FC<AllFilesProps & {ref: Ref<HTMLElement>}> = (props, cref) => {
   );
 };
 
-export default forwardRef<HTMLElement, AllFilesProps>((props, ref) => <AllFiles {...props} ref={ref}/>);
+export default forwardRef<AllFilesHandles, AllFilesProps>(forwardRender);

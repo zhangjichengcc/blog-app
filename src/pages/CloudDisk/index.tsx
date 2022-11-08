@@ -1,16 +1,16 @@
 /*
  * @Author: your name
  * @Date: 2021-12-21 14:41:34
- * @LastEditTime: 2022-11-07 18:44:35
+ * @LastEditTime: 2022-11-08 18:59:17
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\index.tsx
  */
 
-import React, { FC, useState, useRef, forwardRef } from 'react';
+import React, { FC, useState, useRef, forwardRef, ReactNode } from 'react';
 import { Button, Input, Menu, Tabs, Badge } from 'antd';
 import type { MenuProps, TabsProps } from 'antd';
-import AllFiles from './AllFiles';
+import AllFiles, { AllFilesHandles } from './AllFiles';
 import { ImgIcon } from 'components/Icon';
 import downloadImg from 'assets/cloudDisk/folder_download.png';
 import ownerImg from 'assets/cloudDisk/folder_owner.png';
@@ -27,7 +27,7 @@ const CloudDisk: FC = () => {
   const [navTab, setNavTab] = useState<string>('private');
   const [AllFilesSelectedKeys, setAllFilesSelectedKeys] = useState<string[]>([]);
   
-  const AllFilesRef = useRef(null);
+  const AllFilesRef = useRef<AllFilesHandles>(null);
 
   /** tabs列表 */
   const tabsItems: TabsProps['items'] = [
@@ -102,7 +102,7 @@ const CloudDisk: FC = () => {
    * @param node
    */
   async function openDir(node: BreadCrumbNode) {
-    const { current }: { current: any } = AllFilesRef;
+    const { current } = AllFilesRef;
     await current?.addHistory?.(node);
   }
 
@@ -116,13 +116,13 @@ const CloudDisk: FC = () => {
 
   /** 新建文件夹 */
   function createDir() {
-    const { current }: { current: any } = AllFilesRef;
+    const { current } = AllFilesRef;
     current?.newDir();
   }
 
   // 上传文件
   function uploadFile() {
-    const { current }: { current: any } = AllFilesRef;
+    const { current } = AllFilesRef;
     current?.upload();
   }
 
