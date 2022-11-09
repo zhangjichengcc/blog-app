@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-11-07 17:45:07
+ * @LastEditTime: 2022-11-09 18:47:10
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
@@ -13,6 +13,9 @@ import { Spin, Popover } from 'antd';
 import ColumnsName from '../ColumnsName';
 import PopoverContent from '../PopoverContent';
 import { renderType, getType } from 'utils/filesType';
+import type {
+  FileProps,
+} from '@/services/cloudDist';
 import { thousands } from 'utils/math';
 import { renderSize } from '@/utils';
 import moment from 'js-moment';
@@ -38,35 +41,35 @@ type FilesTableProps = {
   /**
    * 表格数据
    */
-  data: fileDataProps[];
+  data: FileProps[];
   /**
    * 删除文件
    */
-  onDelete?: (item: fileDataProps) => void;
+  onDelete?: (item: FileProps) => void;
   /**
    * 打开文件
    */
-  onOpen?: (item: fileDataProps) => void;
+  onOpen?: (item: FileProps) => void;
   /**
    * 新建文件
    */
-  onNew?: (item: fileDataProps) => void;
+  onNew?: (item: FileProps) => void;
   /**
    * 双击列表项
    */
-  onDoubleClick?: (item: fileDataProps) => void;
+  onDoubleClick?: (item: FileProps) => void;
   /**
    * 命名完成
    */
-  onNameOk?: (item: fileDataProps) => void;
+  onNameOk?: (item: FileProps) => void;
   /**
    * 重命名文件
    */
-  onRename?: (item: fileDataProps) => void;
+  onRename?: (item: FileProps) => void;
   /**
    * 文件下载
    */
-  onDownLoad?: (item: fileDataProps) => void;
+  onDownLoad?: (item: FileProps) => void;
   /**
    * 表格加载状态
    */
@@ -90,25 +93,25 @@ const FilesTable: FC<FilesTableProps> = (props) => {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
   // 删除
-  function onHandleDelete(item: fileDataProps) {
+  function onHandleDelete(item: FileProps) {
     setContextMenuKeys([]);
     typeof onDelete === 'function' && onDelete(item);
   }
 
   // 打开文件
-  function onHandleOpen(item: fileDataProps) {
+  function onHandleOpen(item: FileProps) {
     setContextMenuKeys([]);
     typeof onOpen === 'function' && onOpen(item);
   }
 
   // 新建文件
-  function onHandleNew(item: fileDataProps) {
+  function onHandleNew(item: FileProps) {
     setContextMenuKeys([]);
     typeof onNew === 'function' && onNew(item);
   }
 
   // 重命名文件
-  function onHandleRename(item: fileDataProps) {
+  function onHandleRename(item: FileProps) {
     setContextMenuKeys([]);
     typeof onRename === 'function' && onRename(item);
   }
@@ -116,7 +119,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
   // 右键单击
   function onTableItemContextMenu(
     e: React.MouseEvent<HTMLDivElement>,
-    item: fileDataProps,
+    item: FileProps,
   ) {
     e.preventDefault(); // 阻止默认事件
     setSelectedKeys([item._id]);
@@ -127,7 +130,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
   // 单击table item
   function onTableItemClick(
     _e: React.MouseEvent<HTMLDivElement>,
-    item: fileDataProps,
+    item: FileProps,
   ) {
     if (selectedKeys.includes(item._id)) {
       onHandleRename(item);
@@ -139,7 +142,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
   // 双击table items
   function onTableItemDoubleClick(
     _e: React.MouseEvent<HTMLDivElement>,
-    item: fileDataProps,
+    item: FileProps,
   ) {
     onDoubleClick && onDoubleClick(item);
   }
@@ -147,7 +150,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
   // !选择table item 双击阻止单击事件, 主要为了处理选中状态下，双击触发rename事件
   function onHandleItemClick(
     e: React.MouseEvent<HTMLDivElement>,
-    item: fileDataProps,
+    item: FileProps,
   ) {
     e.stopPropagation(); // ? 阻止合成事件冒泡，这里用来阻止触发body的click事件
     // e.nativeEvent.stopImmediatePropagation(); // ? 阻止合成事件与最外层document上的事件间的冒泡
@@ -196,7 +199,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
           <span className={styles.td}>Type</span>
         </div>
         <div className={styles.tbody}>
-          {data.map((item: fileDataProps) => {
+          {data.map((item: FileProps) => {
             const { name, attribute, _id: id } = item;
             const { size, create_time } = attribute;
             const createTime = moment(create_time).format('YYYY-MM-dd HH:mm');
