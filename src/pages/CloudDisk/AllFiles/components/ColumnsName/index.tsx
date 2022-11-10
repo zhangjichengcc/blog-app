@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2022-01-04 15:43:02
- * @LastEditTime: 2022-11-03 10:58:35
+ * @LastEditTime: 2022-11-10 23:00:45
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\AllFiles\components\ColumnsName\index.tsx
+ * @FilePath: /blog5.0_front-end/src/pages/CloudDisk/AllFiles/components/ColumnsName/index.tsx
  */
 
 import { FC, useState, useEffect, useRef } from 'react';
@@ -73,20 +73,20 @@ const ColumnsName: FC<any> = (props) => {
 
   if (lock) {
     return (
-      <span style={{ display: 'flex', alignItems: 'center' }}>
+      <span className={styles['columns-name']} style={{ display: 'flex', alignItems: 'center' }}>
         <ContainerOutlined style={{ fontSize: 16, marginRight: 4 }} />
-        {name}
+        <span className={styles.text}>{name}</span>
       </span>
     );
   }
 
   return (
-    <span style={{ display: 'flex', alignItems: 'center' }}>
+    <span className={styles['columns-name']} style={{ display: 'flex', alignItems: 'center' }}>
       <FileIcon
         type={getFileType(name)}
         style={{ fontSize: 16, marginRight: 4 }}
       />
-      {name}
+      <span className={styles.text}>{name}</span>
     </span>
   );
 };
