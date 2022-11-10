@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-11-09 18:56:26
+ * @LastEditTime: 2022-11-10 19:03:18
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\AllFiles\index.tsx
@@ -20,7 +20,7 @@ import moment from 'js-moment';
 import fileDownload from 'js-file-download';
 import { Modal } from 'antd';
 import FilesTable from './components/FilesTable';
-import HistoryBar from '../components/HistoryBar';
+import HistoryBar, { type HistoryBarHandles } from '../components/HistoryBar';
 import FilePlayer from 'components/FilePlayer';
 import {
   getDistMenu,
@@ -58,7 +58,7 @@ const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = 
 
   // const { onSelectedChange } = props;
 
-  const HistoryBarRef = useRef(null);
+  const historyBarRef = useRef<HistoryBarHandles>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [fileList, setFileList] = useState<FileProps[]>([]);
@@ -85,7 +85,7 @@ const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = 
    * @param node
    */
   function push(node: BreadCrumbNode) {
-    const { current }: { current: any } = HistoryBarRef;
+    const { current } = historyBarRef;
     current?.push?.(node);
   }
 
@@ -351,12 +351,12 @@ const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = 
       <div className={styles.topBar}>
         {/* 传递cRef，用于获取子组件添加历史记录方法 addHistory */}
         <HistoryBar
-          cRef={HistoryBarRef}
+          ref={historyBarRef}
           onChange={onMenuChange}
           onReload={onReload}
         />
         <span>
-          共<span className={styles.activeText}>{fileList.length}</span>个
+          counts: <span className={styles.activeText}>{fileList.length}</span>
         </span>
       </div>
       <div>
