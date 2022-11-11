@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-17 18:03:11
- * @LastEditTime: 2022-11-10 17:40:23
+ * @LastEditTime: 2022-11-11 19:02:45
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \blog5.0_front-end\src\services\cloudDist.ts
@@ -20,9 +20,9 @@ export interface FileProps {
     /** 大小 */
     size: number, 
     /** 地址 */
-    url: "", 
+    url: string, 
     /** 类型 */
-    type: "dir"
+    type: string,
   };
   /** 文件锁 */
   lock: boolean;
