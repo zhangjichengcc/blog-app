@@ -1,0 +1,18 @@
+@import '~@/defined.less';
+
+.menu {
+  display: flex;
+  align-items: center;
+  >li {
+    margin-left: 20px;
+    cursor: pointer;
+    transition: all ease .3s;
+    font-weight: bold;
+    &:first-child {
+      margin-left: 0;
+    }
+    &.active {
+      color: @active-red;
+    }
+  }
+}

@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:38:14
- * @LastEditTime: 2022-02-25 23:57:18
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-11-03 10:57:31
+ * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\pages\CloudDisk\components\HistoryBar\index.tsx
+ * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\components\HistoryBar\index.tsx
  */
 
-import React, { FC, RefObject, ReactElement, useImperativeHandle } from 'react';
+import { useImperativeHandle, forwardRef } from 'react';
 import BreadCrumbNode from '@/utils/BreadCrumbNode';
 import useHistory from '../../hooks/useHistory';
 import {
@@ -20,11 +20,11 @@ import {
 import styles from './index.less';
 
 type HistoryBarProps = {
-  /**
-   * 接收子组件ref，用于父组件调用子组件方法
-   * cRef.current.addHistory() // 添加历史记录
-   */
-  cRef: RefObject<ReactElement>;
+  // /**
+  //  * 接收子组件ref，用于父组件调用子组件方法
+  //  * cRef.current.addHistory() // 添加历史记录
+  //  */
+  // cRef: RefObject<ReactElement>;
   /**
    * 默认历史记录列表
    */
@@ -39,8 +39,16 @@ type HistoryBarProps = {
   onReload?: (node: BreadCrumbNode) => void;
 };
 
-const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
-  const { history: _history = [], cRef, onChange, onReload } = props;
+/**
+ * historyBar 暴露方法
+ */
+export interface HistoryBarHandles {
+  push: (node: BreadCrumbNode) => void;
+}
+
+// const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
+const forwardRender: React.ForwardRefRenderFunction<HistoryBarHandles, HistoryBarProps> = (props, ref) => {
+  const { history: _history = [], onChange, onReload } = props;
   const [history, currentIdx, visualHistory, go, push] = useHistory(_history);
 
   const leftActive = currentIdx > 0;
@@ -85,7 +93,7 @@ const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
     typeof onChange === 'function' && onChange(item);
   }
 
-  useImperativeHandle(cRef, (): any => ({
+  useImperativeHandle(ref, (): HistoryBarHandles => ({
     push,
   }));
 
@@ -115,7 +123,7 @@ const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
               {idx !== 0 && <CaretRightOutlined style={{ margin: '0 5px' }} />}
               <span
                 className={styles.filder}
-                onClick={(_e) => onHandleClick(item)}
+                onClick={() => onHandleClick(item)}
               >
                 {name}
               </span>
@@ -127,4 +135,4 @@ const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
   );
 };
 
-export default HistoryBar;
+export default forwardRef(forwardRender);

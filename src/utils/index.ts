@@ -1,14 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 16:34:42
- * @LastEditTime: 2022-03-11 17:39:39
+ * @LastEditTime: 2022-10-28 11:25:58
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\utils\utils.ts
+ * @FilePath: \blog5.0_front-end\src\utils\index.ts
  */
 
 import { baseLog } from 'utils/math';
-import EventEmitter from 'utils/eventEmitter';
+// import EventEmitter from 'utils/eventEmitter';
 
 // const ResizeEventEm = new EventEmitter();
 
@@ -41,6 +41,31 @@ export function sleep(time: number) {
   });
 }
 
+// todo 优化克隆方法
+
+/**
+ * 深拷贝
+ * @param source T extends any
+ * @returns T
+ */
+export function deepClone<R>(source: R): R {
+  const map = new Map(); // 创建字典，存储每次clone对象，处理自引用
+  function fn<T>(source: T): T {
+    if (map.has(source)) return map.get(source); // 字典中存在则直接返回对应值
+    if (typeof source !== 'object') return source; // 非引用数据类型直接返回值
+    const result = (Array.isArray(source) ? [] : {}) as T;
+    map.set(source, result);
+    for (const i in source) {
+      const current = source[i];
+      if (Object.prototype.toString.call(current) === 'object Object' && !Object.prototype.hasOwnProperty.call(source, i)) continue;
+      result[i] = fn(current);
+    }
+    return result;
+  }
+
+  return fn(source);
+}
+
 /**
  * 监听可视化窗口大小变化
  * @param cb 接收回调函数，变化触发
@@ -59,15 +84,14 @@ export function throttle(
   /**
    * 回调方法
    */
-  cb: (...args: any) => any,
+  cb: (...args: unknown[]) => unknown,
   /**
    * 延迟时间，默认 300ms
    */
-  delay: number,
-): (args: any) => void {
+  delay?: number,
+): (args?: unknown) => void {
   let timer: number | null = null;
   return function (...args) {
-    // @ts-ignore
     const that = this;
     if (timer) return;
     timer = window.setTimeout(() => {

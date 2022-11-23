@@ -2,8 +2,8 @@
  * @Author: zhangjicheng
  * @Date: 2022-03-02 17:13:46
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-03-02 18:00:31
- * @FilePath: \blog-app\src\services\typings.d.ts
+ * @LastEditTime: 2022-11-09 15:30:50
+ * @FilePath: \blog5.0_front-end\src\services\typings.d.ts
  * @Description:
  *
  * Copyright (c) 2022 by zhangjicheng, All Rights Reserved.
@@ -18,6 +18,11 @@ declare namespace API {
     data: T;
     msg: string;
   };
+
+  /**
+   * 接口返回 Promise 类型
+   */
+  type ResponsePromise<T> = Promise<ResponseProps<T>>;
 
   /**
    * 用户信息

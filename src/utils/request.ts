@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-11-09 15:56:30
- * @LastEditTime: 2022-03-07 15:14:09
+ * @LastEditTime: 2022-11-10 17:46:55
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\utils\request.ts
+ * @FilePath: \blog5.0_front-end\src\utils\request.ts
  */
 
 /* eslint-disable camelcase */
@@ -109,6 +109,7 @@ export default function request(option: any) {
     // newOptions.body is FormData
     newOptions.headers = {
       Accept: 'application/json',
+      // 'Content-Type': 'multipart/form-data; charset=utf-8',
       ...newOptions.headers,
     };
   }

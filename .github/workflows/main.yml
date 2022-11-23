@@ -19,7 +19,7 @@ jobs:
     env:
       REMOTE_HOST: 118.190.52.53
       REMOTE_USER: root
-      TARGET_PATH: /opt/html/blog-app
+      TARGET_PATH: /opt/nodeServer/blog-app
       TARGET_DIR: dist
     # 步骤
     steps:

@@ -1,26 +1,26 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-12-23 20:19:17
- * @LastEditTime: 2022-02-25 23:56:54
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-11-10 19:03:18
+ * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\pages\CloudDisk\AllFiles\index.tsx
+ * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\AllFiles\index.tsx
  */
 
-import React, {
-  FC,
+import {
   useState,
   useRef,
   useEffect,
   useImperativeHandle,
+  forwardRef,
+  ForwardRefRenderFunction,
 } from 'react';
-import avi from 'assets/cloudDisk/avi.png';
-import classnames from 'classnames';
+import { useRequest } from 'ahooks';
 import moment from 'js-moment';
 import fileDownload from 'js-file-download';
 import { Modal } from 'antd';
 import FilesTable from './components/FilesTable';
-import HistoryBar from '../components/HistoryBar';
+import HistoryBar, { type HistoryBarHandles } from '../components/HistoryBar';
 import FilePlayer from 'components/FilePlayer';
 import {
   getDistMenu,
@@ -29,63 +29,84 @@ import {
   renameFile,
   uploadFile,
 } from '@/services/cloudDist';
+import type { FileProps } from '@/services/cloudDist';
 import BreadCrumbNode from 'utils/BreadCrumbNode';
 import to from 'utils/promiseTools';
-import { sleep } from 'utils/utils';
+import { sleep } from '@/utils';
 import { getCategory } from 'utils/filesType';
 
 import styles from './index.less';
 
-const AllFiles: FC<any> = (props) => {
-  const { cRef, onSelectedChange } = props;
+interface AllFilesProps {
+  onSelectedChange: (keys: React.SetStateAction<string[]>) => void;
+  // ref: React.MutableRefObject<null>;
+}
 
-  const HistoryBarRef = useRef(null);
-  const fileRef = useRef(null);
+/**
+ * 需要暴露给父组件的方法
+ */
+export interface AllFilesHandles {
+  /** 添加历史记录 */
+  addHistory: (node: BreadCrumbNode) => Promise<void>,
+  /** 新建文件夹 */
+  newDir: (list?: FileProps[], node?: BreadCrumbNode) => void,
+  /** 上传文件 */
+  upload: () => void,
+}
 
-  const [fileList, setFileList] = useState<fileDataProps[]>([]);
-  const [loading, setLoading] = useState(false);
+const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = (props, ref) => {
+
+  // const { onSelectedChange } = props;
+
+  const historyBarRef = useRef<HistoryBarHandles>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const [fileList, setFileList] = useState<FileProps[]>([]);
   const [currentNode, setCurrentNode] = useState<BreadCrumbNode>();
   const [visibleFile, setVisibleFile] = useState<any>({ visiable: false });
+
+  /** 查询文件列表 */
+  const {runAsync: fetchData, loading } = useRequest(getDistMenu, {
+    manual: true,
+    onSuccess(data, params) {
+      setFileList(data.data.files);
+      // 若入参没有传递id，则认为查找根目录
+      if (!params[0].id) {
+        setCurrentNode(new BreadCrumbNode(data.data?._id || '', '全部文件'));
+      }
+    },
+    onError(e) {
+      console.error(e);
+    }
+  });
 
   /**
    * 调用 HistoryBar 内部方法 添加记录
    * @param node
    */
   function push(node: BreadCrumbNode) {
-    const { current }: { current: any } = HistoryBarRef;
+    const { current } = historyBarRef;
     current?.push?.(node);
   }
 
   // 添加历史记录
   async function addHistory(node: BreadCrumbNode) {
     const { id } = node;
-    await fetchData(id);
+    await fetchData({id});
     // onHistoryChange(node);
     push(node);
   }
 
   // 面包屑导航变化触发
   async function onMenuChange(node: BreadCrumbNode) {
-    await fetchData(node.id);
+    await fetchData({id: node.id});
     // onHistoryChange(node);
     setCurrentNode(node);
   }
 
   // 页面刷新
   function onReload(node: BreadCrumbNode) {
-    fetchData(node.id);
-  }
-
-  // 获取数据
-  async function fetchData(id?: string): Promise<fileDataProps[]> {
-    setLoading(true);
-    const [err, res] = await to(getDistMenu({ id }));
-    setLoading(false);
-    if (err) return Promise.reject(err);
-    const { data } = res;
-    if (!id) setCurrentNode(new BreadCrumbNode(data._id, '全部文件'));
-    setFileList(data.files);
-    return data.files;
+    fetchData({id: node.id});
   }
 
   /**
@@ -97,22 +118,22 @@ const AllFiles: FC<any> = (props) => {
     if (attribute.type === 'dir') {
       const node = new BreadCrumbNode(_id, name, currentNode?.id);
       node.current = record;
-      const [err, res] = await to(fetchData(_id));
+      const [err] = await to(fetchData({id: _id}));
       if (err) {
         console.error(err);
         return;
       }
-      // onHistoryChange(node);
       push(node);
       setCurrentNode(node);
     }
   }
 
-  function openMedia(record: fileDataProps) {
+  function openMedia(record: FileProps) {
     setVisibleFile({ ...record, visible: true });
     console.log(currentNode);
   }
 
+  // 关闭媒体播放器
   function onMediaCancel() {
     setVisibleFile({ ...visibleFile, visible: false });
     sleep(300).then(() => {
@@ -125,7 +146,7 @@ const AllFiles: FC<any> = (props) => {
    * 打开文件判断
    * @param {record}
    */
-  function onOpen(record: fileDataProps) {
+  function onOpen(record: FileProps) {
     const {
       attribute: { type },
     } = record;
@@ -152,10 +173,10 @@ const AllFiles: FC<any> = (props) => {
    * 新建文件夹
    * 入参 list、node 为可选，兼容右键新建文件夹方法调用
    */
-  function newDir(list?: fileDataProps[], node?: BreadCrumbNode) {
+  function newDir(list?: FileProps[], node?: BreadCrumbNode) {
     const _list = list || fileList;
     const _node = node || currentNode;
-    const item: fileDataProps = {
+    const item: FileProps = {
       _id: '_new', // ! 约定 新建文件夹id为_new
       parent_id: _node?.id as string,
       name: '新建文件夹',
@@ -164,7 +185,7 @@ const AllFiles: FC<any> = (props) => {
         size: 0,
         type: 'dir',
         url: '',
-        create_time: moment().format('YYYY-MM-DD HH:mm'),
+        create_time: moment().format('yyyy-MM-dd HH:mm'),
       },
     };
     setFileList([item, ..._list]);
@@ -176,17 +197,18 @@ const AllFiles: FC<any> = (props) => {
    * @returns
    */
   function upload() {
-    const { current }: { current: any } = fileRef;
+    const { current } = fileRef;
     current?.click();
   }
+
   // 上传文件
-  function onFileChange(e: any) {
+  function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { files = [] } = e.target;
-    const { id = null } = currentNode as any;
-    const [file] = files;
+    const { id } = currentNode!;
+    const [file] = files!;
     uploadFile({ id, file })
-      .then((res) => {
-        fetchData(id);
+      .then(() => {
+        fetchData({id});
       })
       .catch((err) => {
         console.warn(err);
@@ -199,18 +221,15 @@ const AllFiles: FC<any> = (props) => {
    * ! 注意此处方法无法复用 openDir fetchData, fetchData中写入表格数据为异步，会导致添加新建元素延迟，需要单独处理 filesList
    * @param record
    */
-  async function onFileNew(record: fileDataProps) {
+  async function onFileNew(record: FileProps) {
     const { _id, name } = record;
-    setLoading(true);
     const [err, res] = await to(getDistMenu({ id: _id }));
-    setLoading(false);
     const node = new BreadCrumbNode(_id, name, currentNode?.id);
     if (err) {
       console.error(err);
       return;
     }
-    const { data } = res;
-    // onHistoryChange(node);
+    const { data } = res!;
     push(node);
     setCurrentNode(node);
     // 此处传入新的filesList、currentNode, 以规避setFilesList及currentNode的延迟
@@ -224,8 +243,8 @@ const AllFiles: FC<any> = (props) => {
   function onFileDelete(item: fileDataProps) {
     const { _id, parent_id } = item;
     deleteFile({ id: _id })
-      .then((_res) => {
-        fetchData(parent_id);
+      .then(() => {
+        fetchData({id: parent_id});
       })
       .catch((err) => {
         console.error(err);
@@ -248,8 +267,8 @@ const AllFiles: FC<any> = (props) => {
     // 新建文件
     if (_id === '_new') {
       insertDir({ id: parent_id, name })
-        .then((res) => {
-          fetchData(parent_id);
+        .then(() => {
+          fetchData({id: parent_id});
         })
         .catch((err) => {
           console.error(err);
@@ -257,8 +276,8 @@ const AllFiles: FC<any> = (props) => {
     } else {
       // 重命名
       renameFile({ id: _id, name })
-        .then((res) => {
-          fetchData(parent_id);
+        .then(() => {
+          fetchData({id: parent_id});
         })
         .catch((err) => {
           console.error(err);
@@ -291,14 +310,12 @@ const AllFiles: FC<any> = (props) => {
       .then((res) => {
         fileDownload(res, name);
       });
-    // fileDownload(url, name);
   }
 
   /**
    * 初始化
    */
   function init() {
-    setLoading(true);
     getDistMenu({})
       .then((res) => {
         const { data } = res;
@@ -310,13 +327,10 @@ const AllFiles: FC<any> = (props) => {
       .catch((e) => {
         console.warn(e);
       })
-      .finally(() => {
-        setLoading(false);
-      });
   }
 
   // 透传方法，父元素通过 ref.current 获取子元素方法
-  useImperativeHandle(cRef, () => ({
+  useImperativeHandle(ref, () => ({
     addHistory,
     newDir,
     upload,
@@ -337,12 +351,12 @@ const AllFiles: FC<any> = (props) => {
       <div className={styles.topBar}>
         {/* 传递cRef，用于获取子组件添加历史记录方法 addHistory */}
         <HistoryBar
-          cRef={HistoryBarRef}
+          ref={historyBarRef}
           onChange={onMenuChange}
           onReload={onReload}
         />
         <span>
-          共<span className={styles.activeText}>{fileList.length}</span>个
+          counts: <span className={styles.activeText}>{fileList.length}</span>
         </span>
       </div>
       <div>
@@ -368,4 +382,4 @@ const AllFiles: FC<any> = (props) => {
   );
 };
 
-export default AllFiles;
+export default forwardRef<AllFilesHandles, AllFilesProps>(forwardRender);

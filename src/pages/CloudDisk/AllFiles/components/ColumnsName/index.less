@@ -9,9 +9,23 @@
     transition: color ease 0.3s;
     color: @simple-color;
     &:hover {
-      color: @active-color;
+      color: @active-blue;
     }
     cursor: pointer;
+  }
+}
+
+.columns-name {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  .text {
+    overflow: hidden;
+    word-break: break-all;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 200px;
+    flex: 1;
   }
 }
 

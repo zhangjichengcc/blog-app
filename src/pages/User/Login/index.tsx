@@ -21,7 +21,7 @@ import {
   WechatOutlined,
   WeiboOutlined,
 } from '@ant-design/icons';
-import { renderSize } from 'utils/utils';
+import { renderSize } from '@/utils';
 import { oauthPwd } from '@/services/user';
 import logoImg from 'assets/global/logo.png';
 import styles from './index.less';

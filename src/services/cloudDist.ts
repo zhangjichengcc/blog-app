@@ -1,13 +1,50 @@
 /*
  * @Author: your name
  * @Date: 2022-01-17 18:03:11
- * @LastEditTime: 2022-04-19 09:51:49
+ * @LastEditTime: 2022-11-11 19:02:45
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\services\cloudDist.ts
+ * @FilePath: \blog5.0_front-end\src\services\cloudDist.ts
  */
 
 import request from '@/utils/request';
+
+/**
+ * 文件属性
+ */
+export interface FileProps {
+  /** 内置属性 */
+  attribute: {
+    /** 创建时间 */
+    create_time: string, 
+    /** 大小 */
+    size: number, 
+    /** 地址 */
+    url: string, 
+    /** 类型 */
+    type: string,
+  };
+  /** 文件锁 */
+  lock: boolean;
+  /** 文件名 */
+  name: string;
+  /** 父级id */
+  parent_id: string; 
+  /** 文件id */
+  _id: string;
+}
+
+/**
+ * 文件列表
+ */
+export interface FileDataProps {
+  /** 文件列表 */
+  files: Array<FileProps>;
+  /** 用户id */
+  user_id: string;
+  /** 文件id */
+  _id: string;
+}
 
 /**
  * 获取文件列表
@@ -16,7 +53,7 @@ import request from '@/utils/request';
 interface getDistMenuProps {
   id?: string;
 }
-export async function getDistMenu(params: getDistMenuProps) {
+export async function getDistMenu(params: getDistMenuProps): API.ResponsePromise<FileDataProps> {
   return request({
     url: '/api/clouddisk/getDiskFiles',
     method: 'get',
@@ -57,7 +94,7 @@ export async function uploadFile(params: uploadFileProps) {
     url: '/api/clouddisk/upload',
     method: 'post',
     body: formData,
-    // headers: { 'Content-Type': 'multipart/form-data'}
+    // headers: { 'Content-Type': 'multipart/form-data; charset=utf-8'}
   });
 }
 
