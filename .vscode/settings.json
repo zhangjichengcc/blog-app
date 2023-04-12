@@ -1,3 +1,27 @@
 {
-  "cSpell.words": ["umijs"]
+  "cSpell.words": ["umijs"],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // 指定 js 的 formatter 为 eslint
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+
+  // 开启 eslint 校验
+  "eslint.enable": true,
+
+  // 代码保存时触发
+  "editor.codeActionsOnSave": {
+    // 使用eslint来fix，包括格式化会自动fix和代码质量检查会给出错误提示
+    "source.fixAll.eslint": false
+  }
 }

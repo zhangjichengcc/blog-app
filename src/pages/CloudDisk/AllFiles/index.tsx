@@ -47,15 +47,17 @@ interface AllFilesProps {
  */
 export interface AllFilesHandles {
   /** 添加历史记录 */
-  addHistory: (node: BreadCrumbNode) => Promise<void>,
+  addHistory: (node: BreadCrumbNode) => Promise<void>;
   /** 新建文件夹 */
-  newDir: (list?: FileProps[], node?: BreadCrumbNode) => void,
+  newDir: (list?: FileProps[], node?: BreadCrumbNode) => void;
   /** 上传文件 */
-  upload: () => void,
+  upload: () => void;
 }
 
-const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = (props, ref) => {
-
+const forwardRender: ForwardRefRenderFunction<
+  AllFilesHandles,
+  AllFilesProps
+> = (props, ref) => {
   // const { onSelectedChange } = props;
 
   const historyBarRef = useRef<HistoryBarHandles>(null);
@@ -66,7 +68,7 @@ const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = 
   const [visibleFile, setVisibleFile] = useState<any>({ visiable: false });
 
   /** 查询文件列表 */
-  const {runAsync: fetchData, loading } = useRequest(getDistMenu, {
+  const { runAsync: fetchData, loading } = useRequest(getDistMenu, {
     manual: true,
     onSuccess(data, params) {
       setFileList(data.data.files);
@@ -77,7 +79,7 @@ const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = 
     },
     onError(e) {
       console.error(e);
-    }
+    },
   });
 
   /**
@@ -92,21 +94,21 @@ const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = 
   // 添加历史记录
   async function addHistory(node: BreadCrumbNode) {
     const { id } = node;
-    await fetchData({id});
+    await fetchData({ id });
     // onHistoryChange(node);
     push(node);
   }
 
   // 面包屑导航变化触发
   async function onMenuChange(node: BreadCrumbNode) {
-    await fetchData({id: node.id});
+    await fetchData({ id: node.id });
     // onHistoryChange(node);
     setCurrentNode(node);
   }
 
   // 页面刷新
   function onReload(node: BreadCrumbNode) {
-    fetchData({id: node.id});
+    fetchData({ id: node.id });
   }
 
   /**
@@ -118,7 +120,7 @@ const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = 
     if (attribute.type === 'dir') {
       const node = new BreadCrumbNode(_id, name, currentNode?.id);
       node.current = record;
-      const [err] = await to(fetchData({id: _id}));
+      const [err] = await to(fetchData({ id: _id }));
       if (err) {
         console.error(err);
         return;
@@ -208,7 +210,7 @@ const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = 
     const [file] = files!;
     uploadFile({ id, file })
       .then(() => {
-        fetchData({id});
+        fetchData({ id });
       })
       .catch((err) => {
         console.warn(err);
@@ -244,7 +246,7 @@ const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = 
     const { _id, parent_id } = item;
     deleteFile({ id: _id })
       .then(() => {
-        fetchData({id: parent_id});
+        fetchData({ id: parent_id });
       })
       .catch((err) => {
         console.error(err);
@@ -268,7 +270,7 @@ const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = 
     if (_id === '_new') {
       insertDir({ id: parent_id, name })
         .then(() => {
-          fetchData({id: parent_id});
+          fetchData({ id: parent_id });
         })
         .catch((err) => {
           console.error(err);
@@ -277,7 +279,7 @@ const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = 
       // 重命名
       renameFile({ id: _id, name })
         .then(() => {
-          fetchData({id: parent_id});
+          fetchData({ id: parent_id });
         })
         .catch((err) => {
           console.error(err);
@@ -326,7 +328,7 @@ const forwardRender: ForwardRefRenderFunction<AllFilesHandles, AllFilesProps> = 
       })
       .catch((e) => {
         console.warn(e);
-      })
+      });
   }
 
   // 透传方法，父元素通过 ref.current 获取子元素方法
