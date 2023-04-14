@@ -8,8 +8,8 @@
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev",
-    "bootstrap:dev": "cross-env UMI_ENV=dev node scripts/init.ts ",
-    "bootstrap:prod": "cross-env UMI_ENV=prod node scripts/init.ts ",
+    "bootstrap:dev": "cross-env UMI_ENV=dev esno scripts/init.ts ",
+    "bootstrap:prod": "cross-env UMI_ENV=prod esno scripts/init.ts ",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage"

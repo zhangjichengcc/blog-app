@@ -4,10 +4,14 @@ function copyToClipboard(text: string) {
   input.value = text;
   document.body.appendChild(input);
   input.select();
-  // navigator.clipboard.writeText
-  const res = document.execCommand('copy');
-  document.body.removeChild(input);
-  return res;
+
+  // if (navigator.clipboard.writeText) {
+  navigator.clipboard.writeText('<empty clipboard>');
+  // } else {
+  //   const res = document.execCommand('copy');
+  //   document.body.removeChild(input);
+  //   return res;
+  // }
 }
 
 export default copyToClipboard;
