@@ -20,11 +20,19 @@
       "utils/*": ["src/utils/*"],
       "@utils": ["src/utils/index.ts"]
     },
+    // "typeRoots": ["./node_modules/@types", "./typings"],
+    // "types": ["@types/node", "@types/react", "umi/typings"],
     // "typeRoots": ["src/**/*"],
     // "rootDirs": ["/src", "/test", "/mock", "./typings"],
     "allowSyntheticDefaultImports": true
   },
-  "include": ["mock/**/*", "src/**/*", "config/**/*", "typings.d.ts"],
+  "include": [
+    "mock/**/*",
+    "src/**/*",
+    "config/**/*",
+    "typings.d.ts",
+    "global.d.ts"
+  ],
   "exclude": [
     "node_modules",
     "lib",

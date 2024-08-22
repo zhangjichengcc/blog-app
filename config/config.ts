@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-11-08 15:46:05
- * @LastEditTime: 2022-08-29 18:59:55
+ * @LastEditTime: 2024-08-21 14:19:59
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog5.0_front-end\config\config.ts
+ * @FilePath: /blog5.0_front-end/config/config.ts
  */
 
 import { defineConfig } from 'umi';
@@ -25,11 +25,12 @@ export default defineConfig({
   //   type: 'none',
   // },
   publicPath: '/',
-  // plugins: [
-  //   ['umi-plugin-react', {
-  //     dynamicImport: true,
-  //   }],
-  // ],
+  plugins: [
+    // '@umijs/plugins/dist/react-query'
+    // ['umi-plugin-react', {
+    //   dynamicImport: true,
+    // }],
+  ],
   npmClient: 'pnpm',
   // ? https://github.com/umijs/umi/issues/6766
   mfsu: {},
@@ -50,6 +51,9 @@ export default defineConfig({
   },
   proxy: proxyConfig,
   routes: routesConfig,
+  // request: {
+  //   dataField: 'data'
+  // },
   // favicon: '/favicon.ico',
   define: {
     ['process.env']: process.env,

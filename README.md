@@ -2,23 +2,26 @@
 
 ## ABOUT PROJECT
 
-- @tanstack/react-query: 4.10.3
-- redux: 4.2.0
-- umi: 4.0.13
-- antd: 4.23.5
+- [react-redux ^9.1.2](https://cn.react-redux.js.org/)
+- [redux-toolkit 2.2.7](https://cn.redux-toolkit.js.org/)
+- [umi 4.3.14](https://umijs.org/docs/introduce/introduce)
+- [antd 5.20.2](https://ant-design.antgroup.com/index-cn)
+- [gaps 3.12.5](https://gsap.com/docs/v3/Installation/?tab=npm&module=esm&method=private+registry&tier=free&club=false&require=false&trial=true)
 
 ## Getting Started
 
 Install dependencies,
 
 ```bash
-$ yarn
+yarn
 ```
 
 Start the dev server,
 
 ```bash
-$ yarn start
+yarn start
 ```
 
-http://www.bootstrapmb.com/item/12376/preview
+## ReferTo
+
+<http://www.bootstrapmb.com/item/12376/preview>
