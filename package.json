@@ -28,18 +28,23 @@
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
     "@ant-design/pro-components": "^2.7.15",
+    "@gsap/react": "^2.1.1",
     "@reduxjs/toolkit": "^2.2.7",
     "@zhangjicheng/scroller": "^1.1.0",
     "ahooks": "^3.8.1",
     "antd": "^5.20.2",
+    "antd-mobile": "^5.37.1",
     "axios": "^1.7.4",
     "classnames": "^2.3.2",
+    "gasp": "^0.0.2",
     "griffith": "^1.29.0",
+    "gsap": "^3.12.5",
     "js-file-download": "^0.4.12",
     "js-moment": "^3.1.1",
     "qs": "^6.11.0",
     "react-pdf": "^5.7.2",
     "react-redux": "^9.1.2",
+    "redux": "^5.0.1",
     "umi": "^4.3.14"
   },
   "devDependencies": {

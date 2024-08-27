@@ -2,11 +2,13 @@
 
 .Header {
   position: fixed;
+  z-index: 100;
   background-color: transparent;
   display: flex;
   width: 100%;
+  height: var(--menu-height);
   justify-content: center;
-  transition: all ease .3s;
+  transition: all ease 0.3s;
   .container {
     display: flex;
     justify-content: space-between;
@@ -14,7 +16,7 @@
     width: 100%;
     max-width: 1070px;
     color: #fff;
-    transition: all ease .3s;
+    transition: all ease 0.3s;
     .rightContent {
       display: flex;
     }
@@ -29,8 +31,8 @@
       color: #fff;
       background-color: @active-red;
       margin-left: 20px;
-      opacity: .8;
-      transition: opacity ease .3s;
+      opacity: 0.8;
+      transition: opacity ease 0.3s;
       &:hover {
         opacity: 1;
       }
@@ -40,18 +42,17 @@
   &.active {
     background-color: #fff;
     box-shadow: 0 0 10px rgb(0 0 0 / 10%);
-    height: 60px;
     .container {
       color: @default-color;
     }
   }
 }
 
-@media (max-width: 1600px) {
-  .Header {
-    height: 90px;
-    .container {
-      padding: 0 30px;
-    }
-  }
-}
+// @media (max-width: 1600px) {
+//   .Header {
+//     height: 90px;
+//     .container {
+//       padding: 0 30px;
+//     }
+//   }
+// }

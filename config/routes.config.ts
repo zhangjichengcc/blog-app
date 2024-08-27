@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-08 15:46:56
- * @LastEditTime: 2024-08-20 17:05:07
+ * @LastEditTime: 2024-08-26 16:40:28
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /blog5.0_front-end/config/routes.config.ts
@@ -20,7 +20,7 @@ export default [
   // },
   {
     path: '/',
-    component: '@/layouts/BaseLayout',
+    component: '@/layouts/HomeLayout',
     routes: [
       { path: '/', component: './Home', title: 'home' },
       // { path: '/CloudDisk', component: './CloudDisk', title: 'CloudDisk' },
