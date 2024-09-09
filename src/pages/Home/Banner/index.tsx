@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:09:35
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-08-26 19:06:44
+ * @LastEditTime: 2024-09-09 19:03:03
  * @FilePath: /blog5.0_front-end/src/pages/Home/Banner/index.tsx
  */
 
@@ -14,9 +14,10 @@ const Banner = forwardRef<
   HTMLDivElement,
   { style?: CSSProperties; id?: string }
 >((props, ref) => {
+  const { style, id } = props;
+
   return (
-    <div ref={ref} className={styles.banner} {...props}>
-      <a id={props.id}></a>
+    <div id={id} ref={ref} className={styles.banner} style={style}>
       <Row>
         <Col xs={{ span: 24 }} lg={{ span: 8 }}>
           <div>

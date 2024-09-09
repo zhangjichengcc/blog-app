@@ -2,20 +2,22 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:09:35
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-10-17 18:47:22
- * @FilePath: \blog5.0_front-end\src\pages\Home\Portfolio\index.tsx
+ * @LastEditTime: 2024-09-09 19:03:31
+ * @FilePath: /blog5.0_front-end/src/pages/Home/Portfolio/index.tsx
  */
 
-import { forwardRef } from 'react';
+import { CSSProperties, forwardRef } from 'react';
 import styles from './index.less';
 
-const Portfolio = forwardRef<HTMLDivElement>((_props, ref) => {
+const Portfolio = forwardRef<
+  HTMLDivElement,
+  { style?: CSSProperties; id?: string }
+>((props, ref) => {
+  const { style, id } = props;
 
   return (
-    <div ref={ref} className={styles.portfolio}>
-      
-    </div>
-  )
-})
+    <div id={id} ref={ref} className={styles.portfolio} style={style}></div>
+  );
+});
 
 export default Portfolio;

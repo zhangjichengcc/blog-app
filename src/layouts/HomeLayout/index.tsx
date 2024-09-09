@@ -2,10 +2,10 @@
  * @Author: zhangjicheng
  * @Date: 2022-08-29 11:40:01
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-08-27 00:52:14
+ * @LastEditTime: 2024-09-09 17:54:32
  * @FilePath: /blog5.0_front-end/src/layouts/HomeLayout/index.tsx
  */
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { CSSProperties, FC, ReactNode, useEffect, useState } from 'react';
 import { Outlet } from 'umi';
 import { useAppSelector } from '@/store';
 import classnames from 'classnames';
@@ -14,38 +14,56 @@ import GridContainer from '@/components/GridContainer';
 
 import styles from './index.less';
 
+export interface OutletContextProps {
+  cssStyle: CSSProperties;
+}
+
 const large = ['md', 'lg', 'xl', 'xxl'];
-const small = ['xs', 'sm'];
 
 const Layout: FC<{ children: ReactNode }> = () => {
-  const menu = useAppSelector((state) => state.home.homeMenu);
+  const { menu, grid } = useAppSelector((state) => ({
+    menu: state.home.homeMenu,
+    grid: state.global.gird,
+  }));
+  /** 记录头部及底部菜单高度 */
+  const [menuHeightObj, setMenuHeightObj] = useState({
+    top: 0,
+    bottom: 60,
+  });
+  const [menuHeight, setMenuHeight] = useState(0);
 
-  const grid = useAppSelector((state) => state.global.gird);
+  const menuPosition = large.includes(grid) ? 'top' : 'bottom';
 
-  const [paddingTop, setPaddingTop] = useState(0);
-  const [paddingBottom, setPaddingBottom] = useState(0);
-
-  console.log(grid);
-
+  /**
+   * 头部menu高度变化触发
+   * @param {number} height
+   */
   function onHeightChange(height: number) {
-    setPaddingTop(height);
+    setMenuHeightObj((item) => ({
+      ...item,
+      top: height,
+    }));
   }
 
   useEffect(() => {
-    setPaddingBottom(large.includes(grid) ? 60 : 0);
-  }, [grid]);
+    setMenuHeight(menuHeightObj[menuPosition]);
+  }, [grid, menuHeightObj.top, menuHeightObj.bottom]);
 
   return (
     <GridContainer>
-      <div
-        className={classnames(styles.layouts, styles[grid])}
-        style={{ paddingTop, paddingBottom }}
-      >
-        {large.includes(grid) && (
+      <div className={classnames(styles.layouts, styles[grid])}>
+        {menuPosition === 'top' && (
           <TopMenu menu={menu} onHeightChange={onHeightChange} />
         )}
-        <Outlet context={{ cssStyle: { paddingTop, paddingBottom } }} />
-        {small.includes(grid) && <BottomMenu />}
+        <Outlet
+          context={{
+            cssStyle: {
+              [{ top: 'paddingTop', bottom: 'paddingBottom' }[menuPosition]]:
+                menuHeight,
+            },
+          }}
+        />
+        {menuPosition === 'bottom' && <BottomMenu />}
       </div>
     </GridContainer>
   );
