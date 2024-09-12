@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-08-29 11:40:01
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-09 17:54:32
+ * @LastEditTime: 2024-09-11 16:18:23
  * @FilePath: /blog5.0_front-end/src/layouts/HomeLayout/index.tsx
  */
 import { CSSProperties, FC, ReactNode, useEffect, useState } from 'react';
@@ -21,8 +21,9 @@ export interface OutletContextProps {
 const large = ['md', 'lg', 'xl', 'xxl'];
 
 const Layout: FC<{ children: ReactNode }> = () => {
-  const { menu, grid } = useAppSelector((state) => ({
+  const { menu, grid, activeKey } = useAppSelector((state) => ({
     menu: state.home.homeMenu,
+    activeKey: state.home.activeMenu,
     grid: state.global.gird,
   }));
   /** 记录头部及底部菜单高度 */
@@ -53,7 +54,11 @@ const Layout: FC<{ children: ReactNode }> = () => {
     <GridContainer>
       <div className={classnames(styles.layouts, styles[grid])}>
         {menuPosition === 'top' && (
-          <TopMenu menu={menu} onHeightChange={onHeightChange} />
+          <TopMenu
+            menu={menu}
+            activeKey={activeKey}
+            onHeightChange={onHeightChange}
+          />
         )}
         <Outlet
           context={{

@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-14 14:52:20
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-08-26 16:15:11
+ * @LastEditTime: 2024-09-12 11:02:59
  * @FilePath: /blog5.0_front-end/src/store/features/global/globalSlice.ts
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -25,6 +25,8 @@ export const globalSlice = createSlice({
   reducers: {
     /** 设置屏幕栅格化尺寸 */
     setGird: (state, action: PayloadAction<GlobalState['gird']>) => {
+      document.body.classList.remove(`screen-${state.gird}`);
+      document.body.classList.add(`screen-${action.payload}`);
       state.gird = action.payload;
     },
   },

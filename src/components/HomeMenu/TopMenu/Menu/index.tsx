@@ -2,10 +2,10 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:41:44
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-08-26 18:39:46
+ * @LastEditTime: 2024-09-11 16:23:48
  * @FilePath: /blog5.0_front-end/src/components/HomeMenu/TopMenu/Menu/index.tsx
  */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import classnames from 'classnames';
 // import { deepClone } from '@/utils';
 import { useScroll } from 'ahooks';
@@ -15,12 +15,12 @@ import styles from './index.less';
 
 interface Props {
   menu: Array<MenuItem>;
+  activeKey?: string;
 }
 
 export default function Menu(props: Props) {
-  const { menu = [] } = props;
+  const { menu = [], activeKey } = props;
 
-  const [activeKey, setActiveKey] = useState(menu[0]?.key);
   const position = useScroll();
 
   // function goView(item: MenuItem) {
@@ -52,7 +52,6 @@ export default function Menu(props: Props) {
         return (
           <li
             className={classnames({ [styles.active]: activeKey === item.key })}
-            // onClick={() => goView(item)}
             key={label}
           >
             <a href={`#${item.key}`}>{label}</a>

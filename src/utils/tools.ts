@@ -42,3 +42,17 @@ export function getDomRect(dom?: HTMLElement | null): DomRect {
     right,
   };
 }
+
+/**
+ * 格式化 dataset
+ * @param {Record<string, T>} data
+ * @returns {[key: `data-${string}`]: T}
+ */
+export function formatDataset<T>(data: Record<string, T>): {
+  [key: `data-${string}`]: T;
+} {
+  return Object.keys(data).reduce((acc, cur) => {
+    acc[`data-${cur}`] = data[cur];
+    return acc;
+  }, {} as { [key: `data-${string}`]: T });
+}

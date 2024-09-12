@@ -3,16 +3,25 @@
 .menu {
   display: flex;
   align-items: center;
-  >li {
+  > li {
     margin-left: 20px;
     cursor: pointer;
-    transition: all ease .3s;
+    transition: all ease 0.1s;
     font-weight: bold;
     &:first-child {
       margin-left: 0;
     }
     &.active {
       color: @active-red;
+    }
+  }
+}
+
+:global(.screen-md) {
+  .menu {
+    > li {
+      font-size: 16px;
+      margin-left: 10px;
     }
   }
 }

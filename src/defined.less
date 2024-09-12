@@ -1,12 +1,51 @@
+@font-face {
+  font-family: 'Barlow';
+  src: url('~@/assets/font/7cHqv4kjgoGqM7E30-8s51ostz0rdg.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('~@/assets/font/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-mu0SC55I.woff2')
+    format('woff2');
+}
+
+.font-family-barlow {
+  font-family: 'Barlow', sans-serif;
+}
+.font-family-open-sans {
+  font-family: 'Open Sans', sans-serif;
+}
+
+// 容器最大宽度
+.screen-config {
+  &.screen-xs,
+  &.screen-sm {
+    --container-max-width: 100%;
+  }
+  &.screen-md {
+    --container-max-width: 720px;
+  }
+  &.screen-lg {
+    --container-max-width: 960px;
+  }
+  &.screen-xl,
+  &.screen-xxl {
+    --container-max-width: 1070px;
+  }
+}
+
 @menu-height: 48px;
 @menu-color: rgba(255, 255, 255, 0.65);
 
 @bg-color: #ebeff3;
 
+@font-white: #fff;
 @disable-color: #999;
 @simple-color: #666;
 @default-color: #333;
 @active-blue: #3e82fe;
+@active-darkblue: #142eb5;
 @active-red: #fb503b;
 
 // Media queries breakpoints
