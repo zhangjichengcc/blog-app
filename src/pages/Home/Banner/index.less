@@ -1,5 +1,6 @@
 @import '~@/defined.less';
 @import '../defined.less';
+@import '~@/animation.less';
 
 .banner {
   background-image: url('~@/assets/Home/background.jpeg');
@@ -165,5 +166,12 @@
     background-size: 50%;
     width: 100px;
     height: 100px;
+  }
+
+  .circularText {
+    position: absolute;
+    bottom: -70px;
+    left: -70px;
+    .animate-rotate(8s);
   }
 }

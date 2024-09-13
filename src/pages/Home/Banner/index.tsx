@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:09:35
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-12 18:44:06
+ * @LastEditTime: 2024-09-13 15:24:03
  * @FilePath: /blog5.0_front-end/src/pages/Home/Banner/index.tsx
  */
 
@@ -12,6 +12,7 @@ import { useAppSelector } from '@/store';
 import styles from './index.less';
 import { formatDataset } from '@/utils/tools';
 import classNames from 'classnames';
+import CircularText from '@/components/CircularText';
 
 const Banner = forwardRef<
   HTMLDivElement,
@@ -38,8 +39,8 @@ const Banner = forwardRef<
             <p className={styles.name}>JiCheng Zhang</p>
             <p className={styles.job}>Web Developer</p>
             <p className={styles.info}>
-              Jodi kokhono vul hoye jai tumi oporadh nio na ptate velit esse
-              cillum dolore
+              Communicate requirements, technology selection and solution
+              output, and be responsible for project framework construction
             </p>
           </div>
           <div className={styles['button-group']}>
@@ -92,26 +93,14 @@ const Banner = forwardRef<
               className={styles.trophy}
               style={{ backgroundImage: `url(${trophyIcon})` }}
             ></div>
-            <div className="circular" style={{ width: 150, height: 150 }}>
-              <svg viewBox="0 0 300 300">
-                <path
-                  id="circlePath"
-                  d="M 150,150 m -100,0 a 100,100 0 1,1 200,0 a 100,100 0 1,1 -200,0"
-                  fill="none"
-                  stroke="none"
-                />
-
-                <text fontSize={18} fill="rgba(255,255,255,.7)">
-                  <textPath
-                    href="#circlePath"
-                    startOffset="50%"
-                    textAnchor="middle"
-                  >
-                    Creative Web Developer from Dalian, China
-                  </textPath>
-                </text>
-              </svg>
-            </div>
+            <CircularText
+              radius={70}
+              fontSize={33}
+              fontColor="rgba(255, 255, 255, 0.7)"
+              className={styles.circularText}
+            >
+              Creative Web Developer from Dalian, China
+            </CircularText>
           </div>
         </div>
       </div>
