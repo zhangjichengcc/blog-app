@@ -1,6 +1,6 @@
 @import '~@/defined.less';
-@import '../defined.less';
 @import '~@/animation.less';
+@import '../defined.less';
 
 .banner {
   background-image: url('~@/assets/Home/background.jpeg');
@@ -27,6 +27,7 @@
       flex-direction: column;
       justify-content: center;
       color: @font-white;
+      position: relative;
 
       .info {
         .font-family-open-sans;
@@ -40,16 +41,18 @@
     }
   }
 
-  // 小屏
+  /** 小屏 */
   &.grid-xs,
   &.grid-sm {
     .avatar {
     }
   }
 
-  // 中屏
+  /** 中屏 */
   &.grid-md {
     --tag-padding: 15px;
+    /** 中空文字大小 */
+    --stroke-text-font-size: 140px;
 
     .avatar {
       width: 300px;
@@ -78,11 +81,13 @@
     }
   }
 
-  // 大屏
+  /** 大屏 */
   &.grid-lg,
   &.grid-xl,
   &.grid-xxl {
     --tag-padding: 20px;
+    /** 中空文字大小 */
+    --stroke-text-font-size: 160px;
 
     .avatar {
       width: 370px;
@@ -115,6 +120,7 @@
     display: flex;
     font-size: 18px;
     font-weight: 600;
+    z-index: 1;
     > div {
       display: flex;
       align-items: center;
@@ -173,5 +179,11 @@
     bottom: -70px;
     left: -70px;
     .animate-rotate(8s);
+  }
+
+  .stroke-text {
+    position: absolute;
+    z-index: 0;
+    font-size: var(--stroke-text-font-size);
   }
 }

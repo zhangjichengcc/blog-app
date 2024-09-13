@@ -2,26 +2,92 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:09:35
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-13 15:24:03
+ * @LastEditTime: 2024-09-13 18:30:00
  * @FilePath: /blog5.0_front-end/src/pages/Home/Banner/index.tsx
  */
 
-import { forwardRef, CSSProperties } from 'react';
+import { forwardRef, CSSProperties, useRef } from 'react';
 import trophyIcon from '@/assets/Home/trophy.svg';
 import { useAppSelector } from '@/store';
-import styles from './index.less';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { formatDataset } from '@/utils/tools';
 import classNames from 'classnames';
 import CircularText from '@/components/CircularText';
+import StrokeText from '@/components/StrokeText';
+
+import styles from './index.less';
+
+// 注册插件
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Banner = forwardRef<
   HTMLDivElement,
   { style?: CSSProperties; id?: string; dataset?: Record<string, any> }
 >((props, ref) => {
   const { id, dataset = {} } = props;
+  const leftCol = useRef<HTMLDivElement>(null);
+  const rightCol = useRef<HTMLDivElement>(null);
+
   const grid = useAppSelector((state) => state.global.gird);
+  console.log('aaa', ref.current);
 
   const datasetMap = formatDataset(dataset);
+
+  /**
+   * 设置动画
+   */
+  useGSAP(() => {
+    const moduleHeight = leftCol.current.offsetHeight;
+    const [avatar] = rightCol.current!.children;
+    // 元素动画
+    gsap.fromTo(
+      leftCol.current,
+      {
+        x: 0,
+      },
+      {
+        x: '-100%',
+        ease: 'linear',
+        scrollTrigger: {
+          scrub: 1,
+        },
+      },
+    );
+    gsap.fromTo(
+      rightCol.current,
+      {
+        x: 0,
+      },
+      {
+        x: '100%',
+        ease: 'linear',
+        scrollTrigger: {
+          scrub: 1,
+        },
+      },
+    );
+    avatar.childNodes.forEach((dom: ChildNode) => {
+      gsap.fromTo(
+        dom,
+        {
+          x: 0,
+          opacity: 1,
+        },
+        {
+          x: '100%',
+          opacity: 0,
+          ease: 'linear',
+          scrollTrigger: {
+            scrub: 1,
+            start: 'top top', // 滚动起点
+            end: `+=${moduleHeight}`, // 滚动的终点为模块的高度
+          },
+        },
+      );
+    });
+  });
 
   return (
     <div
@@ -33,7 +99,21 @@ const Banner = forwardRef<
       {...datasetMap}
     >
       <div className={styles.row}>
-        <div className={styles['col-left']}>
+        <div ref={leftCol} className={styles['col-left']}>
+          <StrokeText
+            className={styles['stroke-text']}
+            style={{ transform: 'translate(-30%, -110%)' }}
+            strokeColor={'rgba(255, 255, 255, 0.2)'}
+          >
+            JiCheng
+          </StrokeText>
+          <StrokeText
+            className={styles['stroke-text']}
+            style={{ transform: 'rotate(90deg) translate(40%, 110%)' }}
+            strokeColor={'rgba(255, 255, 255, 0.2)'}
+          >
+            Zhang
+          </StrokeText>
           <div className={styles.description}>
             <p className={styles.hello}>Hello I&apos;m</p>
             <p className={styles.name}>JiCheng Zhang</p>
@@ -50,7 +130,7 @@ const Banner = forwardRef<
             </div>
           </div>
         </div>
-        <div className={styles['col-right']}>
+        <div ref={rightCol} className={styles['col-right']}>
           <div className={styles.avatar}>
             <div
               className={styles.flag}
@@ -78,7 +158,7 @@ const Banner = forwardRef<
                     display: 'inline-block',
                     fontSize: '28px',
                     fontStyle: 'normal',
-                    transform: 'translateY(6px)',
+                    transform: 'translateY(-18px)',
                   }}
                 >
                   +
