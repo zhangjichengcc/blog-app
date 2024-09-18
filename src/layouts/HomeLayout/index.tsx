@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-08-29 11:40:01
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-18 15:51:01
+ * @LastEditTime: 2024-09-18 18:13:58
  * @FilePath: /blog5.0_front-end/src/layouts/HomeLayout/index.tsx
  */
 import { CSSProperties, FC, ReactNode, useEffect, useState } from 'react';
@@ -13,6 +13,7 @@ import { TopMenu, BottomMenu } from '@/components/HomeMenu';
 import GridContainer from '@/components/GridContainer';
 
 import styles from './index.less';
+import Copyright from '@/components/Copyright';
 
 export interface OutletContextProps {
   cssStyle: CSSProperties;
@@ -52,7 +53,10 @@ const Layout: FC<{ children: ReactNode }> = () => {
 
   return (
     <GridContainer>
-      <div className={classnames(styles.layouts, styles[grid])}>
+      <div
+        className={classnames(styles.layouts, styles[grid])}
+        style={menuPosition === 'bottom' ? { paddingBottom: 50 } : {}}
+      >
         {menuPosition === 'top' && (
           <TopMenu
             menu={menu}
@@ -68,6 +72,7 @@ const Layout: FC<{ children: ReactNode }> = () => {
             },
           }}
         />
+        <Copyright />
         {menuPosition === 'bottom' && (
           <BottomMenu menu={menu} activeKey={activeKey} />
         )}

@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-14 14:52:20
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-11 16:13:28
+ * @LastEditTime: 2024-09-18 17:37:11
  * @FilePath: /blog5.0_front-end/src/store/features/home/homeSlice.ts
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -13,13 +13,13 @@ interface HomeState {
   /** 首页菜单 */
   homeMenu: Array<MenuItem>;
   /** 当前激活的菜单 */
-  activeMenu?: string;
+  activeMenu?: MenuItem['key'];
 }
 
 const initialState: HomeState = {
   /** 首页菜单 */
   homeMenu: [],
-  activeMenu: '',
+  activeMenu: undefined,
 };
 
 export const homeSlice = createSlice({

@@ -13,7 +13,7 @@ type ActiveKey = 'about' | 'home' | 'menu';
 type MenuKey = MenuItem['key'];
 
 interface Props {
-  activeKey: MenuKey;
+  activeKey?: MenuKey;
   menu: Array<MenuItem>;
 }
 
@@ -23,7 +23,9 @@ const Menu: FC<Props> = (props) => {
   const { activeKey: homeKey, menu } = props;
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [menuActiveKey, setMenuActiveKey] = useState<MenuKey>(homeKey);
+  const [menuActiveKey, setMenuActiveKey] = useState<MenuKey>(
+    homeKey || 'home',
+  );
   const [activeConf, setActiveConf] = useState<{
     key: ActiveKey;
     left: number;
@@ -41,7 +43,7 @@ const Menu: FC<Props> = (props) => {
   }));
 
   /** 设置激活菜单样式 */
-  function setActiveMenuStyle(key: string) {
+  function setActiveMenuStyle(key: ActiveKey | MenuKey) {
     const currentKey: ActiveKey = ['about', 'home', 'menu'].includes(key)
       ? (key as ActiveKey)
       : 'menu';
@@ -83,8 +85,8 @@ const Menu: FC<Props> = (props) => {
   }
 
   useEffect(() => {
-    setActiveMenuStyle(homeKey);
-    setMenuActiveKey(homeKey);
+    setActiveMenuStyle(homeKey || 'menu');
+    setMenuActiveKey(homeKey || 'home');
   }, [homeKey]);
 
   return (

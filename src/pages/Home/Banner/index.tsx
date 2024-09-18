@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:09:35
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-18 17:16:17
+ * @LastEditTime: 2024-09-18 18:33:47
  * @FilePath: /blog5.0_front-end/src/pages/Home/Banner/index.tsx
  */
 
@@ -145,7 +145,9 @@ const Banner: FC<{
             </p>
           </div>
           <div className={styles['button-group']}>
-            <div className={styles.button}>Contact</div>
+            <div className={styles.button}>
+              <a href="#contact">Contact</a>
+            </div>
             <div className={styles['simple-button']}>
               <a href="#about">About Me</a>
             </div>

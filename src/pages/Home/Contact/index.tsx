@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:09:35
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-10 15:09:25
+ * @LastEditTime: 2024-09-18 18:34:25
  * @FilePath: /blog5.0_front-end/src/pages/Home/Contact/index.tsx
  */
 
@@ -25,7 +25,9 @@ const Contact = forwardRef<
       ref={ref}
       className={styles.contact}
       {...datasetMap}
-    ></div>
+    >
+      <h2>contact</h2>
+    </div>
   );
 });
 
