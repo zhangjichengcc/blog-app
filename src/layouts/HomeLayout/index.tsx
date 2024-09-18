@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-08-29 11:40:01
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-11 16:18:23
+ * @LastEditTime: 2024-09-18 15:51:01
  * @FilePath: /blog5.0_front-end/src/layouts/HomeLayout/index.tsx
  */
 import { CSSProperties, FC, ReactNode, useEffect, useState } from 'react';
@@ -68,7 +68,9 @@ const Layout: FC<{ children: ReactNode }> = () => {
             },
           }}
         />
-        {menuPosition === 'bottom' && <BottomMenu />}
+        {menuPosition === 'bottom' && (
+          <BottomMenu menu={menu} activeKey={activeKey} />
+        )}
       </div>
     </GridContainer>
   );

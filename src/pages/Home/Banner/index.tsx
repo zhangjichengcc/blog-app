@@ -2,11 +2,11 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:09:35
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-13 18:30:00
+ * @LastEditTime: 2024-09-18 17:16:17
  * @FilePath: /blog5.0_front-end/src/pages/Home/Banner/index.tsx
  */
 
-import { forwardRef, CSSProperties, useRef } from 'react';
+import { FC, CSSProperties, useRef } from 'react';
 import trophyIcon from '@/assets/Home/trophy.svg';
 import { useAppSelector } from '@/store';
 import { gsap } from 'gsap';
@@ -16,22 +16,24 @@ import { formatDataset } from '@/utils/tools';
 import classNames from 'classnames';
 import CircularText from '@/components/CircularText';
 import StrokeText from '@/components/StrokeText';
+import classnames from 'classnames';
 
 import styles from './index.less';
 
 // 注册插件
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const Banner = forwardRef<
-  HTMLDivElement,
-  { style?: CSSProperties; id?: string; dataset?: Record<string, any> }
->((props, ref) => {
+const Banner: FC<{
+  style?: CSSProperties;
+  id?: string;
+  dataset?: Record<string, any>;
+}> = (props) => {
   const { id, dataset = {} } = props;
+  const ref = useRef<HTMLDivElement>(null);
   const leftCol = useRef<HTMLDivElement>(null);
   const rightCol = useRef<HTMLDivElement>(null);
 
   const grid = useAppSelector((state) => state.global.gird);
-  console.log('aaa', ref.current);
 
   const datasetMap = formatDataset(dataset);
 
@@ -39,8 +41,23 @@ const Banner = forwardRef<
    * 设置动画
    */
   useGSAP(() => {
-    const moduleHeight = leftCol.current.offsetHeight;
+    const moduleHeight = ref.current?.offsetHeight;
     const [avatar] = rightCol.current!.children;
+    // 视差滚动
+    gsap.fromTo(
+      ref.current,
+      {
+        backgroundPositionY: `-50vh`,
+      },
+      {
+        backgroundPositionY: `50vh`,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: ref.current,
+          scrub: true,
+        },
+      },
+    );
     // 元素动画
     gsap.fromTo(
       leftCol.current,
@@ -52,6 +69,8 @@ const Banner = forwardRef<
         ease: 'linear',
         scrollTrigger: {
           scrub: 1,
+          start: 0, // 滚动起点
+          end: `+=${moduleHeight}`, // 滚动的终点为模块的高度
         },
       },
     );
@@ -65,6 +84,8 @@ const Banner = forwardRef<
         ease: 'linear',
         scrollTrigger: {
           scrub: 1,
+          start: 0, // 滚动起点
+          end: `+=${moduleHeight}`, // 滚动的终点为模块的高度
         },
       },
     );
@@ -81,7 +102,7 @@ const Banner = forwardRef<
           ease: 'linear',
           scrollTrigger: {
             scrub: 1,
-            start: 'top top', // 滚动起点
+            start: 0, // 滚动起点
             end: `+=${moduleHeight}`, // 滚动的终点为模块的高度
           },
         },
@@ -124,7 +145,7 @@ const Banner = forwardRef<
             </p>
           </div>
           <div className={styles['button-group']}>
-            <div className={styles.button}>Get a Quote</div>
+            <div className={styles.button}>Contact</div>
             <div className={styles['simple-button']}>
               <a href="#about">About Me</a>
             </div>
@@ -133,7 +154,7 @@ const Banner = forwardRef<
         <div ref={rightCol} className={styles['col-right']}>
           <div className={styles.avatar}>
             <div
-              className={styles.flag}
+              className={classnames(styles.flag, styles.flag1)}
               style={{ top: '10%', marginLeft: '-32%' }}
             >
               <span className={styles.num} style={{ color: '#50c5f0' }}>
@@ -145,7 +166,7 @@ const Banner = forwardRef<
               </div>
             </div>
             <div
-              className={styles.flag}
+              className={classnames(styles.flag, styles.flag2)}
               style={{
                 bottom: '5%',
                 right: '-40%',
@@ -153,16 +174,7 @@ const Banner = forwardRef<
             >
               <span className={styles.num} style={{ color: '#f05c6e' }}>
                 80
-                <i
-                  style={{
-                    display: 'inline-block',
-                    fontSize: '28px',
-                    fontStyle: 'normal',
-                    transform: 'translateY(-18px)',
-                  }}
-                >
-                  +
-                </i>
+                <i>+</i>
               </span>
               <div className={styles.text}>
                 <span>Projects</span>
@@ -186,6 +198,6 @@ const Banner = forwardRef<
       </div>
     </div>
   );
-});
+};
 
 export default Banner;

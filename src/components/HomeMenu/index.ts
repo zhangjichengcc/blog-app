@@ -1,5 +1,6 @@
 export { default as TopMenu } from './TopMenu';
 export { default as BottomMenu } from './BottomMenu';
+import { type MenuKey } from '@/pages/Home';
 
 import { DomRect } from '@/utils/tools';
 
@@ -8,7 +9,7 @@ import { DomRect } from '@/utils/tools';
  */
 export interface MenuItem {
   /** 菜单关键字 */
-  key: string;
+  key: MenuKey;
   /** 菜单名称 */
   label: string;
   /** dom定位信息 */

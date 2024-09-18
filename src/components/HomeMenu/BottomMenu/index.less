@@ -1,7 +1,43 @@
-.bottomBar {
+@import '~@/defined.less';
+
+.menu {
+  position: fixed;
+  z-index: 100;
   width: 100vw;
   height: 50px;
-  background-color: #eee;
-  position: fixed;
+  background-color: #fff;
   bottom: 0;
+  .font-family-barlow;
+  &::before {
+    content: '';
+    position: absolute;
+    width: var(--menu-bar-width);
+    left: var(--menu-bar-left);
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background-color: @active-blue;
+    bottom: 0;
+    transition: width ease 0.3s, left ease 0.3s;
+  }
+  .menu-container {
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    > li {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      color: #999;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      transition: color ease 0.3s;
+      > span {
+        font-size: 14px;
+      }
+      &.active {
+        color: @active-blue;
+      }
+    }
+  }
 }

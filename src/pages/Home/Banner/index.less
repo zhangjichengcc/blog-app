@@ -3,6 +3,84 @@
 @import '../defined.less';
 
 .banner {
+  /** 小屏 */
+  &.grid-xs,
+  &.grid-sm {
+    /** tag 间距 */
+    --tag-padding: 8px;
+    /** tag 文字大小 */
+    --tag-size: 12px;
+    /** tag 数字大小 */
+    --tag-num-size: 20px;
+    /** 中空文字大小 */
+    --stroke-text-font-size: 80px;
+    /** description hello 文字大小 */
+    --description-hello-font-size: 26px;
+    /** description name 文字大小 */
+    --description-name-font-size: 46px;
+    /** description job 文字大小 */
+    --description-job-font-size: 18px;
+    /** description info 文字大小 */
+    --description-info-font-size: 14px;
+    /** avatar 大小 */
+    --avatar-width: 150px;
+    --avatar-height: 175px;
+    /** col 宽度 */
+    --col-width: 100%;
+  }
+
+  /** 中屏 */
+  &.grid-md {
+    /** tag 间距 */
+    --tag-padding: 12px;
+    /** tag 文字大小 */
+    --tag-size: 18px;
+    /** tag 数字大小 */
+    --tag-num-size: 36px;
+    /** 中空文字大小 */
+    --stroke-text-font-size: 140px;
+    /** description hello 文字大小 */
+    --description-hello-font-size: 26px;
+    /** description name 文字大小 */
+    --description-name-font-size: 46px;
+    /** description job 文字大小 */
+    --description-job-font-size: 18px;
+    /** description info 文字大小 */
+    --description-info-font-size: 14px;
+    /** avatar 大小 */
+    --avatar-width: 300px;
+    --avatar-height: 360px;
+    /** col 宽度 */
+    --col-width: 45%;
+  }
+
+  /** 大屏 */
+  &.grid-lg,
+  &.grid-xl,
+  &.grid-xxl {
+    /** tag 间距 */
+    --tag-padding: 16px;
+    /** tag 文字大小 */
+    --tag-size: 22px;
+    /** tag 数字大小 */
+    --tag-num-size: 38px;
+    /** 中空文字大小 */
+    --stroke-text-font-size: 160px;
+    /** description hello 文字大小 */
+    --description-hello-font-size: 30px;
+    /** description name 文字大小 */
+    --description-name-font-size: 65px;
+    /** description job 文字大小 */
+    --description-job-font-size: 22px;
+    /** description info 文字大小 */
+    --description-info-font-size: 18px;
+    /** avatar 大小 */
+    --avatar-width: 320px;
+    --avatar-height: 390px;
+    /** col 宽度 */
+    --col-width: 45%;
+  }
+
   background-image: url('~@/assets/Home/background.jpeg');
   background-repeat: no-repeat;
   background-position: center;
@@ -16,6 +94,8 @@
     background-size: cover;
     border-radius: 10px;
     position: relative;
+    width: var(--avatar-width);
+    height: var(--avatar-height);
   }
 
   .row {
@@ -24,95 +104,37 @@
     justify-content: space-between;
     .col-left {
       display: flex;
+      width: var(--col-width);
       flex-direction: column;
       justify-content: center;
       color: @font-white;
       position: relative;
 
-      .info {
-        .font-family-open-sans;
+      .description {
+        .hello {
+          font-size: var(--description-hello-font-size);
+        }
+        .name {
+          font-size: var(--description-name-font-size);
+          margin-bottom: 20px;
+        }
+        .job {
+          font-size: var(--description-job-font-size);
+          margin-bottom: 20px;
+        }
+        .info {
+          .font-family-open-sans;
+          font-size: var(--description-info-font-size);
+          margin-bottom: 30px;
+        }
       }
     }
 
     .col-right {
       display: flex;
+      width: var(--col-width);
       flex-direction: column;
       justify-content: center;
-    }
-  }
-
-  /** 小屏 */
-  &.grid-xs,
-  &.grid-sm {
-    .avatar {
-    }
-  }
-
-  /** 中屏 */
-  &.grid-md {
-    --tag-padding: 15px;
-    /** 中空文字大小 */
-    --stroke-text-font-size: 140px;
-
-    .avatar {
-      width: 300px;
-      height: 360px;
-    }
-
-    .col-left {
-      width: 45%;
-    }
-    .description {
-      .hello {
-        font-size: 26px;
-      }
-      .name {
-        font-size: 46px;
-        margin-bottom: 20px;
-      }
-      .job {
-        font-size: 18px;
-        margin-bottom: 20px;
-      }
-      .info {
-        font-size: 14px;
-        margin-bottom: 30px;
-      }
-    }
-  }
-
-  /** 大屏 */
-  &.grid-lg,
-  &.grid-xl,
-  &.grid-xxl {
-    --tag-padding: 20px;
-    /** 中空文字大小 */
-    --stroke-text-font-size: 160px;
-
-    .avatar {
-      width: 370px;
-      height: 450px;
-    }
-
-    .col-left {
-      width: 45%;
-    }
-    .description {
-      .hello {
-        font-size: 30px;
-      }
-      .name {
-        font-size: 65px;
-        margin-bottom: 20px;
-      }
-      .job {
-        font-size: 22px;
-        margin-bottom: 20px;
-      }
-      .info {
-        font-size: 18px;
-        margin-bottom: 30px;
-      }
     }
   }
 
@@ -153,11 +175,18 @@
     > .num {
       grid-area: 1 / 1 / 3 / 2;
       padding-right: var(--tag-padding);
-      font-size: 45px;
+      font-size: var(--tag-num-size);
+      > i {
+        font-size: var(--tag-num-size);
+        display: inline-block;
+        font-style: normal;
+        transform: translateY(-24%);
+      }
     }
     > .text {
       display: flex;
       flex-direction: column;
+      font-size: var(--tag-size);
     }
   }
 
@@ -185,5 +214,51 @@
     position: absolute;
     z-index: 0;
     font-size: var(--stroke-text-font-size);
+  }
+
+  /** 小屏 */
+  &.grid-xs,
+  &.grid-sm {
+    .row {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 50px;
+    }
+    .col-left {
+      order: 2;
+      align-items: center;
+    }
+    .col-right {
+      order: 1;
+      align-items: center;
+    }
+    .description {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 40px 0;
+    }
+    .trophy {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  /** 中屏 */
+  &.grid-md {
+    .avatar {
+      margin-left: auto;
+    }
+  }
+
+  /** 大屏 */
+  &.grid-lg,
+  &.grid-xl,
+  &.grid-xxl {
+    .avatar {
+      margin-left: auto;
+    }
   }
 }
