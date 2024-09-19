@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:09:35
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-18 18:33:47
+ * @LastEditTime: 2024-09-19 14:49:21
  * @FilePath: /blog5.0_front-end/src/pages/Home/Banner/index.tsx
  */
 
@@ -13,7 +13,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { formatDataset } from '@/utils/tools';
-import classNames from 'classnames';
 import CircularText from '@/components/CircularText';
 import StrokeText from '@/components/StrokeText';
 import classnames from 'classnames';
@@ -114,7 +113,7 @@ const Banner: FC<{
     <div
       id={id}
       ref={ref}
-      className={classNames(styles.banner, grid && styles['grid-' + grid])}
+      className={classnames(styles.banner, grid && styles['grid-' + grid])}
       // ! 不使用style paddingTop
       // style={style}
       {...datasetMap}

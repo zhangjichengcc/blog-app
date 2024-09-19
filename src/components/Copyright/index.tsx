@@ -4,7 +4,7 @@ import styles from './index.less';
 import { useAppSelector } from '@/store';
 
 interface Props {
-  style: CSSProperties;
+  style?: CSSProperties;
 }
 
 const large = ['md', 'lg', 'xl', 'xxl'];

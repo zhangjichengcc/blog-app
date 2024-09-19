@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-08-29 11:40:01
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-18 18:13:58
+ * @LastEditTime: 2024-09-19 10:46:59
  * @FilePath: /blog5.0_front-end/src/layouts/HomeLayout/index.tsx
  */
 import { CSSProperties, FC, ReactNode, useEffect, useState } from 'react';
@@ -14,6 +14,7 @@ import GridContainer from '@/components/GridContainer';
 
 import styles from './index.less';
 import Copyright from '@/components/Copyright';
+import ToTop from '@/components/ToTop';
 
 export interface OutletContextProps {
   cssStyle: CSSProperties;
@@ -76,6 +77,7 @@ const Layout: FC<{ children: ReactNode }> = () => {
         {menuPosition === 'bottom' && (
           <BottomMenu menu={menu} activeKey={activeKey} />
         )}
+        <ToTop />
       </div>
     </GridContainer>
   );

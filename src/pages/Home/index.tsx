@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2022-03-02 23:05:49
- * @LastEditTime: 2024-09-18 18:53:20
+ * @LastEditTime: 2024-09-19 11:08:33
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /blog5.0_front-end/src/pages/Home/index.tsx
@@ -25,7 +25,6 @@ import Contact from './Contact';
 import Blog from './Blog';
 
 import styles from './index.less';
-import { useScrollScale } from '@/hooks/useScrollScale';
 
 /** 首页模块列表 */
 const sections = [
@@ -71,9 +70,6 @@ const Home: FC = () => {
   const layoutContext = useOutletContext<OutletContextProps>() || {};
   const appDispatch = useAppDispatch();
   const { cssStyle } = layoutContext;
-
-  const scroll = useScrollScale();
-  console.log(scroll);
 
   /**
    * 初始化首页目录导航
