@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:09:35
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-19 18:50:48
+ * @LastEditTime: 2024-09-20 11:50:21
  * @FilePath: /blog5.0_front-end/src/pages/Home/About/index.tsx
  */
 import { CSSProperties, forwardRef } from 'react';
@@ -15,6 +15,7 @@ import { ReactComponent as ComIcon } from '@/assets/Home/icon-components.svg';
 
 import styles from './index.less';
 import { useAppSelector } from '@/store';
+import PartTitle from '../components/PartTitle';
 
 const cards = [
   {
@@ -56,7 +57,7 @@ const About = forwardRef<
       style={style}
       {...datasetMap}
     >
-      <h2>About Me</h2>
+      <PartTitle style={{ paddingTop: 50 }}>About Me</PartTitle>
       <div className={styles.information}>
         <p>
           我是张吉成，来自 辽宁大连，毕业于

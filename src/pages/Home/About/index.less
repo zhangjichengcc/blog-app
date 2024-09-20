@@ -33,7 +33,9 @@
   .font-family-barlow;
 
   .information {
+    font-size: 14px;
     padding-top: 60px;
+    color: @default-color;
     > p {
       text-indent: 2em;
     }
@@ -45,11 +47,12 @@
     padding-bottom: 50px;
     display: flex;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: stretch;
     overflow-x: auto;
-    scroll-behavior: smooth;
     overscroll-behavior-inline: contain;
+    scroll-behavior: smooth;
     scroll-snap-type: inline mandatory;
+    .has-scrollbar();
     .card {
       min-width: var(--card-width);
       scroll-snap-align: start;
