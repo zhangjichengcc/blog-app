@@ -1,0 +1,37 @@
+.fill-svg-animate {
+  position: relative;
+  font-size: 0;
+
+  path,
+  circle {
+    fill: transparent;
+    stroke-dasharray: var(--stroke-length);
+    stroke-dashoffset: var(--stroke-length);
+    stroke-linecap: round;
+    animation: leave var(--animate-time) ease-in-out forwards;
+  }
+
+  &.active {
+    path,
+    circle {
+      animation: enter var(--animate-time) ease-in-out forwards;
+    }
+  }
+
+  @keyframes enter {
+    from {
+      stroke-dashoffset: var(--stroke-length);
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes leave {
+    from {
+      stroke-dashoffset: 0;
+    }
+    to {
+      stroke-dashoffset: var(--stroke-length);
+    }
+  }
+}

@@ -1,14 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2021-12-21 14:41:34
- * @LastEditTime: 2022-11-08 18:59:17
+ * @LastEditTime: 2024-12-19 17:28:21
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\index.tsx
+ * @FilePath: /blog5.0_front-end/src/pages/CloudDisk/index.tsx
  */
 
 import React, { FC, useState, useRef, forwardRef, ReactNode } from 'react';
-import { Button, Input, Menu, Tabs, Badge } from 'antd';
+import { Button, Input, Menu, Tabs, Badge, Dropdown } from 'antd';
 import type { MenuProps, TabsProps } from 'antd';
 import AllFiles, { AllFilesHandles } from './AllFiles';
 import { ImgIcon } from 'components/Icon';
@@ -16,44 +16,89 @@ import downloadImg from 'assets/cloudDisk/folder_download.png';
 import ownerImg from 'assets/cloudDisk/folder_owner.png';
 import publicImg from 'assets/cloudDisk/folder_public.png';
 import uploadImg from 'assets/cloudDisk/folder_upload.png';
+import UserMenu from '@/components/UserMenu';
 
 import BreadCrumbNode from 'utils/BreadCrumbNode';
 
 import styles from './index.less';
+import useBreadCrumb from './hooks/useBreadCrumb';
 
 const { Search } = Input;
 
 const CloudDisk: FC = () => {
   const [navTab, setNavTab] = useState<string>('private');
-  const [AllFilesSelectedKeys, setAllFilesSelectedKeys] = useState<string[]>([]);
-  
+  const [AllFilesSelectedKeys, setAllFilesSelectedKeys] = useState<string[]>(
+    [],
+  );
+
   const AllFilesRef = useRef<AllFilesHandles>(null);
 
   /** tabs列表 */
   const tabsItems: TabsProps['items'] = [
-    { 
+    {
       label: 'myFiles',
       key: 'private',
-      children: <AllFiles 
-        ref={AllFilesRef}
-        // onHistoryChange={onAllFilesMenuChange}
-        onSelectedChange={onSelectedChange}
-      /> 
+      children: (
+        <AllFiles
+          ref={AllFilesRef}
+          // onHistoryChange={onAllFilesMenuChange}
+          onSelectedChange={onSelectedChange}
+        />
+      ),
     },
-    { 
+    {
       label: 'publicFiles',
       key: 'public',
       children: 'publicFiles',
     },
-    { 
+    {
       label: 'uploadFiles',
       key: 'upload',
       children: 'uploadFiles',
     },
-    { 
+    {
       label: 'downloadFiles',
       key: 'download',
       children: 'downloadFiles',
+    },
+  ];
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.antgroup.com"
+        >
+          1st menu item
+        </a>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.aliyun.com"
+        >
+          2nd menu item
+        </a>
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.luohanacademy.com"
+        >
+          3rd menu item
+        </a>
+      ),
     },
   ];
 
@@ -61,39 +106,48 @@ const CloudDisk: FC = () => {
   const menuItems: MenuProps['items'] = [
     {
       type: 'group',
-      label: <span style={{fontWeight: 500}}>Files List</span>,
+      label: <span style={{ fontWeight: 500 }}>Files List</span>,
       children: [
         {
           key: 'private',
-          label: <span>My Documents</span>,
-          icon: <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={ownerImg} />,
+          label: <span>Personal Files</span>,
+          icon: (
+            <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={ownerImg} />
+          ),
         },
         {
           key: 'public',
           label: <span>Share Files</span>,
-          icon: <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={publicImg} />,
+          icon: (
+            <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={publicImg} />
+          ),
         },
-      ]
+      ],
     },
     {
       type: 'group',
-      label: <span style={{fontWeight: 500}}>Transfers List</span>,
+      label: <span style={{ fontWeight: 500 }}>Transfers List</span>,
       children: [
         {
           key: 'upload',
           label: <span>Uploading</span>,
-          icon: <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={uploadImg} />,
+          icon: (
+            <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={uploadImg} />
+          ),
         },
         {
           key: 'download',
           label: <span>DownLoading</span>,
           icon: (
-            <ImgIcon style={{ fontSize: 28, marginRight: 8 }} src={downloadImg} />
+            <ImgIcon
+              style={{ fontSize: 28, marginRight: 8 }}
+              src={downloadImg}
+            />
           ),
         },
-      ]
-    }
-  ]
+      ],
+    },
+  ];
 
   function onSearch() {}
 
@@ -127,7 +181,7 @@ const CloudDisk: FC = () => {
   }
 
   // 选中菜单项
-  function onMenuSelect(e: { key: string; }) {
+  function onMenuSelect(e: { key: string }) {
     const { key } = e;
     setNavTab(key);
   }
@@ -157,9 +211,16 @@ const CloudDisk: FC = () => {
           onSearch={onSearch}
           style={{ marginLeft: 'auto', width: 200 }}
         />
+        <UserMenu style={{ marginLeft: 20 }} redirect={window.location.pathname} />
       </div>
       <div className={styles.content}>
-        <Menu selectedKeys={[navTab]} mode="inline" onSelect={onMenuSelect} className={styles.menu} items={menuItems} />
+        <Menu
+          selectedKeys={[navTab]}
+          mode="inline"
+          onSelect={onMenuSelect}
+          className={styles.menu}
+          items={menuItems}
+        />
         <div className={styles.mainBody}>
           <Tabs
             animated

@@ -2,23 +2,25 @@
 
 .Header {
   position: fixed;
+  z-index: 100;
   background-color: transparent;
   display: flex;
   width: 100%;
+  height: var(--menu-height);
   justify-content: center;
-  transition: all ease .3s;
+  transition: all ease 0.3s;
+  .font-family-barlow;
   .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    max-width: 1070px;
-    color: #fff;
-    transition: all ease .3s;
+    width: var(--container-max-width);
+    color: @font-white;
+    transition: all ease 0.3s;
     .rightContent {
       display: flex;
     }
-    button {
+    .cv {
       height: 40px;
       border-radius: 40px;
       cursor: pointer;
@@ -26,32 +28,21 @@
       padding: 0 30px;
       font-size: 16px;
       font-weight: bold;
-      color: #fff;
+      color: @font-white;
       background-color: @active-red;
       margin-left: 20px;
-      opacity: .8;
-      transition: opacity ease .3s;
+      transition: background-color ease 0.3s;
       &:hover {
-        opacity: 1;
+        background-color: @active-darkblue;
       }
     }
   }
 
   &.active {
-    background-color: #fff;
+    background-color: @font-white;
     box-shadow: 0 0 10px rgb(0 0 0 / 10%);
-    height: 60px;
     .container {
       color: @default-color;
-    }
-  }
-}
-
-@media (max-width: 1600px) {
-  .Header {
-    height: 90px;
-    .container {
-      padding: 0 30px;
     }
   }
 }

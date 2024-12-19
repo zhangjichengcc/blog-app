@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 16:34:42
- * @LastEditTime: 2022-10-28 11:25:58
+ * @LastEditTime: 2024-09-18 17:14:29
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog5.0_front-end\src\utils\index.ts
+ * @FilePath: /blog5.0_front-end/src/utils/index.ts
  */
 
 import { baseLog } from 'utils/math';
@@ -57,7 +57,11 @@ export function deepClone<R>(source: R): R {
     map.set(source, result);
     for (const i in source) {
       const current = source[i];
-      if (Object.prototype.toString.call(current) === 'object Object' && !Object.prototype.hasOwnProperty.call(source, i)) continue;
+      if (
+        Object.prototype.toString.call(current) === 'object Object' &&
+        !Object.prototype.hasOwnProperty.call(source, i)
+      )
+        continue;
       result[i] = fn(current);
     }
     return result;

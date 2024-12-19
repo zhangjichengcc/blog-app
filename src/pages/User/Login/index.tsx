@@ -1,15 +1,16 @@
 /*
  * @Author: your name
  * @Date: 2021-11-08 16:10:07
- * @LastEditTime: 2022-03-04 10:21:08
+ * @LastEditTime: 2024-12-19 18:32:01
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\pages\User\Login\index.tsx
+ * @FilePath: /blog5.0_front-end/src/pages/User/Login/index.tsx
  */
 
 import React, { FC, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { history } from 'umi';
+import { useHistory } from '@/hooks/useHistory';
 import { Form, Input, Button, message, Avatar, Spin } from 'antd';
 import { setUserInfo, setToken } from 'utils/authority';
 import {
@@ -21,16 +22,16 @@ import {
   WechatOutlined,
   WeiboOutlined,
 } from '@ant-design/icons';
-import { renderSize } from '@/utils';
+// import { renderSize } from '@/utils';
 import { oauthPwd } from '@/services/user';
 import logoImg from 'assets/global/logo.png';
 import styles from './index.less';
 
-const Login: FC<any> = (props): React.ReactElement => {
+const Login: FC = (): React.ReactElement => {
   const [form] = Form.useForm();
   const [spinning, setSpinning] = useState(false);
-
-  renderSize(1111);
+  const { params: urlParams } = useHistory();
+  
 
   // 登录
   const onFinish = (values: any) => {
@@ -44,9 +45,10 @@ const Login: FC<any> = (props): React.ReactElement => {
       .then((res) => {
         const { data } = res;
         const { token } = data;
+        const { redirect } = urlParams;
         setUserInfo(data);
         setToken(token);
-        history.goBack();
+        history.replace(redirect || '/');
       })
       .catch((err) => {
         message.error('登录失败，请检查用户名或密码');
@@ -69,13 +71,13 @@ const Login: FC<any> = (props): React.ReactElement => {
         githubSso();
         break;
       case 'weibo':
-        message.warn('暂不支持，以后估计也不会支持！');
+        message.warning('暂不支持，以后估计也不会支持！');
         break;
       case 'facebook':
-        message.warn('暂不支持，看看算了！');
+        message.warning('暂不支持，看看算了！');
         break;
       default:
-        message.warn('开发中。。。等着吧');
+        message.warning('开发中。。。等着吧');
     }
   }
 

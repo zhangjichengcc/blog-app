@@ -16,20 +16,20 @@ export interface FileProps {
   /** 内置属性 */
   attribute: {
     /** 创建时间 */
-    create_time: string, 
+    create_time: string;
     /** 大小 */
-    size: number, 
+    size: number;
     /** 地址 */
-    url: string, 
+    url: string;
     /** 类型 */
-    type: string,
+    type: string;
   };
   /** 文件锁 */
   lock: boolean;
   /** 文件名 */
   name: string;
   /** 父级id */
-  parent_id: string; 
+  parent_id: string;
   /** 文件id */
   _id: string;
 }
@@ -53,7 +53,9 @@ export interface FileDataProps {
 interface getDistMenuProps {
   id?: string;
 }
-export async function getDistMenu(params: getDistMenuProps): API.ResponsePromise<FileDataProps> {
+export async function getDistMenu(
+  params: getDistMenuProps,
+): API.ResponsePromise<FileDataProps> {
   return request({
     url: '/api/clouddisk/getDiskFiles',
     method: 'get',

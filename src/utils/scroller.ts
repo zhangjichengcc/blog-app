@@ -19,14 +19,13 @@ type tweenParams = [
   /** 结束值 */
   end: number,
   /** 持续时间 */
-  duration: number
-]
+  duration: number,
+];
 
 /** 匀速运动 */
 function linearTween(...params: tweenParams): number {
   const [time, start, end, duration] = params;
-  const 
-    v = (end - start) / duration,
+  const v = (end - start) / duration,
     s = v * time + start;
   return time > duration ? end : s;
 }
@@ -34,12 +33,11 @@ function linearTween(...params: tweenParams): number {
 /** 匀减速运动 */
 function easeTween(...params: tweenParams) {
   const [time, start, end, duration] = params;
-  const
-    v_end = 0,
-    v_begin = (end - start) * 2 / duration - v_end,
+  const v_end = 0,
+    v_begin = ((end - start) * 2) / duration - v_end,
     a = (v_end - v_begin) / duration,
     v = v_begin + a * time,
-    s = start + (v_begin + v) * time / 2;
+    s = start + ((v_begin + v) * time) / 2;
   return time > duration ? end : s;
 }
 
@@ -48,19 +46,17 @@ const tweenFunctions = {
   linear: linearTween,
   /** 匀减速运动 */
   ease: easeTween,
-}
+};
 
 /** 滚动配置 */
 type Option = {
   /** 滚动持续时间 */
-  duration?: number,
+  duration?: number;
   /** 动画函数 */
-  easing?: 'linear' | 'ease',
-}
-
+  easing?: 'linear' | 'ease';
+};
 
 class Scroller {
-
   private scrollId: number;
   private prevTimestamp: number;
   private scrollCb?: (y: number) => void;
@@ -77,10 +73,7 @@ class Scroller {
   public duration: number;
 
   constructor(element?: HTMLElement, option?: Option) {
-    const {
-      duration = 300,
-      easing = 'ease'
-    } = option || {};
+    const { duration = 300, easing = 'ease' } = option || {};
 
     this.scrollId = 0;
     this.speed = 50 / 1000;
@@ -94,13 +87,17 @@ class Scroller {
 
   /**
    * 滚动步骤
-   * @param timestamp 
+   * @param timestamp
    */
   private step(timestamp: number) {
-
-    if (!this.prevTimestamp) this.prevTimestamp = timestamp; 
+    if (!this.prevTimestamp) this.prevTimestamp = timestamp;
     const currentTime = timestamp - this.prevTimestamp;
-    const value = tweenFunctions[this.easing](currentTime, this.source, this.target, this.duration);
+    const value = tweenFunctions[this.easing](
+      currentTime,
+      this.source,
+      this.target,
+      this.duration,
+    );
     if (this.scrollCb) this.scrollCb(value);
     if (this.element === window) {
       window.scrollTo(0, value);
@@ -120,14 +117,17 @@ class Scroller {
    */
   scrollTo(y: number, callBack?: (y: number) => void) {
     this.scrollCb = callBack;
-    this.source = this.element === window ? window.scrollY : (this.element as Element).scrollTop;
+    this.source =
+      this.element === window
+        ? window.scrollY
+        : (this.element as Element).scrollTop;
     this.prevTimestamp = 0;
     this.target = y;
     this.scrollId = requestAnimationFrame(this.step.bind(this));
   }
 
   private linearStep(timestamp: number) {
-    if (!this.prevTimestamp) this.prevTimestamp = timestamp; 
+    if (!this.prevTimestamp) this.prevTimestamp = timestamp;
     const currentTime = timestamp - this.prevTimestamp;
     const value = this.source + currentTime * this.speed;
     if (this.scrollCb) this.scrollCb(value);
@@ -146,8 +146,11 @@ class Scroller {
    */
   start(speed?: number, callBack?: (y: number) => void) {
     this.scrollCb = callBack;
-    this.speed = ((speed || 50) / 1000); // 将速度转为 px/ms
-    this.source = this.element === window ? window.scrollY : (this.element as Element).scrollTop;
+    this.speed = (speed || 50) / 1000; // 将速度转为 px/ms
+    this.source =
+      this.element === window
+        ? window.scrollY
+        : (this.element as Element).scrollTop;
     this.prevTimestamp = 0;
     this.scrollId = requestAnimationFrame(this.linearStep.bind(this));
   }
@@ -157,4 +160,4 @@ class Scroller {
   }
 }
 
-export default Scroller
+export default Scroller;

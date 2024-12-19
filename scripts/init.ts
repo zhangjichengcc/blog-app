@@ -1,15 +1,19 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2021-11-10 11:26:51
- * @LastEditTime: 2022-06-21 15:55:39
+ * @LastEditTime: 2024-05-06 17:08:29
  * @LastEditors: zhangjicheng
  * @Description: 生成环境文件
  * @HowToDo: npm run bootstrap:dev/prod
  */
 
-const fs = require('fs');
-const path = require('path');
-const chalk = require('chalk');
+import fs from 'node:fs';
+import chalk from 'chalk';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const log = console.log;
 

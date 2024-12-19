@@ -5,13 +5,13 @@
  * @LastEditTime: 2022-10-12 18:56:43
  * @FilePath: \blog5.0_front-end\src\hooks\useThrottle.ts
  */
-import { useRef } from "react";
+import { useRef } from 'react';
 
 /** 返回值 */
 type Result = {
   /** 触发执行 fn，函数参数将会传递给 fn */
   run: (...args: unknown[]) => void;
-}
+};
 
 /**
  * 函数节流钩子
@@ -31,16 +31,16 @@ export default function useThrottle(
 ): Result {
   const timer = useRef(0);
 
-  const run = function(...args: unknown[]) {
+  const run = function (...args: unknown[]) {
     if (timer.current) return;
     timer.current = window.setTimeout(() => {
       clearTimeout(timer.current);
       timer.current = 0;
       fn(...args);
     }, delay || 300);
-  }
+  };
 
   return {
     run,
-  }
+  };
 }

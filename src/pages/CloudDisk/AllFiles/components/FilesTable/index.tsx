@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 15:00:10
- * @LastEditTime: 2022-11-09 18:47:10
+ * @LastEditTime: 2023-04-12 16:33:38
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\AllFiles\components\FilesTable\index.tsx
+ * @FilePath: /blog5.0_front-end/src/pages/CloudDisk/AllFiles/components/FilesTable/index.tsx
  */
 
 import React, { FC, useState, useEffect } from 'react';
@@ -13,9 +13,7 @@ import { Spin, Popover } from 'antd';
 import ColumnsName from '../ColumnsName';
 import PopoverContent from '../PopoverContent';
 import { renderType, getType } from 'utils/filesType';
-import type {
-  FileProps,
-} from '@/services/cloudDist';
+import type { FileProps } from '@/services/cloudDist';
 import { thousands } from 'utils/math';
 import { renderSize } from '@/utils';
 import moment from 'js-moment';
@@ -197,14 +195,15 @@ const FilesTable: FC<FilesTableProps> = (props) => {
           <span className={styles.td}>Date Modified</span>
           <span className={styles.td}>Size</span>
           <span className={styles.td}>Type</span>
+          <span className={styles.td}>Link</span>
         </div>
         <div className={styles.tbody}>
           {data.map((item: FileProps) => {
             const { name, attribute, _id: id } = item;
-            const { size, create_time } = attribute;
+            const { size, create_time, url } = attribute;
             const createTime = moment(create_time).format('YYYY-MM-dd HH:mm');
             const selected = selectedKeys.includes(id);
-            const popoverVisiable = contextMenuKeys.includes(id);
+            const popoverVisible = contextMenuKeys.includes(id);
             const type = getType(name);
             return (
               <div
@@ -225,7 +224,7 @@ const FilesTable: FC<FilesTableProps> = (props) => {
                       onDownLoad={onDownLoad}
                     />
                   }
-                  open={popoverVisiable}
+                  open={popoverVisible}
                 >
                   <span className={styles.td}>
                     <ColumnsName record={item} addNewDir={onNameOk} />
@@ -236,6 +235,9 @@ const FilesTable: FC<FilesTableProps> = (props) => {
                   {type === 'dir' ? '--' : <RenderSize size={size} />}
                 </span>
                 <span className={styles.td}>{renderType(type)}</span>
+                <span
+                  className={styles.td}
+                >{`${window.location.origin}${url}`}</span>
               </div>
             );
           })}

@@ -1,15 +1,100 @@
-.about {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-}
+@import '~@/defined.less';
 
-.scrollContainer {
-  flex: 1;
-  height: 100%;
-  overflow: auto;
-}
-.scroller {
-  height: 400vh;
-  background-color: rgb(255, 187, 0);
+.about {
+  /** 小屏 */
+  &.grid-xs,
+  &.grid-sm {
+    --card-length: 1;
+    --card-gap: 50px;
+  }
+
+  /** 中屏 */
+  &.grid-md {
+    --card-length: 2;
+    --card-gap: 50px;
+  }
+
+  /** 大屏 */
+  &.grid-lg,
+  &.grid-xl,
+  &.grid-xxl {
+    --card-length: 3;
+    --card-gap: 50px;
+  }
+
+  // 计算卡片宽度
+  --card-width: calc(
+    (100% - var(--card-gap) * (var(--card-length) - 1)) / var(--card-length)
+  );
+
+  width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 25px;
+  .font-family-barlow;
+
+  .information {
+    font-size: 14px;
+    padding-top: 30px;
+    color: @default-color;
+    > p {
+      text-indent: 2em;
+    }
+  }
+
+  .container {
+    width: 100%;
+    margin-top: 50px;
+    padding-bottom: 50px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-behavior: smooth;
+    scroll-snap-type: inline mandatory;
+    .has-scrollbar();
+    .card {
+      min-width: var(--card-width);
+      scroll-snap-align: start;
+      border: #eee solid 1px;
+      color: #fff;
+      padding: 20px;
+      border-radius: 20px;
+      transition: background-color ease 0.3s;
+      &:nth-child(2n + 1) {
+        background-color: #6e7fd1;
+      }
+      &:nth-child(2n) {
+        background-color: #6b97d3;
+      }
+      &:not(:last-child) {
+        margin-right: var(--card-gap);
+      }
+      &:hover {
+        background-color: @active-red;
+      }
+      .info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 30px;
+        border-bottom: #fff 1px solid;
+        margin-bottom: 30px;
+
+        .title {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          span:first-child {
+            font-size: 16px;
+            font-weight: bold;
+          }
+          span:nth-child(2) {
+            font-size: 22px;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
 }

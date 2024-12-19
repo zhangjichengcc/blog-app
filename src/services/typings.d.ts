@@ -2,8 +2,8 @@
  * @Author: zhangjicheng
  * @Date: 2022-03-02 17:13:46
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-11-09 15:30:50
- * @FilePath: \blog5.0_front-end\src\services\typings.d.ts
+ * @LastEditTime: 2024-12-19 15:39:33
+ * @FilePath: /blog5.0_front-end/src/services/typings.d.ts
  * @Description:
  *
  * Copyright (c) 2022 by zhangjicheng, All Rights Reserved.
@@ -28,10 +28,17 @@ declare namespace API {
    * 用户信息
    */
   interface UserInfoProps {
+    /** 用户头像 */
     avatar: string;
+    /** 用户id */
+    id: string;
+    /** 邮箱 */
     email: string;
+    /** 手机号 */
     phone: string | number;
+    /** token */
     token: string;
+    /** 用户名 */
     username: string;
   }
 }

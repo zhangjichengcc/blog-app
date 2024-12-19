@@ -1,15 +1,15 @@
 /*
  * @Author: your name
  * @Date: 2021-12-23 20:38:14
- * @LastEditTime: 2022-11-03 10:57:31
+ * @LastEditTime: 2024-12-19 18:01:41
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog5.0_front-end\src\pages\CloudDisk\components\HistoryBar\index.tsx
+ * @FilePath: /blog5.0_front-end/src/pages/CloudDisk/components/HistoryBar/index.tsx
  */
 
 import { useImperativeHandle, forwardRef } from 'react';
 import BreadCrumbNode from '@/utils/BreadCrumbNode';
-import useHistory from '../../hooks/useHistory';
+import useBreadCrumb from '../../hooks/useBreadCrumb';
 import {
   ReloadOutlined,
   CaretRightOutlined,
@@ -49,7 +49,7 @@ export interface HistoryBarHandles {
 // const HistoryBar: FC<HistoryBarProps> = (props): ReactElement => {
 const forwardRender: React.ForwardRefRenderFunction<HistoryBarHandles, HistoryBarProps> = (props, ref) => {
   const { history: _history = [], onChange, onReload } = props;
-  const [history, currentIdx, visualHistory, go, push] = useHistory(_history);
+  const [history, currentIdx, visualHistory, go, push] = useBreadCrumb(_history);
 
   const leftActive = currentIdx > 0;
   const rightActive = currentIdx < history.length - 1;

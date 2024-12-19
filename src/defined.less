@@ -1,12 +1,87 @@
+@font-face {
+  font-family: 'Barlow';
+  src: url('~@/assets/font/7cHqv4kjgoGqM7E30-8s51ostz0rdg.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('~@/assets/font/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-mu0SC55I.woff2')
+    format('woff2');
+}
+
+// 字体
+.font-family-barlow {
+  font-family: 'Barlow', sans-serif;
+}
+
+// 字体
+.font-family-open-sans {
+  font-family: 'Open Sans', sans-serif;
+}
+
+// 容器最大宽度
+.screen-config {
+  &.screen-xs,
+  &.screen-sm {
+    --container-max-width: 100%;
+  }
+  &.screen-md {
+    --container-max-width: 720px;
+  }
+  &.screen-lg {
+    --container-max-width: 960px;
+  }
+  &.screen-xl,
+  &.screen-xxl {
+    --container-max-width: 1070px;
+  }
+}
+
+/** 设置滚动条 */
+.has-scrollbar {
+  &::-webkit-scrollbar {
+    /* 隐藏默认的滚动条 */
+    -webkit-appearance: none;
+  }
+
+  &::-webkit-scrollbar:vertical {
+    /* 设置垂直滚动条宽度 */
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar:horizontal {
+    /* 设置水平滚动条厚度 */
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-button {
+    width: 100%;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    /* 滚动条的其他样式定制，注意，这个一定也要定制，否则就是一个透明的滚动条 */
+    border-radius: 6px;
+    background-color: @active-blue;
+  }
+}
+
 @menu-height: 48px;
-@menu-color: rgba(255, 255, 255, 0.65);
+@menu-color: #333;
 
 @bg-color: #ebeff3;
 
+@font-white: #fff;
 @disable-color: #999;
 @simple-color: #666;
 @default-color: #333;
 @active-blue: #3e82fe;
+@active-darkblue: #142eb5;
 @active-red: #fb503b;
 
 // Media queries breakpoints

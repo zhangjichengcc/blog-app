@@ -2,8 +2,8 @@
  * @Author: zhangjicheng
  * @Date: 2022-02-28 11:00:50
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-03-11 15:53:28
- * @FilePath: \blog-app\src\components\HeaderDropdown\index.tsx
+ * @LastEditTime: 2024-09-18 17:29:47
+ * @FilePath: /blog5.0_front-end/src/components/HeaderDropdown/index.tsx
  * @Description:
  *
  * Copyright (c) 2022 by zhangjicheng, All Rights Reserved.
@@ -26,6 +26,7 @@ const HeaderDropdown: React.FC<HeaderDropdownProps> = (props) => {
       placement="bottomRight"
       overlayClassName={classNames(styles.container, className)}
       overlay={overlay}
+      // eslint-disable-next-line react/no-children-prop
       children={children}
     />
   );
