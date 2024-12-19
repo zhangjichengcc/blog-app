@@ -2,8 +2,8 @@
  * @Author: zhangjicheng
  * @Date: 2022-03-01 22:59:24
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2022-03-10 10:30:10
- * @FilePath: \blog-app\src\components\UserMenu\index.tsx
+ * @LastEditTime: 2024-12-19 17:38:04
+ * @FilePath: /blog5.0_front-end/src/components/UserMenu/index.tsx
  * @Description:
  *
  * Copyright (c) 2022 by zhangjicheng, All Rights Reserved.
@@ -20,9 +20,10 @@ import {
   SettingOutlined,
 } from '@ant-design/icons';
 import { history } from 'umi';
-import { getUserInfo } from 'utils/authority';
+import { getUserInfo, goLogin, goRegister } from 'utils/authority';
 import { removeToken, removeUserInfo } from 'utils/authority';
 import HeaderDropdown from 'components/HeaderDropdown';
+import { ReactComponent as UserSvg } from 'assets/global/user.svg';
 
 import styles from './index.less';
 
@@ -37,13 +38,19 @@ type UserMenuProps = {
    * @style: 样式
    */
   style?: object;
+  /**
+   * @redirect: 登录后跳转的地址
+   */
+  redirect?: string;
 };
 
 const UserMenu: FC<UserMenuProps> = (props) => {
-  const { size = 30, style = {} } = props;
+  const { size = 30, style = {}, redirect } = props;
 
   const userInfo = getUserInfo();
   const { username = '', avatar } = userInfo;
+
+  const isLogin = !!username;
 
   function logout() {
     confirm({
@@ -61,7 +68,7 @@ const UserMenu: FC<UserMenuProps> = (props) => {
 
   const menuHeaderDropdown = (
     <Menu selectedKeys={[]}>
-      {username ? (
+      {isLogin ? (
         <>
           <Menu.Item key="center">
             <UserOutlined style={{ marginRight: 6 }} />
@@ -79,13 +86,13 @@ const UserMenu: FC<UserMenuProps> = (props) => {
         </>
       ) : (
         <>
-          <Menu.Item key="login" onClick={() => history.push('/user/login')}>
+          <Menu.Item key="login" onClick={() => goLogin(redirect || window.location.pathname)}>
             <LoginOutlined style={{ marginRight: 6 }} />
             Sign in
           </Menu.Item>
           <Menu.Item
             key="register"
-            onClick={() => history.push('/user/register')}
+            onClick={() => goRegister(redirect || window.location.pathname)}
           >
             <SolutionOutlined style={{ marginRight: 6 }} />
             Sign up
@@ -101,7 +108,7 @@ const UserMenu: FC<UserMenuProps> = (props) => {
         {avatar ? (
           <Avatar size={size} src={avatar} />
         ) : (
-          <Avatar size={size} icon={<UserOutlined />} />
+          <Avatar size={size} style={{ fontSize: 20 }} icon={<UserSvg />} />
         )}
         <span className={styles.userName}>{username || '游客'}</span>
       </div>

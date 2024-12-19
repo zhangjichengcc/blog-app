@@ -8,7 +8,7 @@
 # main.yml
 name: deploy blog-app to aliyun
 # 触发方式
-on: 
+on:
   push:
     branches:
       - main
@@ -51,16 +51,15 @@ jobs:
           echo ${{ github.event.head_commit.message }}
         env:
           CI: true
-            
+
       # 上传代码到服务器
       - name: upload code to Server
         uses: easingthemes/ssh-deploy@v2.0.7
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AL_ACCESS_TOKEN }}
-          ARGS: "-avz --delete"
-          SOURCE: "dist"
+          ARGS: '-avz --delete'
+          SOURCE: 'dist'
           REMOTE_HOST: ${{ env.REMOTE_HOST }}
           REMOTE_USER: ${{ env.REMOTE_USER }}
           TARGET: ${{ env.TARGET_PATH }}
-          EXCLUDE: "/.git/, /node_modules/"
-      
+          EXCLUDE: '/.git/, /node_modules/'

@@ -2,7 +2,7 @@
  * @Author: zhangjicheng
  * @Date: 2022-10-12 23:09:35
  * @LastEditors: zhangjicheng
- * @LastEditTime: 2024-09-20 11:50:21
+ * @LastEditTime: 2024-09-23 10:16:17
  * @FilePath: /blog5.0_front-end/src/pages/Home/About/index.tsx
  */
 import { CSSProperties, forwardRef } from 'react';
@@ -57,7 +57,7 @@ const About = forwardRef<
       style={style}
       {...datasetMap}
     >
-      <PartTitle style={{ paddingTop: 50 }}>About Me</PartTitle>
+      <PartTitle style={{ paddingTop: 20 }}>About Me</PartTitle>
       <div className={styles.information}>
         <p>
           我是张吉成，来自 辽宁大连，毕业于

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-16 15:05:50
- * @LastEditTime: 2024-08-23 18:03:03
+ * @LastEditTime: 2024-12-19 11:48:54
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /blog5.0_front-end/src/layouts/BasicLayout/index.tsx
@@ -29,7 +29,7 @@ const BasicLayout: FC<any> = (props) => {
   const [menuMode, setMenuMode] = useState<'inline' | 'horizontal'>(
     'horizontal',
   );
-  const [drawerVisiable, setDrawerVisiable] = useState(false);
+  const [drawerVisible, setDrawerVisible] = useState(false);
 
   // 页面大小变化触发
   function handleResize() {
@@ -44,15 +44,15 @@ const BasicLayout: FC<any> = (props) => {
           <span>Veigar</span>
           {menuMode === 'inline' && (
             <>
-              {drawerVisiable ? (
+              {drawerVisible ? (
                 <MenuFoldOutlined
                   className={styles.menuIcon}
-                  onClick={() => setDrawerVisiable(false)}
+                  onClick={() => setDrawerVisible(false)}
                 />
               ) : (
                 <MenuUnfoldOutlined
                   className={styles.menuIcon}
-                  onClick={() => setDrawerVisiable(true)}
+                  onClick={() => setDrawerVisible(true)}
                 />
               )}
             </>
@@ -60,7 +60,7 @@ const BasicLayout: FC<any> = (props) => {
         </div>
       );
     },
-    [drawerVisiable],
+    [drawerVisible],
   );
 
   function onLogoClick() {
@@ -81,8 +81,8 @@ const BasicLayout: FC<any> = (props) => {
           placement="left"
           closable={false}
           width={200}
-          onClose={() => setDrawerVisiable(false)}
-          visible={drawerVisiable}
+          onClose={() => setDrawerVisible(false)}
+          visible={drawerVisible}
         >
           <Routes2Menu routes={routes} route={route} theme="light" />
         </Drawer>
@@ -96,15 +96,15 @@ const BasicLayout: FC<any> = (props) => {
         />
         {menuMode === 'inline' && (
           <>
-            {drawerVisiable ? (
+            {drawerVisible ? (
               <MenuFoldOutlined
                 className={styles.menuIcon}
-                onClick={() => setDrawerVisiable(false)}
+                onClick={() => setDrawerVisible(false)}
               />
             ) : (
               <MenuUnfoldOutlined
                 className={styles.menuIcon}
-                onClick={() => setDrawerVisiable(true)}
+                onClick={() => setDrawerVisible(true)}
               />
             )}
           </>

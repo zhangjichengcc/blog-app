@@ -7,9 +7,10 @@ import styles from './index.less';
 interface Props {
   children: ReactNode;
   style?: CSSProperties;
+  position?: 'left' | 'center';
 }
 const PartTitle: FC<Props> = (props) => {
-  const { children, style } = props;
+  const { children, style, position = 'left' } = props;
 
   const ref = useRef<HTMLDivElement>(null);
   const visible = useVisible(ref);
@@ -19,6 +20,7 @@ const PartTitle: FC<Props> = (props) => {
       ref={ref}
       className={classnames(styles['part-title'], {
         [styles.visible]: visible,
+        [styles[position]]: true,
       })}
       style={style}
     >

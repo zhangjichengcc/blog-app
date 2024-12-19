@@ -1,16 +1,16 @@
 /*
  * @Author: zhangjc
  * @Date: 2021-12-28 16:19:25
- * @LastEditTime: 2022-01-18 15:10:49
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-12-19 18:00:32
+ * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\pages\CloudDisk\hooks\useHistory\index.tsx
+ * @FilePath: /blog5.0_front-end/src/pages/CloudDisk/hooks/useBreadCrumb/index.tsx
  */
 
 import React, { useState, useEffect } from 'react';
 import BreadCrumbNode from '@/utils/BreadCrumbNode';
 
-export type useHistoryReturnProps = [
+export type useBreadCrumbReturnProps = [
   Array<BreadCrumbNode>,
   number,
   Array<BreadCrumbNode>,
@@ -18,9 +18,9 @@ export type useHistoryReturnProps = [
   (node: BreadCrumbNode) => void,
 ];
 
-const useHistory = function (
+const useBreadCrumb = function (
   historyList: Array<BreadCrumbNode> = [],
-): useHistoryReturnProps {
+): useBreadCrumbReturnProps {
   const [history, setHistory] = useState<Array<BreadCrumbNode>>(historyList);
   const [currentIdx, setCurrentIdx] = useState<number>(0);
   const [visualHistory, setVisualHistory] = useState<Array<BreadCrumbNode>>([]);
@@ -72,4 +72,4 @@ const useHistory = function (
   return [history, currentIdx, visualHistory, go, push];
 };
 
-export default useHistory;
+export default useBreadCrumb;

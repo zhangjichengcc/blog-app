@@ -1,11 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2022-01-17 18:55:43
- * @LastEditTime: 2022-03-02 23:45:08
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-12-19 17:35:20
+ * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog-app\src\utils\authority.ts
+ * @FilePath: /blog5.0_front-end/src/utils/authority.ts
  */
+
+import { history } from 'umi';
 
 /**
  * 录入token
@@ -50,4 +52,22 @@ export function getUserInfo(): API.UserInfoProps {
  */
 export function removeUserInfo() {
   window.localStorage.removeItem('userInfo');
+}
+
+/**
+ * 跳转登录页
+ * @param redirect 重定向地址
+ */
+export function goLogin(redirect?: string) {
+  const loginPath = redirect ? `/user/login?redirect=${redirect}` : '/user/login';
+  history.push(loginPath);
+}
+
+/**
+ * 跳转注册页
+ * @param redirect 重定向地址
+ */
+export function goRegister(redirect?: string) {
+  const registerPath = redirect ? `/user/register?redirect=${redirect}` : '/user/register';
+  history.push(registerPath);
 }

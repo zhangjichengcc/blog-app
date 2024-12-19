@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-11-09 15:56:30
- * @LastEditTime: 2022-11-10 17:46:55
+ * @LastEditTime: 2024-12-19 16:00:50
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \blog5.0_front-end\src\utils\request.ts
+ * @FilePath: /blog5.0_front-end/src/utils/request.ts
  */
 
 /* eslint-disable camelcase */
@@ -15,7 +15,7 @@
 // import { extend } from 'umi-request';
 import { stringify } from 'qs';
 import { notification } from 'antd';
-import { getToken } from 'utils/authority';
+import { getToken, removeToken, removeUserInfo } from 'utils/authority';
 
 const codeMessage: { [key: number]: string } = {
   200: '服务器成功返回请求的数据。',
@@ -123,10 +123,15 @@ export default function request(option: any) {
     .then(checkStatus)
     .then((response) => response.json())
     .then((response) => {
-      const { code, message } = response;
+      const { code, message, data } = response;
       // code 为 0 并且 data 存在的时候才返回数据，其他的均抛出异常，该异常属于业务异常
       if (newOptions.responseType === 'progress' || code === 0) {
         return response;
+      }
+      // 状态为 401 时，清除 token 和用户信息
+      if (data?.statusCode === 401) {
+        removeUserInfo();
+        removeToken();
       }
       // 抛出错误并捕捉
       const error = new _Error(message);

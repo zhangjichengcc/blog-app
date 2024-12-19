@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["umijs"],
+  "cSpell.words": ["esno", "umijs"],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   // 指定 js 的 formatter 为 eslint
