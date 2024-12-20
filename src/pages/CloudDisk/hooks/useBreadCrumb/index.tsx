@@ -1,13 +1,13 @@
 /*
  * @Author: zhangjc
  * @Date: 2021-12-28 16:19:25
- * @LastEditTime: 2024-12-19 18:00:32
+ * @LastEditTime: 2024-12-20 11:22:22
  * @LastEditors: zhangjicheng
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /blog5.0_front-end/src/pages/CloudDisk/hooks/useBreadCrumb/index.tsx
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import BreadCrumbNode from '@/utils/BreadCrumbNode';
 
 export type useBreadCrumbReturnProps = [
@@ -44,7 +44,7 @@ const useBreadCrumb = function (
    */
   function push(node: BreadCrumbNode): void {
     const { pId } = node;
-    let _history = [];
+    const _history = [];
     if (!pId) {
       // 若不存在previous则代表根节点
       _history.push(node);

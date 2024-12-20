@@ -44,6 +44,7 @@ pipeline {
                     npm config set registry https://registry.npmmirror.com
                     npm install pnpm -g
                     pnpm install
+                    echo "开始打包"
                     npm run build
                     """
                 }
